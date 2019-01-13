@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class ConversationBn {
 
+    // hello
     public int id;
     public int conversationId;
     public String speech;
