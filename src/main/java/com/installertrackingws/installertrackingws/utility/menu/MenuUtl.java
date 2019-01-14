@@ -1,6 +1,7 @@
 package com.installertrackingws.installertrackingws.utility.menu;
 
 import com.installertrackingws.installertrackingws.bean.menu.MenuBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.model.menu.Menu;
@@ -43,7 +44,7 @@ public class MenuUtl {
 
         List<Menu> childOneMenus = childOneMenuQry.getResultList();
 
-        ArrayList<MenuBn> menuBeans = new ArrayList<>();
+        ArrayList<MenuBn> menuBns = new ArrayList<>();
 
         for (int i = 0; i < childOneMenus.size(); i++) {
 
@@ -65,7 +66,7 @@ public class MenuUtl {
             child.setSrl(childOneMenus.get(i).getSrl());
             child.setParentId(childOneMenus.get(i).getParentId());
 
-            ArrayList<MenuBn> menuBeansTwo = new ArrayList<>();
+            ArrayList<MenuBn> menuBnsTwo = new ArrayList<>();
 
             for (int j = 0; j < childTwoMenus.size(); j++) {
 
@@ -83,16 +84,16 @@ public class MenuUtl {
                 childTwo.setParentId(childTwoMenus.get(j).getParentId());
                 childTwo.setMenuPermissionList(departmentQuery.getResultList());
 
-                menuBeansTwo.add(childTwo);
+                menuBnsTwo.add(childTwo);
 
             }
 
-            child.setChildren(menuBeansTwo);
-            menuBeans.add(child);
+            child.setChildren(menuBnsTwo);
+            menuBns.add(child);
 
         }
 
-        root.setChildren(menuBeans);
+        root.setChildren(menuBns);
         session.getTransaction().commit();
         session.close();
 
@@ -212,7 +213,6 @@ public class MenuUtl {
                 session.createNativeQuery("DELETE FROM menu WHERE o_id=:oId").setParameter("oId",i).executeUpdate();
             }
 
-
             if (response.getMenuBnList().get(0).getChildren().size()>0){
 
                 for (int i = 0; i < response.getMenuBnList().get(0).getChildren().size(); i++) {
@@ -290,7 +290,7 @@ public class MenuUtl {
         return saveResponse;
     }
 
-    public Response setMenuPermission(HttpServletRequest httpServletRequest,EntityManagerFactory entityManagerFactory,Response response){
+    public Response setMenuPermission(HttpServletRequest httpServletRequest,EntityManagerFactory entityManagerFactory,Request request){
 
         Response saveResponse = new Response();
 
@@ -304,15 +304,15 @@ public class MenuUtl {
             tx = session.beginTransaction();
 
             Query query = session.createNativeQuery("DELETE FROM menu_permission WHERE dept_id=:deptId");
-            query.setParameter("deptId",response.getUserBn().getDeptId());
+            query.setParameter("deptId",request.getUserBn().getDeptId());
             query.executeUpdate();
 
-            for (int i = 0; i < response.getIntegerList().size(); i++) {
+            for (int i = 0; i < request.getIntegerList().size(); i++) {
                 MenuPermission menuPermission = new MenuPermission();
                 menuPermission.setIp(httpServletRequest.getRemoteAddr());
-                menuPermission.setDeptId(response.getUserBn().getDeptId());
-                menuPermission.setModifiedBy(response.getUserBn().getId());
-                menuPermission.setMenuOid(response.getIntegerList().get(i));
+                menuPermission.setDeptId(request.getUserBn().getDeptId());
+                menuPermission.setModifiedBy(request.getUserBn().getId());
+                menuPermission.setMenuOid(request.getIntegerList().get(i));
                 session.save(menuPermission);
             }
 
@@ -326,8 +326,8 @@ public class MenuUtl {
                 tx.rollback();
                 throw e;
             }
-            response.setMsg("Exception occurred !");
-            response.setCode(200);
+            saveResponse.setMsg("Exception occurred !");
+            saveResponse.setCode(200);
         }finally{
             if(session!=null){
                 session.close();

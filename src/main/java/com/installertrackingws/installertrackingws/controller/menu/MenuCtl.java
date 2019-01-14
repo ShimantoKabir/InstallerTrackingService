@@ -1,6 +1,7 @@
 package com.installertrackingws.installertrackingws.controller.menu;
 
 import com.installertrackingws.installertrackingws.bean.menu.MenuBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.utility.menu.MenuUtl;
@@ -63,10 +64,10 @@ public class MenuCtl {
     }
 
     @PostMapping("/set-permission")
-    public Response setMenuPermission(HttpServletRequest httpServletRequest, @RequestBody Response response){
+    public Response setMenuPermission(HttpServletRequest httpServletRequest, @RequestBody Request request){
 
         MenuUtl menuUtility = new MenuUtl();
-        return menuUtility.setMenuPermission(httpServletRequest,entityManagerFactory,response);
+        return menuUtility.setMenuPermission(httpServletRequest,entityManagerFactory,request);
 
     }
 
