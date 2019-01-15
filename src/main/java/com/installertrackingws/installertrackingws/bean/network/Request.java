@@ -1,9 +1,10 @@
 package com.installertrackingws.installertrackingws.bean.network;
 
 import com.installertrackingws.installertrackingws.bean.material.TaskBn;
-import com.installertrackingws.installertrackingws.bean.treasure.CostBreakDownBn;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
+import com.installertrackingws.installertrackingws.bean.workOrder.WoAssignBn;
 import com.installertrackingws.installertrackingws.bean.workOrder.WorkOrderDetailBn;
+import com.installertrackingws.installertrackingws.model.WorkOrder.WoAssign;
 
 import java.util.List;
 
@@ -11,11 +12,19 @@ public class Request {
 
     public WorkOrderDetailBn workOrderDetailBn;
     public List<TaskBn> taskBnList;
-    public CostBreakDownBn costBreakDownBn;
     public List<Integer> integerList;
     public UserBn userBn;
+    public WoAssignBn woAssignBn;
 
     public Request() {}
+
+    public WoAssignBn getWoAssignBn() {
+        return woAssignBn;
+    }
+
+    public void setWoAssignBn(WoAssignBn woAssignBn) {
+        this.woAssignBn = woAssignBn;
+    }
 
     public List<Integer> getIntegerList() {
         return integerList;
@@ -35,14 +44,6 @@ public class Request {
 
     public List<TaskBn> getTaskBnList() {
         return taskBnList;
-    }
-
-    public CostBreakDownBn getCostBreakDownBn() {
-        return costBreakDownBn;
-    }
-
-    public void setCostBreakDownBn(CostBreakDownBn costBreakDownBn) {
-        this.costBreakDownBn = costBreakDownBn;
     }
 
     public void setTaskBnList(List<TaskBn> taskBnList) {

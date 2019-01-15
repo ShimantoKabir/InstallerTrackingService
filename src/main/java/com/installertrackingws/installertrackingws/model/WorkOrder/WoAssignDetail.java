@@ -16,7 +16,7 @@ public class WoAssignDetail {
     public int woAssignOid;
 
     @Column(nullable = false)
-    public int costBreakDownId;
+    public String breakDown;
 
     @Column(nullable = false)
     public String cost;
@@ -50,12 +50,12 @@ public class WoAssignDetail {
         this.woAssignOid = woAssignOid;
     }
 
-    public int getCostBreakDownId() {
-        return costBreakDownId;
+    public String getBreakDown() {
+        return breakDown;
     }
 
-    public void setCostBreakDownId(int costBreakDownId) {
-        this.costBreakDownId = costBreakDownId;
+    public void setBreakDown(String breakDown) {
+        this.breakDown = breakDown;
     }
 
     public String getCost() {

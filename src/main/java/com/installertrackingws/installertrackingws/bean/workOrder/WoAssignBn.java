@@ -1,6 +1,7 @@
 package com.installertrackingws.installertrackingws.bean.workOrder;
 
 import java.util.Date;
+import java.util.List;
 
 public class WoAssignBn {
 
@@ -8,6 +9,7 @@ public class WoAssignBn {
     public int oId;
     public int woId;
     public int assignTo;
+    public Date assignDate;
     public String assignTime;
     public int statusOid;
     public String scope;
@@ -15,8 +17,25 @@ public class WoAssignBn {
     public String ip;
     public Integer modifiedBy;
     public Date createdDate;
+    public List<WoAssignDetailBn> woAssignDetailList;
 
     public WoAssignBn() {}
+
+    public Date getAssignDate() {
+        return assignDate;
+    }
+
+    public void setAssignDate(Date assignDate) {
+        this.assignDate = assignDate;
+    }
+
+    public List<WoAssignDetailBn> getWoAssignDetailList() {
+        return woAssignDetailList;
+    }
+
+    public void setWoAssignDetailList(List<WoAssignDetailBn> woAssignDetailList) {
+        this.woAssignDetailList = woAssignDetailList;
+    }
 
     public int getAssignTo() {
         return assignTo;

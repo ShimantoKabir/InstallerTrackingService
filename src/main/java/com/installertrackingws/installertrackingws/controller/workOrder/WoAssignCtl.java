@@ -1,14 +1,15 @@
 package com.installertrackingws.installertrackingws.controller.workOrder;
 
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
+import com.installertrackingws.installertrackingws.bean.workOrder.WorkOrderBn;
 import com.installertrackingws.installertrackingws.utility.workOrder.WoAssignUtl;
 import com.installertrackingws.installertrackingws.utility.workOrder.WorkOrderUtl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManagerFactory;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/wo-assign")
@@ -20,6 +21,11 @@ public class WoAssignCtl {
     @GetMapping("/init")
     public Response getInitData(){
         return WoAssignUtl.getInitData(entityManagerFactory);
+    }
+
+    @PostMapping("/save")
+    public Response save(HttpServletRequest httpServletRequest, @RequestBody Request request){
+        return WoAssignUtl.save(httpServletRequest,entityManagerFactory,request);
     }
 
 }

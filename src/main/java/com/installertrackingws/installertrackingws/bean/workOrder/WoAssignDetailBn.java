@@ -6,7 +6,7 @@ public class WoAssignDetailBn {
 
     public int id;
     public int woAssignOid;
-    public int costBreakDownId;
+    public String breakDown;
     public String cost;
     public String ip;
     public Integer modifiedBy;
@@ -30,12 +30,12 @@ public class WoAssignDetailBn {
         this.woAssignOid = woAssignOid;
     }
 
-    public int getCostBreakDownId() {
-        return costBreakDownId;
+    public String getBreakDown() {
+        return breakDown;
     }
 
-    public void setCostBreakDownId(int costBreakDownId) {
-        this.costBreakDownId = costBreakDownId;
+    public void setBreakDown(String breakDown) {
+        this.breakDown = breakDown;
     }
 
     public String getCost() {
