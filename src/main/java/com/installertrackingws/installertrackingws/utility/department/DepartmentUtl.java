@@ -24,12 +24,12 @@ public class DepartmentUtl {
 
         Query query = session.createNativeQuery("select  * from Department",Department.class);
 
-        List<DepartmentBn> departmentBeanList = query.getResultList();
+        List<DepartmentBn> departmentBnList = query.getResultList();
 
         session.getTransaction().commit();
         session.close();
 
-        return departmentBeanList;
+        return departmentBnList;
 
     }
 

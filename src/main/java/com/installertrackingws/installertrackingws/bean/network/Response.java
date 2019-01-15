@@ -19,10 +19,28 @@ public class Response {
     public List<?> userList;
     public List<?> siteList;
     public List<?> statusList;
+    public List<?> departmentBnList;
+    public List<?> cbdList;
     public UserBn userBn;
     public int conversationId;
 
     public Response() {}
+
+    public List<?> getDepartmentBnList() {
+        return departmentBnList;
+    }
+
+    public void setDepartmentBnList(List<?> departmentBnList) {
+        this.departmentBnList = departmentBnList;
+    }
+
+    public List<?> getCbdList() {
+        return cbdList;
+    }
+
+    public void setCbdList(List<?> cbdList) {
+        this.cbdList = cbdList;
+    }
 
     public List<?> getUserList() {
         return userList;

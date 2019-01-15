@@ -7,6 +7,7 @@ public class WoAssignBn {
     public int id;
     public int oId;
     public int woId;
+    public int assignTo;
     public String assignTime;
     public int statusOid;
     public String scope;
@@ -16,6 +17,14 @@ public class WoAssignBn {
     public Date createdDate;
 
     public WoAssignBn() {}
+
+    public int getAssignTo() {
+        return assignTo;
+    }
+
+    public void setAssignTo(int assignTo) {
+        this.assignTo = assignTo;
+    }
 
     public int getId() {
         return id;

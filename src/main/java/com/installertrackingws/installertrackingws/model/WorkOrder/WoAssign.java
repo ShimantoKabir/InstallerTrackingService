@@ -18,6 +18,9 @@ public class WoAssign {
     @Column(nullable = false)
     public int woId;
 
+    @Column(nullable = false)
+    public int assignTo;
+
     public Date assignDate;
     public String assignTime;
 
@@ -39,6 +42,14 @@ public class WoAssign {
     public Date createdDate;
 
     public WoAssign() {}
+
+    public int getAssignTo() {
+        return assignTo;
+    }
+
+    public void setAssignTo(int assignTo) {
+        this.assignTo = assignTo;
+    }
 
     public int getId() {
         return id;
