@@ -1,5 +1,7 @@
 package com.installertrackingws.installertrackingws.bean.workOrder;
 
+import com.installertrackingws.installertrackingws.model.WorkOrder.WoAssignDetail;
+
 import java.util.Date;
 import java.util.List;
 
@@ -17,9 +19,53 @@ public class WoAssignBn {
     public String ip;
     public Integer modifiedBy;
     public Date createdDate;
-    public List<WoAssignDetailBn> woAssignDetailList;
+    public List<WoAssignDetailBn> woAssignDetailBnList;
+    public List<WoAssignDetail> woAssignDetailList;
+    public String assignUserName;
+    public String workOrderName;
+    public String statusName;
 
     public WoAssignBn() {}
+
+    public List<WoAssignDetailBn> getWoAssignDetailBnList() {
+        return woAssignDetailBnList;
+    }
+
+    public void setWoAssignDetailBnList(List<WoAssignDetailBn> woAssignDetailBnList) {
+        this.woAssignDetailBnList = woAssignDetailBnList;
+    }
+
+    public List<WoAssignDetail> getWoAssignDetailList() {
+        return woAssignDetailList;
+    }
+
+    public void setWoAssignDetailList(List<WoAssignDetail> woAssignDetailList) {
+        this.woAssignDetailList = woAssignDetailList;
+    }
+
+    public String getAssignUserName() {
+        return assignUserName;
+    }
+
+    public void setAssignUserName(String assignUserName) {
+        this.assignUserName = assignUserName;
+    }
+
+    public String getWorkOrderName() {
+        return workOrderName;
+    }
+
+    public void setWorkOrderName(String workOrderName) {
+        this.workOrderName = workOrderName;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
 
     public Date getAssignDate() {
         return assignDate;
@@ -29,13 +75,6 @@ public class WoAssignBn {
         this.assignDate = assignDate;
     }
 
-    public List<WoAssignDetailBn> getWoAssignDetailList() {
-        return woAssignDetailList;
-    }
-
-    public void setWoAssignDetailList(List<WoAssignDetailBn> woAssignDetailList) {
-        this.woAssignDetailList = woAssignDetailList;
-    }
 
     public int getAssignTo() {
         return assignTo;

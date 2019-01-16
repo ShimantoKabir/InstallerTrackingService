@@ -4,8 +4,6 @@ import com.installertrackingws.installertrackingws.bean.material.TaskBn;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.bean.workOrder.WoAssignBn;
 import com.installertrackingws.installertrackingws.bean.workOrder.WorkOrderDetailBn;
-import com.installertrackingws.installertrackingws.model.WorkOrder.WoAssign;
-
 import java.util.List;
 
 public class Request {

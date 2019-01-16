@@ -20,11 +20,20 @@ public class Response {
     public List<?> siteList;
     public List<?> statusList;
     public List<?> departmentBnList;
+    public List<?> woAssignBnList;
     public List<?> cbdList;
     public UserBn userBn;
     public int conversationId;
 
     public Response() {}
+
+    public List<?> getWoAssignBnList() {
+        return woAssignBnList;
+    }
+
+    public void setWoAssignBnList(List<?> woAssignBnList) {
+        this.woAssignBnList = woAssignBnList;
+    }
 
     public List<?> getDepartmentBnList() {
         return departmentBnList;
