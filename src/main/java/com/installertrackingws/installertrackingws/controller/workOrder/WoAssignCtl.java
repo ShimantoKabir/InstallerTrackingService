@@ -28,4 +28,14 @@ public class WoAssignCtl {
         return WoAssignUtl.save(httpServletRequest,entityManagerFactory,request);
     }
 
+    @PostMapping("/update")
+    public Response update(HttpServletRequest httpServletRequest, @RequestBody Request request){
+        return WoAssignUtl.update(httpServletRequest,entityManagerFactory,request);
+    }
+
+    @PostMapping("/delete")
+    public Response delete(@RequestBody Request request){
+        return WoAssignUtl.delete(entityManagerFactory,request);
+    }
+
 }

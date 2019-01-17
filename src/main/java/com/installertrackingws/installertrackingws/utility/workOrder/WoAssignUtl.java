@@ -60,6 +60,7 @@ public class WoAssignUtl {
             woAssign.setAssignDate(request.getWoAssignBn().getAssignDate());
             woAssign.setAssignTime(request.getWoAssignBn().getAssignTime());
             woAssign.setAssignTo(request.getWoAssignBn().getAssignTo());
+            woAssign.setDeptOid(request.getWoAssignBn().getDeptOid());
             woAssign.setIp(httpServletRequest.getRemoteAddr());
             woAssign.setModifiedBy(request.getWoAssignBn().getModifiedBy());
             woAssign.setRemark(request.getWoAssignBn().getRemark());
@@ -121,13 +122,16 @@ public class WoAssignUtl {
                 "wo_assign.status_oid,\n" +
                 "wo_assign.scope,\n" +
                 "wo_assign.remark,\n" +
-                "user.user_name as assign_user_name,\n" +
-                "work_order.name as work_order_name,\n" +
-                "status.name as status_name\n" +
+                "user.user_name AS assign_user_name,\n" +
+                "work_order.name AS work_order_name,\n" +
+                "status.name AS status_name,\n" +
+                "wo_assign.dept_oid,\n" +
+                "department.name AS dept_name\n" +
                 "FROM wo_assign\n" +
-                "INNER JOIN user ON user.id=wo_assign.assign_to\n" +
+                "INNER JOIN USER ON user.id=wo_assign.assign_to\n" +
                 "INNER JOIN work_order ON work_order.id=wo_assign.wo_id\n" +
-                "INNER JOIN status ON status.o_id=wo_assign.status_oid\n");
+                "INNER JOIN STATUS ON status.o_id=wo_assign.status_oid\n" +
+                "INNER JOIN department ON department.o_id=wo_assign.dept_oid\n");
 
 
         List<Object[]> results = woAssignQuery.getResultList();
@@ -148,6 +152,8 @@ public class WoAssignUtl {
             woAssignBn.setAssignUserName((String) result[9]);
             woAssignBn.setWorkOrderName((String) result[10]);
             woAssignBn.setStatusName((String) result[11]);
+            woAssignBn.setDeptOid((Integer) result[12]);
+            woAssignBn.setDeptName((String) result[13]);
 
             Query woAssignDetailQuery = session.createNativeQuery("select * from wo_assign_detail where wo_assign_oid=:woAssignOid",WoAssignDetail.class);
             woAssignDetailQuery.setParameter("woAssignOid",result[1]);
@@ -175,4 +181,150 @@ public class WoAssignUtl {
 
     }
 
+    public static Response update(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, Request request) {
+
+        Response response = new Response();
+
+        SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
+        Session session = null;
+        Transaction tx = null;
+
+        try{
+
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+
+            Query checkQuery = session.createNativeQuery("SELECT * FROM wo_assign WHERE id=:id",WoAssign.class);
+            checkQuery.setParameter("id",request.getWoAssignBn().getId());
+
+            WoAssign woAssign = (WoAssign) checkQuery.getSingleResult();
+
+            if (woAssign.getStatusOid()==101){
+
+                Query deleteQuery = session.createNativeQuery("DELETE FROM wo_assign_detail WHERE wo_assign_oid=:woAssignOid");
+                deleteQuery.setParameter("woAssignOid",woAssign.getoId());
+                deleteQuery.executeUpdate();
+
+                Query updateQuery = session.createNativeQuery("UPDATE\n" +
+                        "wo_assign\n" +
+                        "SET wo_id=:woId,\n" +
+                        "dept_oid=:deptOid,\n" +
+                        "assign_to=:assignTo,\n" +
+                        "assign_date=:assignDate,\n" +
+                        "assign_time=:assignTime,\n" +
+                        "remark=:remark, \n" +
+                        "scope=:scope,\n" +
+                        "ip=:ip,\n" +
+                        "modified_by=:modifiedBy \n" +
+                        "WHERE id = :id");
+
+                updateQuery.setParameter("woId",request.getWoAssignBn().getWoId());
+                updateQuery.setParameter("deptOid",request.getWoAssignBn().getDeptOid());
+                updateQuery.setParameter("assignTo",request.getWoAssignBn().getAssignTo());
+                updateQuery.setParameter("assignDate",request.getWoAssignBn().getAssignDate());
+                updateQuery.setParameter("assignTime",request.getWoAssignBn().getAssignTime());
+                updateQuery.setParameter("remark",request.getWoAssignBn().getRemark());
+                updateQuery.setParameter("scope",request.getWoAssignBn().getScope());
+                updateQuery.setParameter("ip",httpServletRequest.getRemoteAddr());
+                updateQuery.setParameter("modifiedBy",request.getWoAssignBn().getModifiedBy());
+                updateQuery.setParameter("id",request.getWoAssignBn().getId());
+                updateQuery.executeUpdate();
+
+                for (int i = 0; i < request.getWoAssignBn().getWoAssignDetailBnList().size(); i++) {
+
+                    WoAssignDetail woAssignDetail = new WoAssignDetail();
+                    woAssignDetail.setBreakDown(request.getWoAssignBn().getWoAssignDetailBnList().get(i).getBreakDown());
+                    woAssignDetail.setCost(request.getWoAssignBn().getWoAssignDetailBnList().get(i).getCost());
+                    woAssignDetail.setWoAssignOid(woAssign.getoId());
+                    woAssignDetail.setModifiedBy(request.getWoAssignBn().getModifiedBy());
+                    woAssignDetail.setIp(httpServletRequest.getRemoteAddr());
+                    session.save(woAssignDetail);
+
+                }
+
+                response.setMsg("Work order assign update successfully !");
+                response.setCode(200);
+
+            }else {
+
+                response.setMsg("You can't update this assign work order, cause some is working on this work order !");
+                response.setCode(400);
+
+            }
+
+            tx.commit();
+
+        }catch(Exception e){
+            if (tx != null) {
+                tx.rollback();
+                throw e;
+            }
+            response.setMsg(e.getMessage());
+            response.setCode(400);
+        }finally{
+            if(session!=null){
+                session.close();
+            }
+        }
+
+        return response;
+
+    }
+
+    public static Response delete(EntityManagerFactory entityManagerFactory, Request request) {
+
+        Response response = new Response();
+
+        SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
+        Session session = null;
+        Transaction tx = null;
+
+        try{
+
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+
+            Query checkQuery = session.createNativeQuery("SELECT * FROM wo_assign WHERE id=:id",WoAssign.class);
+            checkQuery.setParameter("id",request.getWoAssignBn().getId());
+
+            WoAssign woAssign = (WoAssign) checkQuery.getSingleResult();
+
+            if (woAssign.getStatusOid()==101){
+
+                Query deleteWoQuery = session.createNativeQuery("DELETE FROM wo_assign WHERE id=:id");
+                deleteWoQuery.setParameter("id",woAssign.getId());
+                deleteWoQuery.executeUpdate();
+
+                Query deleteWoaQuery = session.createNativeQuery("DELETE FROM wo_assign_detail WHERE wo_assign_oid=:woAssignOid");
+                deleteWoaQuery.setParameter("woAssignOid",woAssign.getoId());
+                deleteWoaQuery.executeUpdate();
+
+                response.setMsg("Assign work order delete successful !");
+                response.setCode(200);
+
+            }else {
+
+                response.setMsg("You can't delete this assign work order, cause some is working on this work order !");
+                response.setCode(400);
+
+            }
+
+            tx.commit();
+
+        }catch(Exception e){
+            if (tx != null) {
+                tx.rollback();
+                throw e;
+            }
+            response.setMsg(e.getMessage());
+            response.setCode(400);
+        }finally{
+            if(session!=null){
+                session.close();
+            }
+        }
+
+        return response;
+
+    }
 }

@@ -10,6 +10,7 @@ public class WoAssignBn {
     public int id;
     public int oId;
     public int woId;
+    public int deptOid;
     public int assignTo;
     public Date assignDate;
     public String assignTime;
@@ -24,8 +25,25 @@ public class WoAssignBn {
     public String assignUserName;
     public String workOrderName;
     public String statusName;
+    public String deptName;
 
     public WoAssignBn() {}
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    public int getDeptOid() {
+        return deptOid;
+    }
+
+    public void setDeptOid(int deptOid) {
+        this.deptOid = deptOid;
+    }
 
     public List<WoAssignDetailBn> getWoAssignDetailBnList() {
         return woAssignDetailBnList;

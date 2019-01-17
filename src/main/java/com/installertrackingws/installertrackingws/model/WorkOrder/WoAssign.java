@@ -19,6 +19,9 @@ public class WoAssign {
     public int woId;
 
     @Column(nullable = false)
+    public int deptOid;
+
+    @Column(nullable = false)
     public int assignTo;
 
     public Date assignDate;
@@ -42,6 +45,14 @@ public class WoAssign {
     public Date createdDate;
 
     public WoAssign() {}
+
+    public int getDeptOid() {
+        return deptOid;
+    }
+
+    public void setDeptOid(int deptOid) {
+        this.deptOid = deptOid;
+    }
 
     public int getAssignTo() {
         return assignTo;
