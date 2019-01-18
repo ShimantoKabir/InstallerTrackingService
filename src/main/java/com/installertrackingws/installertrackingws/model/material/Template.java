@@ -1,19 +1,32 @@
-package com.installertrackingws.installertrackingws.bean.material;
+package com.installertrackingws.installertrackingws.model.material;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
-public class TemplateBn {
+@Entity
+public class Template {
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public int id;
+
+    @Column(nullable = false)
     public int oId;
+
+    @Column(nullable = false)
     public String name;
+
     public String ip;
     public int modifiedBy;
-    public Date createdDate;
-    public List<TaskBn> taskList;
 
-    public TemplateBn() {}
+    @Column(nullable = false)
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date createdDate;
+
+    public Template() {}
 
     public int getoId() {
         return oId;
@@ -21,14 +34,6 @@ public class TemplateBn {
 
     public void setoId(int oId) {
         this.oId = oId;
-    }
-
-    public List<TaskBn> getTaskList() {
-        return taskList;
-    }
-
-    public void setTaskList(List<TaskBn> taskList) {
-        this.taskList = taskList;
     }
 
     public int getId() {

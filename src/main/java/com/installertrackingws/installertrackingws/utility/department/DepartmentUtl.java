@@ -1,6 +1,7 @@
 package com.installertrackingws.installertrackingws.utility.department;
 
 import com.installertrackingws.installertrackingws.bean.department.DepartmentBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.model.department.Department;
@@ -33,7 +34,7 @@ public class DepartmentUtl {
 
     }
 
-    public Response save(EntityManagerFactory entityManagerFactory, HttpServletRequest httpServletRequest, @RequestBody DepartmentBn departmentBean){
+    public Response save(EntityManagerFactory entityManagerFactory, HttpServletRequest httpServletRequest,Request request){
 
         Response response = new Response();
 
@@ -45,7 +46,7 @@ public class DepartmentUtl {
             transaction = session.beginTransaction();
 
             Query query = session.createNativeQuery("SELECT count(id) FROM department WHERE rank = :rk");
-            query.setParameter("rk",departmentBean.getRank());
+            query.setParameter("rk",request.getDepartmentBn().getRank());
 
             if (query.getResultList().get(0).toString().equals("0")){
 
@@ -53,10 +54,10 @@ public class DepartmentUtl {
 
                 Department department = new Department();
                 department.setIp(httpServletRequest.getRemoteAddr());
-                department.setName(departmentBean.getName());
-                department.setRank(departmentBean.getRank());
+                department.setName(request.getDepartmentBn().getName());
+                department.setRank(request.getDepartmentBn().getRank());
                 department.setoId(oId.intValue());
-                department.setModifiedBy(departmentBean.getUserBn().getId());
+                department.setModifiedBy(request.getUserBn().getId());
                 session.save(department);
 
                 response.setMsg("Department save successfully !");
@@ -84,14 +85,16 @@ public class DepartmentUtl {
 
     }
 
-    public List<Department> getDepartmentByUser(EntityManagerFactory entityManagerFactory, UserBn userBn){
+    public Response getDepartmentByUser(EntityManagerFactory entityManagerFactory, Request request){
+
+        Response response = new Response();
 
         SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
         Query rankQuery = session.createNativeQuery("SELECT * FROM department WHERE o_id = :deptId",Department.class);
-        rankQuery.setParameter("deptId",userBn.getDeptId());
+        rankQuery.setParameter("deptId",request.getUserBn().getDeptId());
 
         Department department = (Department) rankQuery.getSingleResult();
         int rank = department.getRank();
@@ -104,7 +107,16 @@ public class DepartmentUtl {
         session.getTransaction().commit();
         session.close();
 
-        return departmentList;
+        if (departmentList.size()>0){
+            response.setCode(200);
+            response.setMsg("Department list fetch successful !");
+            response.setList(departmentList);
+            return response;
+        }else {
+            response.setCode(200);
+            response.setMsg("Department list fetch successful !");
+            return response;
+        }
 
     }
 

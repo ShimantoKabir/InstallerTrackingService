@@ -1,7 +1,9 @@
 package com.installertrackingws.installertrackingws.controller.user;
 
+import com.google.gson.Gson;
 import com.installertrackingws.installertrackingws.bean.department.DepartmentBn;
 import com.installertrackingws.installertrackingws.bean.menu.MenuBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.helper.Token;
@@ -13,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityManagerFactory;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +37,15 @@ public class UserCtl {
         return new UserUtl().getAllUser(entityManagerFactory);
     }
 
+
     @PostMapping("/manage")
-    public Response manage(@RequestBody UserBn userBn){
-        return new UserUtl().manageUser(entityManagerFactory,userBn);
+    public Response manage(@RequestBody Request request){
+        return new UserUtl().manageUser(entityManagerFactory,request);
+    }
+
+    @PostMapping("/manage-init")
+    public Response getManageInitData(@RequestBody Request request){
+        return new UserUtl().getManageInitData(entityManagerFactory,request);
     }
 
     @PostMapping("/active")
@@ -44,19 +54,19 @@ public class UserCtl {
     }
 
     @PostMapping("/registration")
-    public Response registrationAttempt(HttpServletRequest httpServletRequest, @RequestBody UserBn userBn) {
+    public Response registrationAttempt(HttpServletRequest httpServletRequest, @RequestBody Request request) {
 
         Response response = new Response();
 
         String token = Token.getToken();
-        userBn.setToken(token);
+        request.getUserBn().setToken(token);
 
-        Response registrationResponse = new UserUtl().registrationUser(httpServletRequest,entityManagerFactory,userBn);
+        Response registrationResponse = new UserUtl().registrationUser(httpServletRequest,entityManagerFactory,request.getUserBn());
 
         if (registrationResponse.getCode()==200){
 
             Email email = new Email();
-            Response emailResponse = email.sendRegistrationSuccessEmail(javaMailSender,userBn,httpServletRequest.getRemoteAddr());
+            Response emailResponse = email.sendRegistrationSuccessEmail(javaMailSender,request.getUserBn(),httpServletRequest.getRemoteAddr());
 
             if (emailResponse.getCode()==200){
                 response.setCode(200);
@@ -76,18 +86,21 @@ public class UserCtl {
     }
 
     @PostMapping("/login")
-    public Response loginAttempt(@RequestBody UserBn userBn){
-        return new UserUtl().checkUserLogin(entityManagerFactory,userBn);
+    public Response loginAttempt(HttpServletResponse httpServletResponse, @RequestBody Request request){
+
+        Response response = new UserUtl().checkUserLogin(entityManagerFactory,request);
+        return response;
+
     }
 
     @PostMapping("/initial-data")
-    public Response loginInitialData(@RequestBody UserBn userBn){
+    public Response loginInitialData(@RequestBody Request request){
 
         RouterUtl routerUtility = new RouterUtl();
-        List routerList = routerUtility.getRouter(entityManagerFactory,userBn);
+        List routerList = routerUtility.getRouter(entityManagerFactory,request.getUserBn());
 
         MenuUtl menuUtility = new MenuUtl();
-        List<MenuBn> menuBnList = menuUtility.getMenuByUserId(entityManagerFactory,userBn);
+        List<MenuBn> menuBnList = menuUtility.getMenuByUserId(entityManagerFactory,request.getUserBn());
 
         if (routerList.size() > 0 && menuBnList.size() > 0){
 

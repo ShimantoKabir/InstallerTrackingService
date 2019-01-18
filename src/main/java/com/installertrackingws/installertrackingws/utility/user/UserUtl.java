@@ -1,17 +1,22 @@
 package com.installertrackingws.installertrackingws.utility.user;
 
+import com.google.gson.Gson;
 import com.installertrackingws.installertrackingws.bean.department.DepartmentBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.helper.PasswordEncryptionManager;
 import com.installertrackingws.installertrackingws.model.department.Department;
 import com.installertrackingws.installertrackingws.model.user.User;
+import com.installertrackingws.installertrackingws.utility.department.DepartmentUtl;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,11 +70,9 @@ public class UserUtl {
 
     }
 
-    public Response manageUser(EntityManagerFactory entityManagerFactory, UserBn userBn){
+    public Response manageUser(EntityManagerFactory entityManagerFactory, Request request){
 
         Response response = new Response();
-        response.setCode(200);
-        response.setMsg("Everything is ok !");
 
         SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
         Session session = null;
@@ -80,20 +83,24 @@ public class UserUtl {
             tx = session.beginTransaction();
 
             Query query = session.createNativeQuery("UPDATE USER SET is_user_active = :isUserActive,is_user_approved=:isUserApproved,dept_id=:deptId WHERE id = :id");
-            query.setParameter("isUserActive",userBn.getIsUserActive());
-            query.setParameter("isUserApproved",userBn.getIsUserApproved());
-            query.setParameter("deptId",userBn.getDeptId());
-            query.setParameter("id",userBn.getId());
+            query.setParameter("isUserActive",request.getManageUserBn().getIsUserActive());
+            query.setParameter("isUserApproved",request.getManageUserBn().getIsUserApproved());
+            query.setParameter("deptId",request.getManageUserBn().getDeptId());
+            query.setParameter("id",request.getManageUserBn().getId());
             query.executeUpdate();
 
             tx.commit();
+
+            response.setCode(200);
+            response.setMsg("User manage successful !");
+
         }catch(Exception e){
             if (tx != null) {
                 tx.rollback();
                 throw e;
             }
             response.setMsg("Exception occurred !");
-            response.setCode(200);
+            response.setCode(400);
         }finally{
             if(session!=null){
                 session.close();
@@ -228,7 +235,7 @@ public class UserUtl {
         return response;
     }
 
-    public Response checkUserLogin(EntityManagerFactory entityManagerFactory, UserBn userBn) {
+    public Response checkUserLogin(EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
 
@@ -237,8 +244,8 @@ public class UserUtl {
         session.beginTransaction();
 
         Query query = session.createNativeQuery("SELECT * FROM USER WHERE user_email = :userEmail AND password = :password ", User.class);
-        query.setParameter("userEmail", userBn.getUserEmail());
-        query.setParameter("password", PasswordEncryptionManager.encryptPassword(userBn.getPassword()));
+        query.setParameter("userEmail", request.getUserBn().getUserEmail());
+        query.setParameter("password", PasswordEncryptionManager.encryptPassword(request.getUserBn().getPassword()));
 
         List<User> userList = query.getResultList();
 
@@ -257,8 +264,6 @@ public class UserUtl {
                 response.setMsg("Your account did not approved yet, when admin will approved your account then you can login !");
                 response.setCode(400);
             } else {
-                response.setMsg("Login successful !");
-                response.setCode(200);
 
                 Query deptNameQuery = session.createNativeQuery("SELECT * FROM department WHERE o_id = :oId",Department.class);
                 deptNameQuery.setParameter("oId",userList.get(0).getDeptId());
@@ -266,18 +271,17 @@ public class UserUtl {
 
                 UserBn resUserBn = new UserBn();
                 resUserBn.setId(userList.get(0).getId());
-                resUserBn.setPassword(userList.get(0).getPassword());
                 resUserBn.setUserEmail(userList.get(0).getUserEmail());
                 resUserBn.setUserName(userList.get(0).getUserName());
-                resUserBn.setIsUserActive(userList.get(0).getIsUserActive());
-                resUserBn.setIsUserApproved(userList.get(0).getIsUserApproved());
+//                resUserBn.setIsUserActive(userList.get(0).getIsUserActive());
+//                resUserBn.setIsUserApproved(userList.get(0).getIsUserApproved());
                 resUserBn.setDeptId(userList.get(0).getDeptId());
                 resUserBn.setDeptName(department.getName());
-                resUserBn.setToken(userList.get(0).getToken());
-                resUserBn.setIp(userList.get(0).getIp());
-                resUserBn.setCreatedDate(userList.get(0).getCreatedDate());
 
                 response.setObject(resUserBn);
+                response.setMsg("Login successful !");
+                response.setCode(200);
+
             }
 
 
@@ -666,4 +670,24 @@ public class UserUtl {
 
     }
 
+    public Response getManageInitData(EntityManagerFactory entityManagerFactory, Request request) {
+
+        Response response = new Response();
+
+        Response userRes = this.getAllUser(entityManagerFactory);
+        Response deptRes = new DepartmentUtl().getDepartmentByUser(entityManagerFactory,request);
+
+        if (userRes.getCode()==200 && deptRes.getCode()==200){
+
+            response.setUserList(userRes.getList());
+            response.setDepartmentBnList(deptRes.getList());
+            response.setCode(200);
+            response.setMsg("Initial data getting successful !");
+        }else {
+            response.setCode(400);
+            response.setMsg("Initial data getting error !");
+        }
+
+        return response;
+    }
 }

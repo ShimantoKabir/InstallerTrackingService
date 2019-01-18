@@ -1,6 +1,7 @@
 package com.installertrackingws.installertrackingws.controller.material;
 
 import com.installertrackingws.installertrackingws.bean.material.TaskBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.utility.material.TaskUtl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,9 @@ public class TaskCtl {
     private EntityManagerFactory entityManagerFactory;
 
     @PostMapping("/save")
-    public Response save(HttpServletRequest httpServletRequest,@RequestBody TaskBn taskBn){
+    public Response save(HttpServletRequest httpServletRequest,@RequestBody Request request){
 
-        return new TaskUtl().save(httpServletRequest,entityManagerFactory,taskBn);
+        return new TaskUtl().save(httpServletRequest,entityManagerFactory,request);
 
     }
 
@@ -31,11 +32,17 @@ public class TaskCtl {
     }
 
     @PostMapping("/update")
-    public Response update(HttpServletRequest httpServletRequest,@RequestBody TaskBn taskBn){
+    public Response update(HttpServletRequest httpServletRequest,@RequestBody Request request){
 
-        return new TaskUtl().update(httpServletRequest,entityManagerFactory,taskBn);
+        return new TaskUtl().update(httpServletRequest,entityManagerFactory,request);
 
     }
 
+    @PostMapping("/init-data")
+    public Response getInitData(@RequestBody Request request){
+
+        return new TaskUtl().getInitData(entityManagerFactory);
+
+    }
 
 }

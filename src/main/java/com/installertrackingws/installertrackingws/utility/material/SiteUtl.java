@@ -2,7 +2,7 @@ package com.installertrackingws.installertrackingws.utility.material;
 
 import com.installertrackingws.installertrackingws.bean.material.SiteBn;
 import com.installertrackingws.installertrackingws.bean.network.Response;
-import com.installertrackingws.installertrackingws.model.Material.Site;
+import com.installertrackingws.installertrackingws.model.material.Site;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;

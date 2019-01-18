@@ -1,9 +1,12 @@
 package com.installertrackingws.installertrackingws.bean.network;
 
+import com.installertrackingws.installertrackingws.bean.department.DepartmentBn;
 import com.installertrackingws.installertrackingws.bean.material.TaskBn;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
-import com.installertrackingws.installertrackingws.bean.workOrder.WoAssignBn;
-import com.installertrackingws.installertrackingws.bean.workOrder.WorkOrderDetailBn;
+import com.installertrackingws.installertrackingws.bean.workorder.WoAssignBn;
+import com.installertrackingws.installertrackingws.bean.workorder.WorkOrderDetailBn;
+import com.installertrackingws.installertrackingws.model.department.Department;
+
 import java.util.List;
 
 public class Request {
@@ -12,9 +15,36 @@ public class Request {
     public List<TaskBn> taskBnList;
     public List<Integer> integerList;
     public UserBn userBn;
+    public UserBn manageUserBn;
     public WoAssignBn woAssignBn;
+    public DepartmentBn departmentBn;
+    public TaskBn taskBn;
 
     public Request() {}
+
+    public TaskBn getTaskBn() {
+        return taskBn;
+    }
+
+    public void setTaskBn(TaskBn taskBn) {
+        this.taskBn = taskBn;
+    }
+
+    public UserBn getManageUserBn() {
+        return manageUserBn;
+    }
+
+    public void setManageUserBn(UserBn manageUserBn) {
+        this.manageUserBn = manageUserBn;
+    }
+
+    public DepartmentBn getDepartmentBn() {
+        return departmentBn;
+    }
+
+    public void setDepartmentBn(DepartmentBn departmentBn) {
+        this.departmentBn = departmentBn;
+    }
 
     public WoAssignBn getWoAssignBn() {
         return woAssignBn;

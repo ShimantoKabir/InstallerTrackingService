@@ -1,6 +1,7 @@
 package com.installertrackingws.installertrackingws.controller.department;
 
 import com.installertrackingws.installertrackingws.bean.department.DepartmentBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.model.department.Department;
@@ -19,9 +20,9 @@ public class DepartmentCtl {
     private EntityManagerFactory entityManagerFactory;
 
     @PostMapping("/save")
-    public Response save(HttpServletRequest httpServletRequest, @RequestBody DepartmentBn departmentBn){
+    public Response save(HttpServletRequest httpServletRequest, @RequestBody Request request){
 
-         return new DepartmentUtl().save(entityManagerFactory,httpServletRequest,departmentBn);
+         return new DepartmentUtl().save(entityManagerFactory,httpServletRequest,request);
 
     }
 
@@ -47,22 +48,9 @@ public class DepartmentCtl {
     }
 
     @PostMapping("/get-by-user")
-    public Response save(@RequestBody UserBn userBn){
+    public Response save(@RequestBody Request request){
 
-        Response response = new Response();
-        DepartmentUtl departmentUtility = new DepartmentUtl();
-        List<Department> departmentList = departmentUtility.getDepartmentByUser(entityManagerFactory,userBn);
-
-        if (departmentList.size()>0){
-            response.setCode(200);
-            response.setMsg("Department list fetch successful !");
-            response.setList(departmentList);
-            return response;
-        }else {
-            response.setCode(200);
-            response.setMsg("Department list fetch successful !");
-            return response;
-        }
+        return  new DepartmentUtl().getDepartmentByUser(entityManagerFactory,request);
 
     }
 

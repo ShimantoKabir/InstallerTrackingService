@@ -2,7 +2,7 @@ package com.installertrackingws.installertrackingws.utility.communication;
 
 import com.installertrackingws.installertrackingws.bean.communication.NotificationBn;
 import com.installertrackingws.installertrackingws.bean.network.Response;
-import com.installertrackingws.installertrackingws.model.Communication.Notification;
+import com.installertrackingws.installertrackingws.model.communication.Notification;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;

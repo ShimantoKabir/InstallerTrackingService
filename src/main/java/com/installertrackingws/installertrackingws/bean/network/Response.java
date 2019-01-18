@@ -10,6 +10,8 @@ public class Response {
     public String msg;
     public int code;
     public Object object;
+    public Object taskResponse;
+    public Object userResponse;
     public List<?> list;
     public List<MenuBn> menuBnList;
     public List<Integer> integerList;
@@ -22,10 +24,35 @@ public class Response {
     public List<?> departmentBnList;
     public List<?> woAssignBnList;
     public List<?> cbdList;
+    public List<?> taskList;
     public UserBn userBn;
     public int conversationId;
 
     public Response() {}
+
+    public Object getTaskResponse() {
+        return taskResponse;
+    }
+
+    public void setTaskResponse(Object taskResponse) {
+        this.taskResponse = taskResponse;
+    }
+
+    public Object getUserResponse() {
+        return userResponse;
+    }
+
+    public void setUserResponse(Object userResponse) {
+        this.userResponse = userResponse;
+    }
+
+    public List<?> getTaskList() {
+        return taskList;
+    }
+
+    public void setTaskList(List<?> taskList) {
+        this.taskList = taskList;
+    }
 
     public List<?> getWoAssignBnList() {
         return woAssignBnList;

@@ -2,7 +2,7 @@ package com.installertrackingws.installertrackingws.utility.location;
 
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
-import com.installertrackingws.installertrackingws.model.Location.Location;
+import com.installertrackingws.installertrackingws.model.location.Location;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 

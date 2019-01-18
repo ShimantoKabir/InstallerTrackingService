@@ -1,8 +1,10 @@
 package com.installertrackingws.installertrackingws.utility.material;
 
 import com.installertrackingws.installertrackingws.bean.material.TaskBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
-import com.installertrackingws.installertrackingws.model.Material.Task;
+import com.installertrackingws.installertrackingws.model.material.Task;
+import com.installertrackingws.installertrackingws.utility.user.UserUtl;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -14,9 +16,10 @@ import java.util.List;
 
 public class TaskUtl {
 
-    public Response save(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, TaskBn taskBn) {
+    public Response save(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory,Request request) {
 
         Response response = new Response();
+        TaskBn taskBn = request.getTaskBn();
 
         SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
         Session session = null;
@@ -103,9 +106,10 @@ public class TaskUtl {
 
     }
 
-    public Response update(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, TaskBn taskBn) {
+    public Response update(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
+        TaskBn taskBn = request.getTaskBn();
 
         SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
         Session session = null;
@@ -146,4 +150,17 @@ public class TaskUtl {
 
         return response;
     }
+
+    public Response getInitData(EntityManagerFactory entityManagerFactory) {
+
+        Response response = new Response();
+        response.setTaskResponse(this.getAllTask(entityManagerFactory));
+        response.setUserResponse(new UserUtl().getAllUser(entityManagerFactory));
+        response.setCode(200);
+        response.setMsg("Init data getting successful !");
+
+        return response;
+
+    }
+
 }

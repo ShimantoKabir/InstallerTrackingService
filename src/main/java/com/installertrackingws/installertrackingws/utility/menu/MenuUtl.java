@@ -338,4 +338,8 @@ public class MenuUtl {
 
     }
 
+    public void checkMenuPermission(){
+
+    }
+
 }
