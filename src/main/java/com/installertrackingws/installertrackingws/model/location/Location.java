@@ -12,6 +12,9 @@ public class Location {
     public int id;
 
     @Column(nullable = false)
+    public int woId;
+
+    @Column(nullable = false)
     public double lat;
 
     @Column(nullable = false)
@@ -29,6 +32,14 @@ public class Location {
     public Date createdDate;
 
     public Location() {}
+
+    public int getWoId() {
+        return woId;
+    }
+
+    public void setWoId(int woId) {
+        this.woId = woId;
+    }
 
     public int getId() {
         return id;

@@ -1,5 +1,6 @@
 package com.installertrackingws.installertrackingws.controller.location;
 
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.utility.location.LocationUtl;
@@ -33,6 +34,13 @@ public class LocationCtl {
     @PostMapping("/get-new")
     public Response getNew(@RequestBody UserBn userBn){
         return new LocationUtl().getNew(entityManagerFactory,userBn);
+    }
+
+    @PostMapping("/track-by-work-order")
+    public Response trackByWorkOrder(@RequestBody Request request){
+
+        return new LocationUtl().trackByWorkOrder(entityManagerFactory,request);
+
     }
 
 }

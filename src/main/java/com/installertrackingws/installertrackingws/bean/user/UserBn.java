@@ -1,6 +1,11 @@
 package com.installertrackingws.installertrackingws.bean.user;
 
+import com.installertrackingws.installertrackingws.bean.location.LocationBn;
+import com.installertrackingws.installertrackingws.model.location.Location;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class UserBn {
 
@@ -22,8 +27,17 @@ public class UserBn {
     private Date lastPresenceDate;
     public String deptName;
     public String newPassword;
+    List<LocationBn> locationList = new ArrayList<>();
 
     public UserBn() {}
+
+    public List<LocationBn> getLocationList() {
+        return locationList;
+    }
+
+    public void setLocationList(List<LocationBn> locationList) {
+        this.locationList = locationList;
+    }
 
     public String getNewPassword() {
         return newPassword;

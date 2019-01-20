@@ -1,4 +1,4 @@
-package com.installertrackingws.installertrackingws.websocket.User;
+package com.installertrackingws.installertrackingws.websocket.user;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

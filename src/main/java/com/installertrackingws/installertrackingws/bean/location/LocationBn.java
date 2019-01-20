@@ -5,14 +5,41 @@ import java.util.Date;
 public class LocationBn {
 
     public int id;
+    public int woId;
     public double lat;
+    public double lng;
     public double lon;
     public double speed;
     public int userId;
     public String ip;
     public Date createdDate;
+    public Position position;
 
     public LocationBn() {}
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public int getWoId() {
+        return woId;
+    }
+
+    public void setWoId(int woId) {
+        this.woId = woId;
+    }
 
     public int getId() {
         return id;
