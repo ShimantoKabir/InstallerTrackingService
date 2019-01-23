@@ -273,8 +273,8 @@ public class UserUtl {
                 resUserBn.setId(userList.get(0).getId());
                 resUserBn.setUserEmail(userList.get(0).getUserEmail());
                 resUserBn.setUserName(userList.get(0).getUserName());
-//                resUserBn.setIsUserActive(userList.get(0).getIsUserActive());
-//                resUserBn.setIsUserApproved(userList.get(0).getIsUserApproved());
+                resUserBn.setIsUserActive(userList.get(0).getIsUserActive());
+                resUserBn.setIsUserApproved(userList.get(0).getIsUserApproved());
                 resUserBn.setDeptId(userList.get(0).getDeptId());
                 resUserBn.setDeptName(department.getName());
 

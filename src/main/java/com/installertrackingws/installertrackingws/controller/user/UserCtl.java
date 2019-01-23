@@ -86,51 +86,9 @@ public class UserCtl {
     }
 
     @PostMapping("/login")
-    public Response loginAttempt(HttpServletResponse httpServletResponse, @RequestBody Request request){
+    public Response loginAttempt(@RequestBody Request request){
 
-        Response response = new UserUtl().checkUserLogin(entityManagerFactory,request);
-        return response;
-
-    }
-
-    @PostMapping("/initial-data")
-    public Response loginInitialData(@RequestBody Request request){
-
-        RouterUtl routerUtility = new RouterUtl();
-        List routerList = routerUtility.getRouter(entityManagerFactory,request.getUserBn());
-
-        MenuUtl menuUtility = new MenuUtl();
-        List<MenuBn> menuBnList = menuUtility.getMenuByUserId(entityManagerFactory,request.getUserBn());
-
-        if (routerList.size() > 0 && menuBnList.size() > 0){
-
-            Response routerResponse = new Response();
-            routerResponse.setMsg("Router List ok");
-            routerResponse.setCode(200);
-            routerResponse.setList(routerList);
-
-            Response menuResponse = new Response();
-            menuResponse.setList(menuBnList);
-            menuResponse.setMsg("Menu list ok");
-            menuResponse.setCode(200);
-
-            List<Response> loginInitialDataList = new ArrayList();
-            loginInitialDataList.add(routerResponse);
-            loginInitialDataList.add(menuResponse);
-
-            Response initialResponse = new Response();
-            initialResponse.setCode(200);
-            initialResponse.setMsg("Initial response ok !");
-            initialResponse.setList(loginInitialDataList);
-
-            return initialResponse;
-
-        }else {
-            Response initialResponse = new Response();
-            initialResponse.setCode(400);
-            initialResponse.setMsg("Can not get initial response !");
-            return initialResponse;
-        }
+        return new UserUtl().checkUserLogin(entityManagerFactory,request);
 
     }
 

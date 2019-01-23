@@ -1,6 +1,7 @@
 package com.installertrackingws.installertrackingws.utility.communication;
 
 import com.installertrackingws.installertrackingws.bean.communication.NotificationBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.model.communication.Notification;
 import org.hibernate.Session;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class NotificationUtl {
 
-    public Response getNotificationByReceiver(EntityManagerFactory entityManagerFactory, NotificationBn notificationBn) {
+    public Response getNotificationByReceiver(EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
 
@@ -22,14 +23,14 @@ public class NotificationUtl {
         session.beginTransaction();
 
         Query query = session.createNativeQuery("select  * from notification WHERE receiver = :receiver",Notification.class);
-        query.setParameter("receiver",notificationBn.getReceiver());
+        query.setParameter("receiver",request.getNotificationBn().getReceiver());
 
         List<Notification> notifications = query.getResultList();
 
         if (notifications.size()>0){
             response.setMsg("Found notification !");
             response.setCode(200);
-            response.setObject(notificationBn);
+            response.setObject(request.getNotificationBn());
             response.setList(notifications);
         }else {
             response.setMsg("Didn't found any notification !");
@@ -43,7 +44,7 @@ public class NotificationUtl {
 
     }
 
-    public Response seenNotification(EntityManagerFactory entityManagerFactory, NotificationBn notificationBn) {
+    public Response seenNotification(EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
 
@@ -57,7 +58,7 @@ public class NotificationUtl {
             tx = session.beginTransaction();
 
             Query areFriendQuery = session.createNativeQuery("UPDATE notification SET  is_seen= 1 WHERE id = :id");
-            areFriendQuery.setParameter("id",notificationBn.getId());
+            areFriendQuery.setParameter("id",request.getNotificationBn().getId());
             areFriendQuery.executeUpdate();
 
             response.setMsg("Notification seen successfully !");

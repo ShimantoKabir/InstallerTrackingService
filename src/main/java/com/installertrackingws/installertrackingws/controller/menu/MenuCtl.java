@@ -3,7 +3,6 @@ package com.installertrackingws.installertrackingws.controller.menu;
 import com.installertrackingws.installertrackingws.bean.menu.MenuBn;
 import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
-import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.utility.menu.MenuUtl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,39 +26,17 @@ public class MenuCtl {
     }
 
     @PostMapping("/save")
-    public Response setMenu(HttpServletRequest httpServletRequest, @RequestBody Response response){
+    public Response setMenu(HttpServletRequest httpServletRequest, @RequestBody Request request){
 
         MenuUtl menuUtility = new MenuUtl();
-        return menuUtility.saveMenu(httpServletRequest,entityManagerFactory,response);
+        return menuUtility.saveMenu(httpServletRequest,entityManagerFactory,request);
 
     }
 
-    @PostMapping("/get-by-user-id")
-    public List getMenuByUserId(@RequestBody UserBn userBn){
+    @PostMapping("/get-by-department")
+    public Response getMenuByDepartment(@RequestBody Request request){
 
-        MenuUtl menuUtility = new MenuUtl();
-        return menuUtility.getMenuByUserId(entityManagerFactory,userBn);
-
-    }
-
-    @PostMapping("/get-by-department-id")
-    public Response getMenuByDepartmentId(@RequestBody UserBn userBn){
-
-        Response response = new Response();
-
-        MenuUtl menuUtility = new MenuUtl();
-        List<MenuBn> menuBeanList = menuUtility.getMenuByUserId(entityManagerFactory,userBn);
-
-        if (menuBeanList.size()>0){
-            response.setCode(200);
-            response.setMsg("Ger department ok");
-            response.setList(menuBeanList);
-            return response;
-        }else {
-            response.setCode(400);
-            response.setMsg("Ger department ok");
-            return response;
-        }
+        return new MenuUtl().getMenuByDepartment(entityManagerFactory,request);
 
     }
 

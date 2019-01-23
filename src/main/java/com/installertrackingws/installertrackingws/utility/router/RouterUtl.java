@@ -1,6 +1,7 @@
 package com.installertrackingws.installertrackingws.utility.router;
 
-import com.installertrackingws.installertrackingws.bean.user.UserBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
+import com.installertrackingws.installertrackingws.bean.network.Response;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import javax.persistence.EntityManagerFactory;
@@ -10,14 +11,16 @@ import java.util.List;
 
 public class RouterUtl {
 
-    public List getRouter(EntityManagerFactory entityManagerFactory, UserBn userBn){
+    public Response getRouterByDepartment(EntityManagerFactory entityManagerFactory, Request request){
+
+        Response response = new Response();
 
         SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
         Query routerQuery = session.createNativeQuery("SELECT link FROM menu INNER JOIN menu_permission ON menu_permission.menu_oid=menu.o_id WHERE menu.rank = 3 AND menu_permission.dept_id = :deptId");
-        routerQuery.setParameter("deptId",userBn.getDeptId());
+        routerQuery.setParameter("deptId",request.getUserBn().getDeptId());
 
         List list = routerQuery.getResultList();
 
@@ -35,7 +38,16 @@ public class RouterUtl {
         session.getTransaction().commit();
         session.close();
 
-        return routerList;
+        if (routerList.size()>0){
+            response.setCode(200);
+            response.setMsg("Route fetch successful !");
+            response.setList(routerList);
+        }else {
+            response.setCode(400);
+            response.setMsg("Route fetch unsuccessful !");
+        }
+
+        return response;
 
     }
 

@@ -1,6 +1,6 @@
 package com.installertrackingws.installertrackingws.controller.communication;
 
-import com.installertrackingws.installertrackingws.bean.communication.NotificationBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.utility.communication.NotificationUtl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +18,16 @@ public class NotificationCtl {
     private EntityManagerFactory entityManagerFactory;
 
     @PostMapping("/get-by-receiver")
-    public Response getNotificationByReceiver(@RequestBody NotificationBn notificationBn){
+    public Response getNotificationByReceiver(@RequestBody Request request){
 
-        return new NotificationUtl().getNotificationByReceiver(entityManagerFactory,notificationBn);
+        return new NotificationUtl().getNotificationByReceiver(entityManagerFactory,request);
 
     }
 
     @PostMapping("/seen")
-    public Response seenNotification(@RequestBody NotificationBn notificationBn){
+    public Response seenNotification(@RequestBody Request request){
 
-        return new NotificationUtl().seenNotification(entityManagerFactory,notificationBn);
+        return new NotificationUtl().seenNotification(entityManagerFactory,request);
 
     }
 

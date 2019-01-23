@@ -3,7 +3,6 @@ package com.installertrackingws.installertrackingws.utility.menu;
 import com.installertrackingws.installertrackingws.bean.menu.MenuBn;
 import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
-import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.model.menu.Menu;
 import com.installertrackingws.installertrackingws.model.menu.MenuPermission;
 import org.hibernate.Session;
@@ -18,8 +17,9 @@ import java.util.List;
 
 public class MenuUtl {
 
-    public List<MenuBn> getMenuByUserId(EntityManagerFactory entityManagerFactory, UserBn userBn){
+    public Response getMenuByDepartment(EntityManagerFactory entityManagerFactory, Request request){
 
+        Response response = new Response();
         MenuBn root = new MenuBn();
 
         SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
@@ -53,7 +53,7 @@ public class MenuUtl {
             // second child ...
             Query childTwoMenuQry = session.createNativeQuery("SELECT * FROM menu INNER JOIN menu_permission ON menu_permission.menu_oid=menu.o_id WHERE menu.rank = 3 AND menu_permission.dept_id = :deptId AND menu.parent_id = :pId",Menu.class);
             childTwoMenuQry.setParameter("pId",childOneMenus.get(i).getoId());
-            childTwoMenuQry.setParameter("deptId",userBn.getDeptId());
+            childTwoMenuQry.setParameter("deptId",request.getUserBn().getDeptId());
 
             List<Menu> childTwoMenus = childTwoMenuQry.getResultList();
 
@@ -100,7 +100,16 @@ public class MenuUtl {
         List<MenuBn> rootMenuList = new ArrayList<>();
         rootMenuList.add(root);
 
-        return rootMenuList;
+        if (rootMenuList.size()>0){
+            response.setCode(200);
+            response.setMsg("Menu list fetch successful");
+            response.setList(rootMenuList);
+            return response;
+        }else {
+            response.setCode(400);
+            response.setMsg("Menu list empty");
+            return response;
+        }
 
     }
 
@@ -189,7 +198,7 @@ public class MenuUtl {
         return rootMenuList;
     }
 
-    public Response saveMenu(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory,Response response){
+    public Response saveMenu(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory,Request request){
 
         Response saveResponse = new Response();
 
@@ -206,19 +215,19 @@ public class MenuUtl {
 
             session.createNativeQuery("DELETE FROM menu_permission WHERE dept_id=101").executeUpdate();
 
-            int rootOid = response.getMenuBnList().get(0).getoId();
+            int rootOid = request.getMenuBnList().get(0).getoId();
             int maxOid = (int) query.getResultList().get(0);
 
             for (int i = rootOid+1; i <= maxOid; i++) {
                 session.createNativeQuery("DELETE FROM menu WHERE o_id=:oId").setParameter("oId",i).executeUpdate();
             }
 
-            if (response.getMenuBnList().get(0).getChildren().size()>0){
+            if (request.getMenuBnList().get(0).getChildren().size()>0){
 
-                for (int i = 0; i < response.getMenuBnList().get(0).getChildren().size(); i++) {
+                for (int i = 0; i < request.getMenuBnList().get(0).getChildren().size(); i++) {
 
-                    List<MenuBn> menuList1 = response.getMenuBnList().get(0).getChildren();
-                    int parentId = response.getMenuBnList().get(0).getoId();
+                    List<MenuBn> menuList1 = request.getMenuBnList().get(0).getChildren();
+                    int parentId = request.getMenuBnList().get(0).getoId();
 
                     BigInteger oId1 = (BigInteger) session.createNativeQuery("SELECT IFNULL(MAX(o_id),0)+1 AS o_id FROM menu").getResultList().get(0);
 
@@ -231,7 +240,7 @@ public class MenuUtl {
                     menu1.setIcon(menuList1.get(i).getIcon());
                     menu1.setSrl(i+1);
                     menu1.setIp(httpServletRequest.getRemoteAddr());
-                    menu1.setModifiedBy(response.getUserBn().getId());
+                    menu1.setModifiedBy(request.getUserBn().getId());
                     session.save(menu1);
 
                     if (menuList1.get(i).getChildren().size()>0){
@@ -251,14 +260,14 @@ public class MenuUtl {
                             menu2.setIcon(menuList2.get(j).getIcon());
                             menu2.setSrl(j+1);
                             menu2.setIp(httpServletRequest.getRemoteAddr());
-                            menu2.setModifiedBy(response.getUserBn().getId());
+                            menu2.setModifiedBy(request.getUserBn().getId());
                             session.save(menu2);
 
                             MenuPermission menuPermission = new MenuPermission();
                             menuPermission.setDeptId(101);
                             menuPermission.setMenuOid(oId2.intValue());
                             menuPermission.setIp(httpServletRequest.getRemoteAddr());
-                            menuPermission.setModifiedBy(response.getUserBn().getId());
+                            menuPermission.setModifiedBy(request.getUserBn().getId());
                             session.save(menuPermission);
 
                         }

@@ -1,8 +1,10 @@
 package com.installertrackingws.installertrackingws.bean.network;
 
+import com.installertrackingws.installertrackingws.bean.communication.NotificationBn;
 import com.installertrackingws.installertrackingws.bean.department.DepartmentBn;
 import com.installertrackingws.installertrackingws.bean.location.LocationBn;
 import com.installertrackingws.installertrackingws.bean.material.TaskBn;
+import com.installertrackingws.installertrackingws.bean.menu.MenuBn;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.bean.workorder.WoAssignBn;
 import com.installertrackingws.installertrackingws.bean.workorder.WorkOrderBn;
@@ -24,8 +26,26 @@ public class Request {
     public TaskBn taskBn;
     public WorkOrderBn workOrderBn;
     public LocationBn locationBn;
+    public List<MenuBn> menuBnList;
+    public NotificationBn notificationBn;
 
     public Request() {}
+
+    public NotificationBn getNotificationBn() {
+        return notificationBn;
+    }
+
+    public void setNotificationBn(NotificationBn notificationBn) {
+        this.notificationBn = notificationBn;
+    }
+
+    public List<MenuBn> getMenuBnList() {
+        return menuBnList;
+    }
+
+    public void setMenuBnList(List<MenuBn> menuBnList) {
+        this.menuBnList = menuBnList;
+    }
 
     public WorkOrderBn getWorkOrderBn() {
         return workOrderBn;

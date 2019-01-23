@@ -3,6 +3,7 @@ package com.installertrackingws.installertrackingws.websocket.communication;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.installertrackingws.installertrackingws.bean.communication.NotificationBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.utility.communication.NotificationUtl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -23,7 +24,8 @@ public class NotificationWs {
         Gson gson = new GsonBuilder().create();
         NotificationBn notificationBn = new NotificationBn();
         notificationBn.setReceiver(Integer.parseInt(receiver));
-        return gson.toJson(new NotificationUtl().getNotificationByReceiver(entityManagerFactory,notificationBn));
+        Request request = new Request();
+        return gson.toJson(new NotificationUtl().getNotificationByReceiver(entityManagerFactory,request));
     }
 
 }

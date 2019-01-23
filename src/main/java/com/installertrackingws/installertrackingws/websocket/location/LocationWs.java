@@ -13,7 +13,6 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 import javax.persistence.EntityManagerFactory;
-import java.lang.reflect.Type;
 
 @Controller
 public class LocationWs {
