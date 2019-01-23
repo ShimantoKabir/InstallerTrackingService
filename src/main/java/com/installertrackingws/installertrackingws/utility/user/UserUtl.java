@@ -641,7 +641,7 @@ public class UserUtl {
 
     }
 
-    public Response getByDepartment(EntityManagerFactory entityManagerFactory, DepartmentBn departmentBn) {
+    public Response getByDepartment(EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
 
@@ -650,7 +650,7 @@ public class UserUtl {
         session.beginTransaction();
 
         Query query = session.createNativeQuery("SELECT * FROM user WHERE dept_id = :deptId",User.class);
-        query.setParameter("deptId",departmentBn.getoId());
+        query.setParameter("deptId",request.getDepartmentBn().getoId());
 
         List<User> userList = query.getResultList();
 

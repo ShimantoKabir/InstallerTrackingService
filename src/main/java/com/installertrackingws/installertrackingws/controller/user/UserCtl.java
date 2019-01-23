@@ -197,8 +197,8 @@ public class UserCtl {
     }
 
     @PostMapping("/get-by-department")
-    public Response getByDepartment(@RequestBody DepartmentBn departmentBn){
-        return new UserUtl().getByDepartment(entityManagerFactory,departmentBn);
+    public Response getByDepartment(@RequestBody Request request){
+        return new UserUtl().getByDepartment(entityManagerFactory,request);
     }
 
 }

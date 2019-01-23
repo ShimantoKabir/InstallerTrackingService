@@ -22,11 +22,19 @@ public class LocationWs {
     private EntityManagerFactory entityManagerFactory;
 
     @MessageMapping("/get-location-by-work-order")
-    @SendTo("/ws-response/locations")
+    @SendTo("/ws-response/location-by-work-order")
     public String getLocationByWorkOrder(String receiver) {
         Gson gson = new GsonBuilder().create();
         Request request = gson.fromJson(receiver,Request.class);
         return gson.toJson(new LocationUtl().trackByWorkOrder(entityManagerFactory,request));
+    }
+
+    @MessageMapping("/get-location-by-user")
+    @SendTo("/ws-response/location-by-user")
+    public String getLocationByUser(String receiver) {
+        Gson gson = new GsonBuilder().create();
+        Request request = gson.fromJson(receiver,Request.class);
+        return gson.toJson(new LocationUtl().trackByUser(entityManagerFactory,request));
     }
 
 }

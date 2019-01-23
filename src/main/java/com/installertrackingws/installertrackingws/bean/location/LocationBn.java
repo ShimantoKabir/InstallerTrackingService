@@ -14,8 +14,26 @@ public class LocationBn {
     public String ip;
     public Date createdDate;
     public Position position;
+    public String workOrderName;
+    public String userName;
 
     public LocationBn() {}
+
+    public String getWorkOrderName() {
+        return workOrderName;
+    }
+
+    public void setWorkOrderName(String workOrderName) {
+        this.workOrderName = workOrderName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public double getLng() {
         return lng;

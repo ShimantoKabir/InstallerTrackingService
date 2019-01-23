@@ -12,11 +12,12 @@ import org.hibernate.SessionFactory;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class LocationUtl {
 
-    public Response trackByUser(EntityManagerFactory entityManagerFactory, UserBn userBn) {
+    public Response trackByUser(EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
 
@@ -24,16 +25,32 @@ public class LocationUtl {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Query query = session.createNativeQuery("select  * from location WHERE user_id = :userId and CAST(created_date AS DATE) = :createdDate",Location.class);
-        query.setParameter("userId",userBn.getId());
-        query.setParameter("createdDate",userBn.getCreatedDate());
+        Query query = session.createNativeQuery("select location.id,location.lat,location.lon,location.user_id,location.wo_id,location.created_date,user.user_name,work_order.name from location inner join user on user.id = location.user_id inner join work_order on work_order.id = location.wo_id WHERE location.user_id = :userId AND CAST(location.created_date AS DATE) = :createdDate");
+        query.setParameter("userId",request.getLocationBn().getUserId());
+        query.setParameter("createdDate",request.getLocationBn().getCreatedDate());
 
-        List<Location> locations = query.getResultList();
+        List<Object[]> results = query.getResultList();
+        List<LocationBn> locationBnList = new ArrayList<>();
 
-        if (locations.size()>0){
+        for (Object[] result : results) {
+
+            LocationBn locationBn = new LocationBn();
+            locationBn.setLat((Double) result[1]);
+            locationBn.setLng((Double) result[2]);
+            locationBn.setPosition(new Position((Double) result[1],(Double) result[2]));
+            locationBn.setUserId((Integer) result[3]);
+            locationBn.setWoId((Integer) result[4]);
+            locationBn.setCreatedDate((Date) result[5]);
+            locationBn.setUserName((String) result[6]);
+            locationBn.setWorkOrderName((String) result[7]);
+            locationBnList.add(locationBn);
+
+        }
+
+        if (locationBnList.size()>0){
             response.setMsg("Found location !");
             response.setCode(200);
-            response.setList(locations);
+            response.setList(locationBnList);
         }else {
             response.setMsg("No location found !");
             response.setCode(400);
@@ -64,7 +81,6 @@ public class LocationUtl {
         return locations.size();
 
     }
-
 
     public Response getNew(EntityManagerFactory entityManagerFactory, UserBn userBn) {
 
@@ -114,20 +130,26 @@ public class LocationUtl {
             UserBn userBn = new UserBn();
             userBn.setId((Integer) distinctUserIdQuery.getResultList().get(i));
 
-            Query locationQuery = session.createNativeQuery("SELECT * FROM location WHERE user_id = :userId AND wo_id = :woId AND CAST(created_date AS DATE) = :createdDate",Location.class);
+            Query locationQuery = session.createNativeQuery("select location.id,location.lat,location.lon,location.user_id,location.wo_id,location.created_date,user.user_name,work_order.name from location inner join user on user.id = location.user_id inner join work_order on work_order.id = location.wo_id WHERE location.user_id = :userId AND location.wo_id = :woId AND CAST(location.created_date AS DATE) = :createdDate");
             locationQuery.setParameter("userId",distinctUserIdQuery.getResultList().get(i));
             locationQuery.setParameter("woId",request.getWorkOrderBn().getId());
             locationQuery.setParameter("createdDate",request.getLocationBn().getCreatedDate());
 
-            List<Location> locationList = locationQuery.getResultList();
+            List<Object[]> results = locationQuery.getResultList();
             List<LocationBn> locationBnList = new ArrayList<>();
 
-            for (int j = 0; j < locationList.size(); j++) {
+            for (Object[] result : results) {
 
                 LocationBn locationBn = new LocationBn();
-                locationBn.setLat(locationList.get(j).getLat());
-                locationBn.setLng(locationList.get(j).getLon());
-                locationBn.setPosition(new Position(locationList.get(j).getLat(),locationList.get(j).getLon()));
+                locationBn.setId((Integer) result[0]);
+                locationBn.setLat((Double) result[1]);
+                locationBn.setLng((Double) result[2]);
+                locationBn.setPosition(new Position((Double) result[1],(Double) result[2]));
+                locationBn.setUserId((Integer) result[3]);
+                locationBn.setWoId((Integer) result[4]);
+                locationBn.setCreatedDate((Date) result[5]);
+                locationBn.setUserName((String) result[6]);
+                locationBn.setWorkOrderName((String) result[7]);
                 locationBnList.add(locationBn);
 
             }

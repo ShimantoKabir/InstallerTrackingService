@@ -20,9 +20,9 @@ public class LocationCtl {
     private EntityManagerFactory entityManagerFactory;
 
     @PostMapping("/track-by-user")
-    public Response trackByUser(@RequestBody UserBn userBn){
+    public Response trackByUser(@RequestBody Request request){
 
-        return new LocationUtl().trackByUser(entityManagerFactory,userBn);
+        return new LocationUtl().trackByUser(entityManagerFactory,request);
 
     }
 
