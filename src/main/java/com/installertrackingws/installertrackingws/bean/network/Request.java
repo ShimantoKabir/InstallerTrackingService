@@ -1,5 +1,7 @@
 package com.installertrackingws.installertrackingws.bean.network;
 
+import com.installertrackingws.installertrackingws.bean.communication.ConversationBn;
+import com.installertrackingws.installertrackingws.bean.communication.FriendRequestBn;
 import com.installertrackingws.installertrackingws.bean.communication.NotificationBn;
 import com.installertrackingws.installertrackingws.bean.department.DepartmentBn;
 import com.installertrackingws.installertrackingws.bean.location.LocationBn;
@@ -28,8 +30,35 @@ public class Request {
     public LocationBn locationBn;
     public List<MenuBn> menuBnList;
     public NotificationBn notificationBn;
+    public MenuBn menuBn;
+    public FriendRequestBn friendRequestBn;
+    public ConversationBn conversationBn;
 
     public Request() {}
+
+    public ConversationBn getConversationBn() {
+        return conversationBn;
+    }
+
+    public void setConversationBn(ConversationBn conversationBn) {
+        this.conversationBn = conversationBn;
+    }
+
+    public FriendRequestBn getFriendRequestBn() {
+        return friendRequestBn;
+    }
+
+    public void setFriendRequestBn(FriendRequestBn friendRequestBn) {
+        this.friendRequestBn = friendRequestBn;
+    }
+
+    public MenuBn getMenuBn() {
+        return menuBn;
+    }
+
+    public void setMenuBn(MenuBn menuBn) {
+        this.menuBn = menuBn;
+    }
 
     public NotificationBn getNotificationBn() {
         return notificationBn;

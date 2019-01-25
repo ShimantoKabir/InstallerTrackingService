@@ -1,6 +1,7 @@
 package com.installertrackingws.installertrackingws.controller.communication;
 
 import com.installertrackingws.installertrackingws.bean.communication.FriendRequestBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.utility.communication.FriendRequestUtl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +20,16 @@ public class FriendRequestCtl {
     private EntityManagerFactory entityManagerFactory;
 
     @PostMapping("/check-friend")
-    public Response checkFriend(@RequestBody FriendRequestBn friendRequestBn){
+    public Response checkFriend(@RequestBody Request request){
 
-        return new FriendRequestUtl().checkFriend(entityManagerFactory,friendRequestBn);
+        return new FriendRequestUtl().checkFriend(entityManagerFactory,request);
 
     }
 
     @PostMapping("/manage")
-    public Response manageFriendRequest(HttpServletRequest httpServletRequest,@RequestBody FriendRequestBn friendRequestBn){
+    public Response manageFriendRequest(HttpServletRequest httpServletRequest,@RequestBody Request request){
 
-        return new FriendRequestUtl().manageFriendRequest(httpServletRequest,entityManagerFactory,friendRequestBn);
+        return new FriendRequestUtl().manageFriendRequest(httpServletRequest,entityManagerFactory,request);
 
     }
 

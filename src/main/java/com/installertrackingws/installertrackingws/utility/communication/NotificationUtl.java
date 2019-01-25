@@ -1,6 +1,5 @@
 package com.installertrackingws.installertrackingws.utility.communication;
 
-import com.installertrackingws.installertrackingws.bean.communication.NotificationBn;
 import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.model.communication.Notification;
@@ -23,7 +22,7 @@ public class NotificationUtl {
         session.beginTransaction();
 
         Query query = session.createNativeQuery("select  * from notification WHERE receiver = :receiver",Notification.class);
-        query.setParameter("receiver",request.getNotificationBn().getReceiver());
+        query.setParameter("receiver",request.getUserBn().getId());
 
         List<Notification> notifications = query.getResultList();
 

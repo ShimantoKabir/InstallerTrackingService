@@ -1,7 +1,5 @@
 package com.installertrackingws.installertrackingws.utility.user;
 
-import com.google.gson.Gson;
-import com.installertrackingws.installertrackingws.bean.department.DepartmentBn;
 import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
@@ -111,7 +109,7 @@ public class UserUtl {
 
     }
 
-    public Response activeUser(EntityManagerFactory entityManagerFactory, String token) throws ParseException {
+    public Response activeUser(EntityManagerFactory entityManagerFactory, Request request) throws ParseException {
 
         Response response = new Response();
 
@@ -124,7 +122,7 @@ public class UserUtl {
             tx = session.beginTransaction();
 
             Query checkQuery = session.createNativeQuery("SELECT created_date FROM user WHERE token = :token");
-            checkQuery.setParameter("token",token);
+            checkQuery.setParameter("token",request.getUserBn().getToken());
 
             if (checkQuery.getResultList().size()>0){
 
@@ -142,7 +140,7 @@ public class UserUtl {
                 }else {
 
                     Query query = session.createNativeQuery("UPDATE user SET is_user_active=1 WHERE token = :token ");
-                    query.setParameter("token",token);
+                    query.setParameter("token",request.getUserBn().getToken());
 
                     int result = query.executeUpdate();
 
@@ -294,7 +292,7 @@ public class UserUtl {
 
     }
 
-    public Response saveProfile(EntityManagerFactory entityManagerFactory, UserBn userBeen) {
+    public Response saveProfile(EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
 
@@ -308,8 +306,8 @@ public class UserUtl {
             tx = session.beginTransaction();
 
             Query query = session.createNativeQuery("UPDATE user SET user_name = :userName WHERE id = :id");
-            query.setParameter("id",userBeen.getId());
-            query.setParameter("userName",userBeen.getUserName());
+            query.setParameter("id",request.getUserBn().getId());
+            query.setParameter("userName",request.getUserBn().getUserName());
             query.executeUpdate();
 
             response.setMsg("Profile save successfully!");
@@ -334,7 +332,7 @@ public class UserUtl {
 
     }
 
-    public Response changePassword(EntityManagerFactory entityManagerFactory, UserBn userBn) {
+    public Response changePassword(EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
 
@@ -348,7 +346,7 @@ public class UserUtl {
             tx = session.beginTransaction();
 
             Query checkQuery = session.createNativeQuery("SELECT count(id) FROM user WHERE password = :password");
-            checkQuery.setParameter("password",PasswordEncryptionManager.encryptPassword(userBn.getPassword()));
+            checkQuery.setParameter("password",PasswordEncryptionManager.encryptPassword(request.getUserBn().getPassword()));
 
             if (checkQuery.getResultList().get(0).toString().equals("0")){
 
@@ -358,8 +356,8 @@ public class UserUtl {
             }else{
 
                 Query query = session.createNativeQuery("UPDATE user SET password = :newPassword WHERE id = :id");
-                query.setParameter("id",userBn.getId());
-                query.setParameter("newPassword",PasswordEncryptionManager.encryptPassword(userBn.getNewPassword()));
+                query.setParameter("id",request.getUserBn().getId());
+                query.setParameter("newPassword",PasswordEncryptionManager.encryptPassword(request.getUserBn().getNewPassword()));
                 query.executeUpdate();
 
                 response.setMsg("Password changed successfully!");
@@ -386,7 +384,7 @@ public class UserUtl {
 
     }
 
-    public Response getForgotPasswordLink(EntityManagerFactory entityManagerFactory, UserBn userBn) {
+    public Response getForgotPasswordLink(EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
 
@@ -400,7 +398,7 @@ public class UserUtl {
             tx = session.beginTransaction();
 
             Query checkQuery = session.createNativeQuery("SELECT count(id) FROM user WHERE user_email = :userEmail");
-            checkQuery.setParameter("userEmail",userBn.getUserEmail());
+            checkQuery.setParameter("userEmail",request.getUserBn().getUserEmail());
 
             if (checkQuery.getResultList().get(0).toString().equals("0")){
 
@@ -410,8 +408,8 @@ public class UserUtl {
             }else{
 
                 Query query = session.createNativeQuery("UPDATE user SET token = :token,modify_date = :modifyDate WHERE user_email = :userEmail");
-                query.setParameter("token",userBn.getToken());
-                query.setParameter("userEmail",userBn.getUserEmail());
+                query.setParameter("token",request.getUserBn().getToken());
+                query.setParameter("userEmail",request.getUserBn().getUserEmail());
                 query.setParameter("modifyDate",new Date());
                 query.executeUpdate();
 
@@ -440,7 +438,7 @@ public class UserUtl {
 
     }
 
-    public Response verifyForgotPasswordToken(EntityManagerFactory entityManagerFactory, UserBn userBn) throws ParseException {
+    public Response verifyForgotPasswordToken(EntityManagerFactory entityManagerFactory, Request request) throws ParseException {
 
         Response response = new Response();
 
@@ -454,7 +452,7 @@ public class UserUtl {
             tx = session.beginTransaction();
 
             Query checkQuery = session.createNativeQuery("SELECT modify_date FROM user WHERE token = :token");
-            checkQuery.setParameter("token",userBn.getToken());
+            checkQuery.setParameter("token",request.getUserBn().getToken());
 
             if (checkQuery.getResultList().size()>0){
 
@@ -471,7 +469,7 @@ public class UserUtl {
 
 
                     Query query = session.createNativeQuery("UPDATE user SET password = :password WHERE modify_date = :modifyDate");
-                    query.setParameter("password",PasswordEncryptionManager.encryptPassword(userBn.getNewPassword()));
+                    query.setParameter("password",PasswordEncryptionManager.encryptPassword(request.getUserBn().getNewPassword()));
                     query.setParameter("modifyDate",modifiedDate);
                     query.executeUpdate();
 
@@ -507,7 +505,7 @@ public class UserUtl {
 
     }
 
-    public Response updateUserPresence(HttpServletRequest httpServletRequest,EntityManagerFactory entityManagerFactory, UserBn userBn) {
+    public Response updateUserPresence(EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
 
@@ -522,7 +520,7 @@ public class UserUtl {
 
             Query query = session.createNativeQuery("UPDATE user SET last_presence_date = :lastPresenceDate WHERE id = :id");
             query.setParameter("lastPresenceDate",new Date());
-            query.setParameter("id",userBn.getId());
+            query.setParameter("id",request.getUserBn().getId());
             query.executeUpdate();
 
             response.setMsg("User presence update successfully !");
@@ -601,7 +599,7 @@ public class UserUtl {
 
     }
 
-    public Response changeTypingStatus(EntityManagerFactory entityManagerFactory, UserBn userBn) {
+    public Response changeTypingStatus(EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
 
@@ -615,7 +613,7 @@ public class UserUtl {
             tx = session.beginTransaction();
 
             Query query = session.createNativeQuery("UPDATE user SET is_typing = 0 WHERE id = :id");
-            query.setParameter("id",userBn.getId());
+            query.setParameter("id",request.getUserBn().getId());
             query.executeUpdate();
 
             response.setMsg("Typing status change successfully !");

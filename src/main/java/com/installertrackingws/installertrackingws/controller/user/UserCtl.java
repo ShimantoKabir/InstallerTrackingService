@@ -49,8 +49,8 @@ public class UserCtl {
     }
 
     @PostMapping("/active")
-    public Response userActiveAttempt(@RequestBody UserBn userBn) throws ParseException {
-        return new UserUtl().activeUser(entityManagerFactory,userBn.getToken());
+    public Response userActiveAttempt(@RequestBody Request request) throws ParseException {
+        return new UserUtl().activeUser(entityManagerFactory,request);
     }
 
     @PostMapping("/registration")
@@ -93,29 +93,29 @@ public class UserCtl {
     }
 
     @PostMapping("/save/profile")
-    public Response saveProfile(@RequestBody UserBn userBn){
-        return new UserUtl().saveProfile(entityManagerFactory,userBn);
+    public Response saveProfile(@RequestBody Request request){
+        return new UserUtl().saveProfile(entityManagerFactory,request);
     }
 
     @PostMapping("/change-password")
-    public Response changePassword(@RequestBody UserBn userBn){
-        return new UserUtl().changePassword(entityManagerFactory,userBn);
+    public Response changePassword(@RequestBody Request request){
+        return new UserUtl().changePassword(entityManagerFactory,request);
     }
 
     @PostMapping("/get-forgot-password-link")
-    public Response getForgotPasswordLink(HttpServletRequest httpServletRequest,@RequestBody UserBn userBn){
+    public Response getForgotPasswordLink(HttpServletRequest httpServletRequest,@RequestBody Request request){
 
         Response response = new Response();
 
         String token = Token.getToken();
-        userBn.setToken(token);
+        request.getUserBn().setToken(token);
 
-        Response registrationResponse = new UserUtl().getForgotPasswordLink(entityManagerFactory,userBn);
+        Response registrationResponse = new UserUtl().getForgotPasswordLink(entityManagerFactory,request);
 
         if (registrationResponse.getCode()==200){
 
             Email email = new Email();
-            Response emailResponse = email.sendForgotPasswordLinkMail(javaMailSender,userBn,httpServletRequest.getRemoteAddr());
+            Response emailResponse = email.sendForgotPasswordLinkMail(javaMailSender,request,httpServletRequest.getRemoteAddr());
             if (emailResponse.getCode()==200){
 
                 response.setCode(200);
@@ -140,18 +140,18 @@ public class UserCtl {
     }
 
     @PostMapping("/verify-forgot-password-token")
-    public Response verifyForgotPasswordToken(HttpServletRequest httpServletRequest,@RequestBody UserBn userBn) throws ParseException {
-        return new UserUtl().verifyForgotPasswordToken(entityManagerFactory,userBn);
+    public Response verifyForgotPasswordToken(@RequestBody Request request) throws ParseException {
+        return new UserUtl().verifyForgotPasswordToken(entityManagerFactory,request);
     }
 
     @PostMapping("/update-presence")
-    public Response updateUserPresence(HttpServletRequest httpServletRequest,@RequestBody UserBn userBn){
-        return new UserUtl().updateUserPresence(httpServletRequest,entityManagerFactory,userBn);
+    public Response updateUserPresence(@RequestBody Request request){
+        return new UserUtl().updateUserPresence(entityManagerFactory,request);
     }
 
     @PostMapping("/change-typing-status")
-    public Response changeTypingStatus(@RequestBody UserBn userBn){
-        return new UserUtl().changeTypingStatus(entityManagerFactory,userBn);
+    public Response changeTypingStatus(@RequestBody Request request){
+        return new UserUtl().changeTypingStatus(entityManagerFactory,request);
     }
 
     @PostMapping("/get-by-department")

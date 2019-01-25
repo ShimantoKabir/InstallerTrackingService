@@ -13,6 +13,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 
 public class DepartmentUtl {
@@ -120,4 +121,41 @@ public class DepartmentUtl {
 
     }
 
+    public Response update(EntityManagerFactory entityManagerFactory, HttpServletRequest httpServletRequest, Request request) {
+
+        Response response = new Response();
+
+        SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
+        Transaction transaction = null;
+
+        try (Session session = sessionFactory.openSession()) {
+
+            transaction = session.beginTransaction();
+
+            Query query = session.createNativeQuery("UPDATE department SET name=:name,rank=:rk,ip=:ip,modified_by=:modifiedBy,modify_date=:modifyDate WHERE id=:id");
+            query.setParameter("rk",request.getDepartmentBn().getRank());
+            query.setParameter("name",request.getDepartmentBn().getName());
+            query.setParameter("modifiedBy",request.getUserBn().getId());
+            query.setParameter("modifyDate",new Date());
+            query.setParameter("ip",httpServletRequest.getRemoteAddr());
+            query.setParameter("id",request.getDepartmentBn().getId());
+            query.executeUpdate();
+
+            response.setMsg("Department update successful !");
+            response.setCode(200);
+
+            transaction.commit();
+
+        } catch (Exception e) {
+            response.setCode(400);
+            response.setMsg("Exception occurred");
+            if (transaction != null) {
+                transaction.rollback();
+                throw e;
+            }
+        }
+
+        return response;
+
+    }
 }

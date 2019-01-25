@@ -1,6 +1,7 @@
 package com.installertrackingws.installertrackingws.utility.communication;
 
 import com.installertrackingws.installertrackingws.bean.communication.ConversationBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.model.communication.Conversation;
 import org.hibernate.Session;
@@ -45,7 +46,7 @@ public class ConversationUtl {
 
     }
 
-    public Response save(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, ConversationBn conversationBn) {
+    public Response save(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
 
@@ -59,12 +60,12 @@ public class ConversationUtl {
             tx = session.beginTransaction();
 
             Conversation conversation = new Conversation();
-            conversation.setConversationId(conversationBn.getConversationId());
+            conversation.setConversationId(request.getConversationBn().getConversationId());
             conversation.setIsSeen(0);
-            conversation.setReceiver(conversationBn.getReceiver());
+            conversation.setReceiver(request.getConversationBn().getReceiver());
             conversation.setSendDate(new Date());
-            conversation.setSender(conversationBn.getSender());
-            conversation.setSpeech(conversationBn.getSpeech());
+            conversation.setSender(request.getConversationBn().getSender());
+            conversation.setSpeech(request.getConversationBn().getSpeech());
             conversation.setIp(httpServletRequest.getRemoteAddr());
             session.save(conversation);
 
@@ -90,7 +91,7 @@ public class ConversationUtl {
 
     }
 
-    public Response seenTheUnseen(EntityManagerFactory entityManagerFactory, ConversationBn conversationBn) {
+    public Response seenTheUnseen(EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
 
@@ -105,17 +106,17 @@ public class ConversationUtl {
             tx = session.beginTransaction();
 
             Query isSeenQuery = session.createNativeQuery("UPDATE conversation SET is_seen = 1 WHERE conversation_id = :conversationId and is_seen = 0");
-            isSeenQuery.setParameter("conversationId",conversationBn.getConversationId());
+            isSeenQuery.setParameter("conversationId",request.getConversationBn().getConversationId());
             isSeenQuery.executeUpdate();
 
             Query isTypingQuery = session.createNativeQuery("UPDATE user SET is_typing = :isTyping,for_who = :forWho WHERE id = :id ");
             isTypingQuery.setParameter("isTyping",1);
-            isTypingQuery.setParameter("forWho",conversationBn.getReceiver());
-            isTypingQuery.setParameter("id",conversationBn.getSender());
+            isTypingQuery.setParameter("forWho",request.getConversationBn().getReceiver());
+            isTypingQuery.setParameter("id",request.getConversationBn().getSender());
             isTypingQuery.executeUpdate();
 
             Query query = session.createNativeQuery("select  * from conversation WHERE conversation_id = :conversationId",Conversation.class);
-            query.setParameter("conversationId",conversationBn.getConversationId());
+            query.setParameter("conversationId",request.getConversationBn().getConversationId());
 
             List<Conversation> conversations = query.getResultList();
 

@@ -53,7 +53,7 @@ public class MenuUtl {
             // second child ...
             Query childTwoMenuQry = session.createNativeQuery("SELECT * FROM menu INNER JOIN menu_permission ON menu_permission.menu_oid=menu.o_id WHERE menu.rank = 3 AND menu_permission.dept_id = :deptId AND menu.parent_id = :pId",Menu.class);
             childTwoMenuQry.setParameter("pId",childOneMenus.get(i).getoId());
-            childTwoMenuQry.setParameter("deptId",request.getUserBn().getDeptId());
+            childTwoMenuQry.setParameter("deptId",request.getDepartmentBn().getId());
 
             List<Menu> childTwoMenus = childTwoMenuQry.getResultList();
 

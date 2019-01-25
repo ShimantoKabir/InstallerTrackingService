@@ -26,6 +26,13 @@ public class DepartmentCtl {
 
     }
 
+    @PostMapping("/update")
+    public Response update(HttpServletRequest httpServletRequest, @RequestBody Request request){
+
+        return new DepartmentUtl().update(entityManagerFactory,httpServletRequest,request);
+
+    }
+
     @GetMapping("/get")
     public Response get(){
 

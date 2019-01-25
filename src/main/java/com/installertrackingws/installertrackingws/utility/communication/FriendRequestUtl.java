@@ -1,6 +1,7 @@
 package com.installertrackingws.installertrackingws.utility.communication;
 
 import com.installertrackingws.installertrackingws.bean.communication.FriendRequestBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.model.communication.FriendRequest;
 import com.installertrackingws.installertrackingws.model.communication.Notification;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class FriendRequestUtl {
 
-    public Response checkFriend(EntityManagerFactory entityManagerFactory, FriendRequestBn friendRequestBn) {
+    public Response checkFriend(EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
         response.setObject(new FriendRequestBn());
@@ -28,15 +29,15 @@ public class FriendRequestUtl {
         session.beginTransaction();
 
         Query query = session.createNativeQuery("select  * from friend_request WHERE sender = :sender OR receiver = :sender",FriendRequest.class);
-        query.setParameter("sender",friendRequestBn.getSender());
-        query.setParameter("sender",friendRequestBn.getSender());
+        query.setParameter("sender",request.getFriendRequestBn().getSender());
+        query.setParameter("sender",request.getFriendRequestBn().getSender());
 
         List<FriendRequest> friendRequests = query.getResultList();
 
         for (int i = 0; i < friendRequests.size(); i++) {
 
-            if (friendRequests.get(i).getReceiver() == friendRequestBn.getReceiver() ||
-                    friendRequests.get(i).getSender() == friendRequestBn.getReceiver()){
+            if (friendRequests.get(i).getReceiver() == request.getFriendRequestBn().getReceiver() ||
+                    friendRequests.get(i).getSender() == request.getFriendRequestBn().getReceiver()){
 
                 response.setCode(200);
                 response.setMsg("This user is your friend ");
@@ -54,7 +55,7 @@ public class FriendRequestUtl {
 
     }
 
-    public Response manageFriendRequest(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, FriendRequestBn friendRequestBn) {
+    public Response manageFriendRequest(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
 
@@ -67,18 +68,18 @@ public class FriendRequestUtl {
             session = sessionFactory.openSession();
             tx = session.beginTransaction();
 
-            if (friendRequestBn.getAreFriend()==0){
+            if (request.getFriendRequestBn().getAreFriend()==0){
 
                 Query query = session.createNativeQuery("SELECT * FROM friend_request where id=:id ",FriendRequest.class);
-                query.setParameter("id",friendRequestBn.getId());
+                query.setParameter("id",request.getFriendRequestBn().getId());
 
                 if (query.getResultList().size()>0){
 
                     Query areFriendQuery = session.createNativeQuery("UPDATE friend_request SET  are_friend= :areFriend,sender=:sender,receiver=:receiver WHERE id = :id");
-                    areFriendQuery.setParameter("id",friendRequestBn.getId());
+                    areFriendQuery.setParameter("id",request.getFriendRequestBn().getId());
                     areFriendQuery.setParameter("areFriend",1);
-                    areFriendQuery.setParameter("sender",friendRequestBn.getSender());
-                    areFriendQuery.setParameter("receiver",friendRequestBn.getReceiver());
+                    areFriendQuery.setParameter("sender",request.getFriendRequestBn().getSender());
+                    areFriendQuery.setParameter("receiver",request.getFriendRequestBn().getReceiver());
                     areFriendQuery.executeUpdate();
 
                 }else {
@@ -87,8 +88,8 @@ public class FriendRequestUtl {
 
                     FriendRequest friendRequest = new FriendRequest();
                     friendRequest.setAreFriend(1);
-                    friendRequest.setSender(friendRequestBn.getSender());
-                    friendRequest.setReceiver(friendRequestBn.getReceiver());
+                    friendRequest.setSender(request.getFriendRequestBn().getSender());
+                    friendRequest.setReceiver(request.getFriendRequestBn().getReceiver());
                     friendRequest.setConversationId(conversationId.intValue());
                     friendRequest.setIp(httpServletRequest.getRemoteAddr());
                     session.save(friendRequest);
@@ -100,17 +101,17 @@ public class FriendRequestUtl {
                 // notification.setLink("http://"+httpServletRequest.getRemoteAddr()+":3308/#/messenger/"+friendRequestBn.getSender());
                 notification.setLink("/messenger/");
                 notification.setIp(httpServletRequest.getRemoteAddr());
-                notification.setReceiver(friendRequestBn.getReceiver());
-                notification.setMessage("Your have got a friend request form "+friendRequestBn.getSenderEmail());
+                notification.setReceiver(request.getFriendRequestBn().getReceiver());
+                notification.setMessage("Your have got a friend request form "+request.getFriendRequestBn().getSenderEmail());
                 session.save(notification);
 
                 response.setCode(200);
-                response.setMsg("You have successfully send a friend to "+friendRequestBn.getReceiverEmail()+" !");
+                response.setMsg("You have successfully send a friend to "+request.getFriendRequestBn().getReceiverEmail()+" !");
 
-            }else if (friendRequestBn.getAreFriend()==1){
+            }else if (request.getFriendRequestBn().getAreFriend()==1){
 
                 Query query = session.createNativeQuery("UPDATE friend_request SET  are_friend= :areFriend,accept_date=:acceptDate WHERE id = :id");
-                query.setParameter("id",friendRequestBn.getId());
+                query.setParameter("id",request.getFriendRequestBn().getId());
                 query.setParameter("areFriend",2);
                 query.setParameter("acceptDate",new Date());
                 query.executeUpdate();
@@ -120,17 +121,17 @@ public class FriendRequestUtl {
                 // notification.setLink("http://"+httpServletRequest.getRemoteAddr()+":3308/#/messenger/"+friendRequestBn.getSender());
                 notification.setLink("/messenger");
                 notification.setIp(httpServletRequest.getRemoteAddr());
-                notification.setReceiver(friendRequestBn.getReceiver());
-                notification.setMessage(friendRequestBn.getSenderEmail()+" accept your friend friend request !");
+                notification.setReceiver(request.getFriendRequestBn().getReceiver());
+                notification.setMessage(request.getFriendRequestBn().getSenderEmail()+" accept your friend friend request !");
                 session.save(notification);
 
                 response.setCode(200);
-                response.setMsg("Your have successfully accept "+friendRequestBn.getReceiverEmail()+" friend request !");
+                response.setMsg("Your have successfully accept "+request.getFriendRequestBn().getReceiverEmail()+" friend request !");
 
-            }else if (friendRequestBn.getAreFriend()==3){
+            }else if (request.getFriendRequestBn().getAreFriend()==3){
 
                 Query query = session.createNativeQuery("UPDATE friend_request SET  are_friend= :areFriend WHERE id = :id");
-                query.setParameter("id",friendRequestBn.getId());
+                query.setParameter("id",request.getFriendRequestBn().getId());
                 query.setParameter("areFriend",0);
                 query.executeUpdate();
 
@@ -139,17 +140,17 @@ public class FriendRequestUtl {
                 notification.setLink("/messenger");
                 // notification.setLink("http://"+httpServletRequest.getRemoteAddr()+":3308/#/messenger/"+friendRequestBn.getSender());
                 notification.setIp(httpServletRequest.getRemoteAddr());
-                notification.setReceiver(friendRequestBn.getReceiver());
-                notification.setMessage(friendRequestBn.getSenderEmail()+" cancel the friend request that he/she sent to you ");
+                notification.setReceiver(request.getFriendRequestBn().getReceiver());
+                notification.setMessage(request.getFriendRequestBn().getSenderEmail()+" cancel the friend request that he/she sent to you ");
                 session.save(notification);
 
                 response.setCode(200);
-                response.setMsg("You have successfully cancel the friend request that you send to "+friendRequestBn.getReceiverEmail());
+                response.setMsg("You have successfully cancel the friend request that you send to "+request.getFriendRequestBn().getReceiverEmail());
 
             }else {
 
                 Query query = session.createNativeQuery("UPDATE friend_request SET  are_friend= :areFriend WHERE id = :id");
-                query.setParameter("id",friendRequestBn.getId());
+                query.setParameter("id",request.getFriendRequestBn().getId());
                 query.setParameter("areFriend",0);
                 query.executeUpdate();
 
@@ -158,12 +159,12 @@ public class FriendRequestUtl {
                 // notification.setLink("http://"+httpServletRequest.getRemoteAddr()+":3308/#/messenger/"+friendRequestBn.getSender());
                 notification.setLink("/messenger");
                 notification.setIp(httpServletRequest.getRemoteAddr());
-                notification.setReceiver(friendRequestBn.getReceiver());
-                notification.setMessage(friendRequestBn.getSenderEmail()+" and you no longer be a friend, because he/she un friend you");
+                notification.setReceiver(request.getFriendRequestBn().getReceiver());
+                notification.setMessage(request.getFriendRequestBn().getSenderEmail()+" and you no longer be a friend, because he/she un friend you");
                 session.save(notification);
 
                 response.setCode(200);
-                response.setMsg("You have successfully un friend "+friendRequestBn.getReceiverEmail()+" !");
+                response.setMsg("You have successfully un friend "+request.getFriendRequestBn().getReceiverEmail()+" !");
 
             }
 

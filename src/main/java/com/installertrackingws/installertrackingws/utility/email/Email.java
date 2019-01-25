@@ -1,5 +1,6 @@
 package com.installertrackingws.installertrackingws.utility.email;
 
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -33,7 +34,7 @@ public class Email {
 
     }
 
-    public Response sendForgotPasswordLinkMail(JavaMailSender javaMailSender, UserBn userBeen, String ip) {
+    public Response sendForgotPasswordLinkMail(JavaMailSender javaMailSender, Request request, String ip) {
 
         Response response = new Response();
 
@@ -41,8 +42,8 @@ public class Email {
 
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
-            helper.setTo(userBeen.getUserEmail());
-            helper.setText("<html><body><h3>Click the bellow link to change your password.</h3><br><a href='http://192.168.0.3:3308/#/forgot-password/"+userBeen.getToken()+"' >http://192.168.0.3:3308/#/forgot-password/"+userBeen.getToken()+"</a><body></html>",true);
+            helper.setTo(request.getUserBn().getUserEmail());
+            helper.setText("<html><body><h3>Click the bellow link to change your password.</h3><br><a href='http://192.168.0.3:3308/#/forgot-password/"+request.getUserBn().getToken()+"' >http://192.168.0.3:3308/#/forgot-password/"+request.getUserBn().getToken()+"</a><body></html>",true);
             helper.setSubject("Password change mail");
             javaMailSender.send(message);
 
