@@ -22,7 +22,7 @@ public class NotificationUtl {
         session.beginTransaction();
 
         Query query = session.createNativeQuery("select  * from notification WHERE receiver = :receiver",Notification.class);
-        query.setParameter("receiver",request.getUserBn().getId());
+        query.setParameter("receiver",request.getNotificationBn().getReceiver());
 
         List<Notification> notifications = query.getResultList();
 

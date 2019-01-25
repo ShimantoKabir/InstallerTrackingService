@@ -1,6 +1,6 @@
 package com.installertrackingws.installertrackingws.controller.material;
 
-import com.installertrackingws.installertrackingws.bean.material.SiteBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.utility.material.SiteUtl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,23 +17,23 @@ public class SiteCtl {
     private EntityManagerFactory entityManagerFactory;
 
     @PostMapping("/save")
-    public Response save(HttpServletRequest httpServletRequest, @RequestBody SiteBn siteBn){
+    public Response save(HttpServletRequest httpServletRequest, @RequestBody Request request){
 
-        return new SiteUtl().save(httpServletRequest,entityManagerFactory,siteBn);
+        return new SiteUtl().save(httpServletRequest,entityManagerFactory,request);
 
     }
 
-    @GetMapping("/get")
-    public Response getAllSite(){
+    @PostMapping("/get")
+    public Response getAllSite(@RequestBody Request request){
 
         return new SiteUtl().getAllSite(entityManagerFactory);
 
     }
 
     @PostMapping("/update")
-    public Response update(HttpServletRequest httpServletRequest, @RequestBody SiteBn siteBn){
+    public Response update(HttpServletRequest httpServletRequest, @RequestBody Request request){
 
-        return new SiteUtl().update(httpServletRequest,entityManagerFactory,siteBn);
+        return new SiteUtl().update(httpServletRequest,entityManagerFactory,request);
 
     }
 

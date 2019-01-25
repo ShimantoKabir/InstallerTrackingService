@@ -11,6 +11,7 @@ public class Response {
     public int code;
     public Object object;
     public Object taskResponse;
+    public Object templateResponse;
     public Object userResponse;
     public List<?> list;
     public List<MenuBn> menuBnList;
@@ -29,6 +30,14 @@ public class Response {
     public int conversationId;
 
     public Response() {}
+
+    public Object getTemplateResponse() {
+        return templateResponse;
+    }
+
+    public void setTemplateResponse(Object templateResponse) {
+        this.templateResponse = templateResponse;
+    }
 
     public Object getTaskResponse() {
         return taskResponse;

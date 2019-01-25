@@ -5,7 +5,9 @@ import com.installertrackingws.installertrackingws.bean.communication.FriendRequ
 import com.installertrackingws.installertrackingws.bean.communication.NotificationBn;
 import com.installertrackingws.installertrackingws.bean.department.DepartmentBn;
 import com.installertrackingws.installertrackingws.bean.location.LocationBn;
+import com.installertrackingws.installertrackingws.bean.material.SiteBn;
 import com.installertrackingws.installertrackingws.bean.material.TaskBn;
+import com.installertrackingws.installertrackingws.bean.material.TemplateBn;
 import com.installertrackingws.installertrackingws.bean.menu.MenuBn;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.bean.workorder.WoAssignBn;
@@ -33,8 +35,26 @@ public class Request {
     public MenuBn menuBn;
     public FriendRequestBn friendRequestBn;
     public ConversationBn conversationBn;
+    public SiteBn siteBn;
+    public TemplateBn templateBn;
 
     public Request() {}
+
+    public TemplateBn getTemplateBn() {
+        return templateBn;
+    }
+
+    public void setTemplateBn(TemplateBn templateBn) {
+        this.templateBn = templateBn;
+    }
+
+    public SiteBn getSiteBn() {
+        return siteBn;
+    }
+
+    public void setSiteBn(SiteBn siteBn) {
+        this.siteBn = siteBn;
+    }
 
     public ConversationBn getConversationBn() {
         return conversationBn;

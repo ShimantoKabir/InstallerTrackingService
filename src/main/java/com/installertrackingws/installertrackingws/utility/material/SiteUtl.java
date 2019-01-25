@@ -1,6 +1,7 @@
 package com.installertrackingws.installertrackingws.utility.material;
 
 import com.installertrackingws.installertrackingws.bean.material.SiteBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.model.material.Site;
 import org.hibernate.Session;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class SiteUtl {
 
-    public Response save(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, SiteBn siteBn) {
+    public Response save(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
 
@@ -27,12 +28,12 @@ public class SiteUtl {
             tx = session.beginTransaction();
 
             Site site = new Site();
-            site.setAddress(siteBn.getAddress());
+            site.setAddress(request.getSiteBn().getAddress());
             site.setIp(httpServletRequest.getRemoteAddr());
-            site.setLat(siteBn.getLat());
-            site.setLon(siteBn.getLon());
-            site.setModifiedBy(siteBn.getModifiedBy());
-            site.setName(siteBn.getName());
+            site.setLat(request.getSiteBn().getLat());
+            site.setLon(request.getSiteBn().getLon());
+            site.setModifiedBy(request.getSiteBn().getModifiedBy());
+            site.setName(request.getSiteBn().getName());
             session.save(site);
 
             response.setMsg("Site save successfully !");
@@ -85,7 +86,7 @@ public class SiteUtl {
 
     }
 
-    public Response update(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, SiteBn siteBn) {
+    public Response update(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory,Request request) {
 
         Response response = new Response();
 
@@ -99,13 +100,13 @@ public class SiteUtl {
             tx = session.beginTransaction();
 
             Query query = session.createNativeQuery("UPDATE site SET name=:name, address=:address, ip=:ip, lat=:lat, lon=:lon, modified_by=:modifiedBy  WHERE id = :id");
-            query.setParameter("id",siteBn.getId());
-            query.setParameter("name",siteBn.getName());
-            query.setParameter("address",siteBn.getAddress());
+            query.setParameter("id",request.getSiteBn().getId());
+            query.setParameter("name",request.getSiteBn().getName());
+            query.setParameter("address",request.getSiteBn().getAddress());
             query.setParameter("ip",httpServletRequest.getRemoteAddr());
-            query.setParameter("lat",siteBn.getLat());
-            query.setParameter("lon",siteBn.getLon());
-            query.setParameter("modifiedBy",siteBn.getModifiedBy());
+            query.setParameter("lat",request.getSiteBn().getLat());
+            query.setParameter("lon",request.getSiteBn().getLon());
+            query.setParameter("modifiedBy",request.getSiteBn().getModifiedBy());
             query.executeUpdate();
 
             response.setMsg("Site updated successfully !");

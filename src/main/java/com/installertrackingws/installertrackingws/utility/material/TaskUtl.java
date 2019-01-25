@@ -82,7 +82,7 @@ public class TaskUtl {
             taskBn.setCost((Double) result[2]);
             taskBn.setDuration((Double) result[3]);
             taskBn.setTaskSpecialist((Integer) result[4]);
-            taskBn.setSequenceNumber(count);
+            taskBn.setSequenceNumber(0);
             taskBn.setUserEmail((String) result[5]);
             taskBn.setUserName((String) result[6]);
             taskBn.setChecked(false);

@@ -2,6 +2,7 @@ package com.installertrackingws.installertrackingws.utility.material;
 
 import com.installertrackingws.installertrackingws.bean.material.TaskBn;
 import com.installertrackingws.installertrackingws.bean.material.TemplateBn;
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.model.material.Template;
 import com.installertrackingws.installertrackingws.model.material.TemplateDetail;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class TemplateUtl {
 
-    public Response save(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, TemplateBn templateBn) {
+    public Response save(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
 
@@ -35,20 +36,24 @@ public class TemplateUtl {
 
             Template template = new Template();
             template.setoId(maxOid.intValue());
-            template.setName(templateBn.getName());
+            template.setName(request.getTemplateBn().getName());
             template.setIp(httpServletRequest.getRemoteAddr());
-            template.setModifiedBy(templateBn.getModifiedBy());
+            template.setModifiedBy(request.getTemplateBn().getModifiedBy());
             session.save(template);
 
-            for (int i = 0; i < templateBn.getTaskList().size(); i++) {
+            for (int i = 0; i < request.getTaskBnList().size(); i++) {
 
-                TemplateDetail templateDetail = new TemplateDetail();
-                templateDetail.setIp(httpServletRequest.getRemoteAddr());
-                templateDetail.setModifiedBy(templateBn.getModifiedBy());
-                templateDetail.setTaskOid(templateBn.getTaskList().get(i).getId());
-                templateDetail.setTemplateOid(maxOid.intValue());
-                templateDetail.setSequenceNumber(templateBn.getTaskList().get(i).getSequenceNumber());
-                session.save(templateDetail);
+                if (request.getTaskBnList().get(i).isChecked()){
+
+                    TemplateDetail templateDetail = new TemplateDetail();
+                    templateDetail.setIp(httpServletRequest.getRemoteAddr());
+                    templateDetail.setModifiedBy(request.getTemplateBn().getModifiedBy());
+                    templateDetail.setTaskOid(request.getTaskBnList().get(i).getId());
+                    templateDetail.setTemplateOid(maxOid.intValue());
+                    templateDetail.setSequenceNumber(request.getTaskBnList().get(i).getSequenceNumber());
+                    session.save(templateDetail);
+
+                }
 
             }
 
@@ -141,7 +146,7 @@ public class TemplateUtl {
 
     }
 
-    public Response update(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, TemplateBn templateBn) {
+    public Response update(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, Request request) {
 
 
         Response response = new Response();
@@ -156,30 +161,30 @@ public class TemplateUtl {
             tx = session.beginTransaction();
 
             Query templateDeleteQuery = session.createNativeQuery("DELETE FROM template WHERE o_id = :oId");
-            templateDeleteQuery.setParameter("oId",templateBn.getoId());
+            templateDeleteQuery.setParameter("oId",request.getTemplateBn().getoId());
             templateDeleteQuery.executeUpdate();
 
             Query taskDeleteQuery = session.createNativeQuery("DELETE FROM template_detail WHERE template_oid = :templateOid");
-            taskDeleteQuery.setParameter("templateOid",templateBn.getoId());
+            taskDeleteQuery.setParameter("templateOid",request.getTemplateBn().getoId());
             taskDeleteQuery.executeUpdate();
 
             Template template = new Template();
-            template.setoId(templateBn.getoId());
-            template.setName(templateBn.getName());
+            template.setoId(request.getTemplateBn().getoId());
+            template.setName(request.getTemplateBn().getName());
             template.setIp(httpServletRequest.getRemoteAddr());
-            template.setModifiedBy(templateBn.getModifiedBy());
+            template.setModifiedBy(request.getTemplateBn().getModifiedBy());
             session.save(template);
 
-            for (int i = 0; i < templateBn.getTaskList().size(); i++) {
+            for (int i = 0; i < request.getTaskBnList().size(); i++) {
 
-                if (templateBn.getTaskList().get(i).isChecked()){
+                if (request.getTaskBnList().get(i).isChecked()){
 
                     TemplateDetail templateDetail = new TemplateDetail();
                     templateDetail.setIp(httpServletRequest.getRemoteAddr());
-                    templateDetail.setModifiedBy(templateBn.getModifiedBy());
-                    templateDetail.setTaskOid(templateBn.getTaskList().get(i).getId());
-                    templateDetail.setTemplateOid(templateBn.getoId());
-                    templateDetail.setSequenceNumber(templateBn.getTaskList().get(i).getSequenceNumber());
+                    templateDetail.setModifiedBy(request.getTemplateBn().getModifiedBy());
+                    templateDetail.setTaskOid(request.getTaskBnList().get(i).getId());
+                    templateDetail.setTemplateOid(request.getTemplateBn().getoId());
+                    templateDetail.setSequenceNumber(request.getTaskBnList().get(i).getSequenceNumber());
                     session.save(templateDetail);
 
                 }
@@ -205,6 +210,22 @@ public class TemplateUtl {
         }
 
         return response;
+
+    }
+
+    public Response getInitData(EntityManagerFactory entityManagerFactory, Request request) {
+
+        Response response = new Response();
+        Response taskRes = new TaskUtl().getAllTask(entityManagerFactory);
+        Response templateRes = this.getTemplateWithTask(entityManagerFactory);
+
+        response.setTaskResponse(taskRes);
+        response.setTemplateResponse(templateRes);
+        response.setCode(200);
+        response.setMsg("Init data getting successful !");
+
+        return response;
+
 
     }
 }

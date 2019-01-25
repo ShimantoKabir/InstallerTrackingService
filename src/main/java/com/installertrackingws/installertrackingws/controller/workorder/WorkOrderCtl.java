@@ -1,5 +1,6 @@
 package com.installertrackingws.installertrackingws.controller.workorder;
 
+import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.workorder.WorkOrderBn;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.utility.workorder.WorkOrderUtl;
@@ -16,8 +17,8 @@ public class WorkOrderCtl {
     @Autowired
     private EntityManagerFactory entityManagerFactory;
 
-    @GetMapping("/get-init-data")
-    public Response getInitData(){
+    @PostMapping("/get-init-data")
+    public Response getInitData(@RequestBody Request request){
         return WorkOrderUtl.getInitData(entityManagerFactory);
     }
 
