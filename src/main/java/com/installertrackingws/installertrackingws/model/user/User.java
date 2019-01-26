@@ -12,14 +12,13 @@ public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     public int id;
-
-    @NotNull
+    @Column(nullable = false)
     public String password;
-
-    @NotNull
+    @Column(nullable = false)
     public String userEmail;
-
     public String userName;
+    @Column(nullable = false)
+    public String sessionId;
     public Integer isUserActive;
     public Integer isUserApproved;
     public Integer isOnline;
@@ -59,6 +58,14 @@ public class User {
     private Date lastPresenceDate;
 
     public User() {}
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
     public int getId() {
         return id;

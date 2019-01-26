@@ -4,6 +4,7 @@ import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.helper.PasswordEncryptionManager;
+import com.installertrackingws.installertrackingws.helper.Token;
 import com.installertrackingws.installertrackingws.model.department.Department;
 import com.installertrackingws.installertrackingws.model.user.User;
 import com.installertrackingws.installertrackingws.utility.department.DepartmentUtl;
@@ -263,6 +264,13 @@ public class UserUtl {
                 response.setCode(400);
             } else {
 
+                String token = Token.getToken();
+
+                Query sessionIdQuery = session.createNativeQuery("UPDATE USER SET session_id = :sessionId WHERE id = :id");
+                sessionIdQuery.setParameter("id",userList.get(0).getId());
+                sessionIdQuery.setParameter("sessionId",token);
+                sessionIdQuery.executeUpdate();
+
                 Query deptNameQuery = session.createNativeQuery("SELECT * FROM department WHERE o_id = :oId",Department.class);
                 deptNameQuery.setParameter("oId",userList.get(0).getDeptId());
                 Department department = (Department) deptNameQuery.getSingleResult();
@@ -273,6 +281,7 @@ public class UserUtl {
                 resUserBn.setUserName(userList.get(0).getUserName());
                 resUserBn.setIsUserActive(userList.get(0).getIsUserActive());
                 resUserBn.setIsUserApproved(userList.get(0).getIsUserApproved());
+                resUserBn.setSessionId(token);
                 resUserBn.setDeptId(userList.get(0).getDeptId());
                 resUserBn.setDeptName(department.getName());
 

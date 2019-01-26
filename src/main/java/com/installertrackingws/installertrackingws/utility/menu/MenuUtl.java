@@ -347,8 +347,44 @@ public class MenuUtl {
 
     }
 
-    public void checkMenuPermission(){
+    public static boolean isPermitted(EntityManagerFactory entityManagerFactory,Request request){
 
+        SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Query qry = session.createNativeQuery("SELECT * FROM menu WHERE link = :link",Menu.class);
+        qry.setParameter("link",request.getMenuBn().getLink());
+
+        List<Menu> menuBnList = qry.getResultList();
+
+        if (menuBnList.size()>0){
+
+            Query permissionQry = session.createNativeQuery("SELECT * FROM menu_permission WHERE dept_id = :deptId and menu_oid = :menuOid",MenuPermission.class);
+            permissionQry.setParameter("deptId",request.getUserBn().getDeptId());
+            permissionQry.setParameter("menuOid",menuBnList.get(0).getoId());
+
+            List<MenuPermission> menuPermissionList = permissionQry.getResultList();
+
+            if (menuPermissionList.size()>0){
+                return true;
+            }else {
+                return false;
+            }
+
+        }else {
+
+            return false;
+
+        }
+
+    }
+
+    public static Response response(){
+        Response response = new Response();
+        response.setCode(400);
+        response.setMsg("Menu authentication fail !");
+        return response;
     }
 
 }

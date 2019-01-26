@@ -13,6 +13,7 @@ public class UserBn {
     public String password;
     public String userEmail;
     public String userName;
+    public String sessionId;
     public Integer isUserActive;
     public Integer isUserApproved;
     public Integer isOnline;
@@ -30,6 +31,14 @@ public class UserBn {
     List<LocationBn> locationList = new ArrayList<>();
 
     public UserBn() {}
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
     public List<LocationBn> getLocationList() {
         return locationList;
