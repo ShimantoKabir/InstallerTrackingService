@@ -1,5 +1,6 @@
 package com.installertrackingws.installertrackingws.bean.network;
 
+import com.installertrackingws.installertrackingws.bean.accounts.CostBreakDownBn;
 import com.installertrackingws.installertrackingws.bean.communication.ConversationBn;
 import com.installertrackingws.installertrackingws.bean.communication.FriendRequestBn;
 import com.installertrackingws.installertrackingws.bean.communication.NotificationBn;
@@ -11,10 +12,9 @@ import com.installertrackingws.installertrackingws.bean.material.TemplateBn;
 import com.installertrackingws.installertrackingws.bean.menu.MenuBn;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.bean.workorder.WoAssignBn;
+import com.installertrackingws.installertrackingws.bean.workorder.WoAssignDetailBn;
 import com.installertrackingws.installertrackingws.bean.workorder.WorkOrderBn;
 import com.installertrackingws.installertrackingws.bean.workorder.WorkOrderDetailBn;
-import com.installertrackingws.installertrackingws.model.department.Department;
-import com.installertrackingws.installertrackingws.model.location.Location;
 
 import java.util.List;
 
@@ -37,8 +37,35 @@ public class Request {
     public ConversationBn conversationBn;
     public SiteBn siteBn;
     public TemplateBn templateBn;
+    public CostBreakDownBn costBreakDownBn;
+    public List<CostBreakDownBn> costBreakDownBnList;
+    public List<WoAssignDetailBn> woAssignDetailBnList;
 
     public Request() {}
+
+    public List<WoAssignDetailBn> getWoAssignDetailBnList() {
+        return woAssignDetailBnList;
+    }
+
+    public void setWoAssignDetailBnList(List<WoAssignDetailBn> woAssignDetailBnList) {
+        this.woAssignDetailBnList = woAssignDetailBnList;
+    }
+
+    public List<CostBreakDownBn> getCostBreakDownBnList() {
+        return costBreakDownBnList;
+    }
+
+    public void setCostBreakDownBnList(List<CostBreakDownBn> costBreakDownBnList) {
+        this.costBreakDownBnList = costBreakDownBnList;
+    }
+
+    public CostBreakDownBn getCostBreakDownBn() {
+        return costBreakDownBn;
+    }
+
+    public void setCostBreakDownBn(CostBreakDownBn costBreakDownBn) {
+        this.costBreakDownBn = costBreakDownBn;
+    }
 
     public TemplateBn getTemplateBn() {
         return templateBn;

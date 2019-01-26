@@ -4,8 +4,10 @@ import com.installertrackingws.installertrackingws.bean.department.DepartmentBn;
 import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.bean.workorder.WoAssignBn;
+import com.installertrackingws.installertrackingws.bean.workorder.WoAssignDetailBn;
 import com.installertrackingws.installertrackingws.model.workorder.WoAssign;
 import com.installertrackingws.installertrackingws.model.workorder.WoAssignDetail;
+import com.installertrackingws.installertrackingws.utility.accounts.CostBreakDownUtl;
 import com.installertrackingws.installertrackingws.utility.department.DepartmentUtl;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -28,10 +30,12 @@ public class WoAssignUtl {
         Response workOrderRes = WorkOrderUtl.getAllWorkOder(entityManagerFactory);
         List<DepartmentBn> departmentBnList = new DepartmentUtl().getDepartmentList(entityManagerFactory);
         Response woAssignRes = getALLAssignWorkOrder(entityManagerFactory);
+        Response cbdRes = CostBreakDownUtl.getAllCostBreakDown(entityManagerFactory);
 
         response.setWorkOrderList(workOrderRes.getList());
         response.setDepartmentBnList(departmentBnList);
         response.setWoAssignBnList(woAssignRes.getList());
+        response.setCostBreakDownList(cbdRes.getList());
 
         response.setMsg("Init data fetch successful !");
         response.setCode(200);
@@ -69,11 +73,11 @@ public class WoAssignUtl {
             woAssign.setoId(maxOid.intValue());
             session.save(woAssign);
 
-            for (int i = 0; i < request.getWoAssignBn().getWoAssignDetailBnList().size(); i++) {
+            for (int i = 0; i < request.getWoAssignDetailBnList().size(); i++) {
 
                 WoAssignDetail woAssignDetail = new WoAssignDetail();
-                woAssignDetail.setBreakDown(request.getWoAssignBn().getWoAssignDetailBnList().get(i).getBreakDown());
-                woAssignDetail.setCost(request.getWoAssignBn().getWoAssignDetailBnList().get(i).getCost());
+                woAssignDetail.setCbdId(request.getWoAssignDetailBnList().get(i).getId());
+                woAssignDetail.setCost(request.getWoAssignDetailBnList().get(i).getCost());
                 woAssignDetail.setWoAssignOid(maxOid.intValue());
                 woAssignDetail.setModifiedBy(request.getWoAssignBn().getModifiedBy());
                 woAssignDetail.setIp(httpServletRequest.getRemoteAddr());
@@ -155,11 +159,34 @@ public class WoAssignUtl {
             woAssignBn.setDeptOid((Integer) result[12]);
             woAssignBn.setDeptName((String) result[13]);
 
-            Query woAssignDetailQuery = session.createNativeQuery("select * from wo_assign_detail where wo_assign_oid=:woAssignOid",WoAssignDetail.class);
+            Query woAssignDetailQuery = session.createNativeQuery("SELECT \n" +
+                    "wo_assign_detail.id,\n" +
+                    "wo_assign_detail.cost,\n" +
+                    "cost_break_down.name,\n" +
+                    "wo_assign_detail.wo_assign_oid,\n" +
+                    "wo_assign_detail.cbd_id\n" +
+                    "FROM wo_assign_detail\n" +
+                    "INNER JOIN cost_break_down ON cost_break_down.id=wo_assign_detail.cbd_id\n" +
+                    "WHERE wo_assign_detail.wo_assign_oid = :woAssignOid");
+
             woAssignDetailQuery.setParameter("woAssignOid",result[1]);
 
-            List<WoAssignDetail> woAssignDetailList = woAssignDetailQuery.getResultList();
-            woAssignBn.setWoAssignDetailList(woAssignDetailList);
+            List<Object[]> wadResults = woAssignDetailQuery.getResultList();
+            List<WoAssignDetailBn> woAssignDetailBnList = new ArrayList<>();
+
+            for (Object[] wadResult : wadResults) {
+
+                WoAssignDetailBn woAssignDetailBn = new WoAssignDetailBn();
+                woAssignDetailBn.setId((Integer) wadResult[0]);
+                woAssignDetailBn.setCost((String) wadResult[1]);
+                woAssignDetailBn.setName((String) wadResult[2]);
+                woAssignDetailBn.setWoAssignOid((Integer) wadResult[3]);
+                woAssignDetailBn.setCbdId((Integer) wadResult[4]);
+                woAssignDetailBnList.add(woAssignDetailBn);
+
+            }
+
+            woAssignBn.setWoAssignDetailBnList(woAssignDetailBnList);
 
             woAssignBnList.add(woAssignBn);
 
@@ -230,11 +257,12 @@ public class WoAssignUtl {
                 updateQuery.setParameter("id",request.getWoAssignBn().getId());
                 updateQuery.executeUpdate();
 
-                for (int i = 0; i < request.getWoAssignBn().getWoAssignDetailBnList().size(); i++) {
+                for (int i = 0; i < request.getWoAssignDetailBnList().size(); i++) {
 
                     WoAssignDetail woAssignDetail = new WoAssignDetail();
-                    woAssignDetail.setBreakDown(request.getWoAssignBn().getWoAssignDetailBnList().get(i).getBreakDown());
-                    woAssignDetail.setCost(request.getWoAssignBn().getWoAssignDetailBnList().get(i).getCost());
+
+                    woAssignDetail.setCbdId(request.getWoAssignDetailBnList().get(i).getCbdId());
+                    woAssignDetail.setCost(request.getWoAssignDetailBnList().get(i).getCost());
                     woAssignDetail.setWoAssignOid(woAssign.getoId());
                     woAssignDetail.setModifiedBy(request.getWoAssignBn().getModifiedBy());
                     woAssignDetail.setIp(httpServletRequest.getRemoteAddr());

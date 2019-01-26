@@ -8,11 +8,29 @@ public class WoAssignDetailBn {
     public int woAssignOid;
     public String breakDown;
     public String cost;
+    public String name;
+    public int cbdId;
     public String ip;
     public Integer modifiedBy;
     public Date createdDate;
 
     public WoAssignDetailBn() {}
+
+    public int getCbdId() {
+        return cbdId;
+    }
+
+    public void setCbdId(int cbdId) {
+        this.cbdId = cbdId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getId() {
         return id;

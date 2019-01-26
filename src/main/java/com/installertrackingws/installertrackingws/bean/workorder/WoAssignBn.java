@@ -12,6 +12,7 @@ public class WoAssignBn {
     public int woId;
     public int deptOid;
     public int assignTo;
+    public String assignUserMail;
     public Date assignDate;
     public String assignTime;
     public int statusOid;
@@ -28,6 +29,14 @@ public class WoAssignBn {
     public String deptName;
 
     public WoAssignBn() {}
+
+    public String getAssignUserMail() {
+        return assignUserMail;
+    }
+
+    public void setAssignUserMail(String assignUserMail) {
+        this.assignUserMail = assignUserMail;
+    }
 
     public String getDeptName() {
         return deptName;

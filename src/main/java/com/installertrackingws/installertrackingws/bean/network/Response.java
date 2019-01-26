@@ -26,10 +26,19 @@ public class Response {
     public List<?> woAssignBnList;
     public List<?> cbdList;
     public List<?> taskList;
+    public List<?> costBreakDownList;
     public UserBn userBn;
     public int conversationId;
 
     public Response() {}
+
+    public List<?> getCostBreakDownList() {
+        return costBreakDownList;
+    }
+
+    public void setCostBreakDownList(List<?> costBreakDownList) {
+        this.costBreakDownList = costBreakDownList;
+    }
 
     public Object getTemplateResponse() {
         return templateResponse;
