@@ -24,7 +24,7 @@ public class DepartmentUtl {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Query query = session.createNativeQuery("select  * from Department",Department.class);
+        Query query = session.createNativeQuery("select  * from department",Department.class);
 
         List<DepartmentBn> departmentBnList = query.getResultList();
 

@@ -1,5 +1,6 @@
 package com.installertrackingws.installertrackingws.utility.email;
 
+import com.installertrackingws.installertrackingws.AppInfo;
 import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
@@ -20,7 +21,7 @@ public class Email {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
             helper.setTo(user.getUserEmail());
-            helper.setText("<html><body><h3>Click the bellow link to complete to your registration.</h3><br><a href='http://192.168.0.3:3308/#/email-verification/"+user.getToken()+"' >http://192.168.0.3:3308/#/email-verification/"+user.getToken()+"</a><body></html>",true);
+            helper.setText("<html><body><h3>Click the bellow link to complete to your registration.</h3><br><a href='http://"+AppInfo.getClientIp()+":"+AppInfo.getClientPort()+"/#/email-verification/"+user.getToken()+"' >http://"+AppInfo.getClientIp()+":"+AppInfo.getClientPort()+"/#/email-verification/"+user.getToken()+"</a><body></html>",true);
             helper.setSubject("registration confirmation mail");
             javaMailSender.send(message);
 
@@ -43,7 +44,7 @@ public class Email {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
             helper.setTo(request.getUserBn().getUserEmail());
-            helper.setText("<html><body><h3>Click the bellow link to change your password.</h3><br><a href='http://192.168.0.3:3308/#/forgot-password/"+request.getUserBn().getToken()+"' >http://192.168.0.3:3308/#/forgot-password/"+request.getUserBn().getToken()+"</a><body></html>",true);
+            helper.setText("<html><body><h3>Click the bellow link to change your password.</h3><br><a href='http://"+AppInfo.getClientIp() +":"+AppInfo.getClientPort()+"/#/forgot-password/"+request.getUserBn().getToken()+"' >http://"+AppInfo.getClientIp()+":"+AppInfo.getClientPort()+"/#/forgot-password/"+request.getUserBn().getToken()+"</a><body></html>",true);
             helper.setSubject("Password change mail");
             javaMailSender.send(message);
 

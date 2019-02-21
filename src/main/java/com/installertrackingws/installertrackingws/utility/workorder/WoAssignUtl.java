@@ -132,9 +132,9 @@ public class WoAssignUtl {
                 "wo_assign.dept_oid,\n" +
                 "department.name AS dept_name\n" +
                 "FROM wo_assign\n" +
-                "INNER JOIN USER ON user.id=wo_assign.assign_to\n" +
+                "INNER JOIN user ON user.id=wo_assign.assign_to\n" +
                 "INNER JOIN work_order ON work_order.id=wo_assign.wo_id\n" +
-                "INNER JOIN STATUS ON status.o_id=wo_assign.status_oid\n" +
+                "INNER JOIN status ON status.o_id=wo_assign.status_oid\n" +
                 "INNER JOIN department ON department.o_id=wo_assign.dept_oid\n");
 
 

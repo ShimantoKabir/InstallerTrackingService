@@ -13,7 +13,7 @@ public class TaskBn {
     public String userEmail;
     public String userName;
     public String ip;
-    public int modifiedBy;
+    public Integer modifiedBy;
     public Date createdDate;
     public boolean checked;
     public String startDate;

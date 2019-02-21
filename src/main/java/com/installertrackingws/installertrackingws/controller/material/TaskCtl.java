@@ -1,6 +1,5 @@
 package com.installertrackingws.installertrackingws.controller.material;
 
-import com.installertrackingws.installertrackingws.bean.material.TaskBn;
 import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.utility.material.TaskUtl;

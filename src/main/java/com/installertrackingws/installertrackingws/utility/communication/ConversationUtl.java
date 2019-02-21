@@ -1,6 +1,5 @@
 package com.installertrackingws.installertrackingws.utility.communication;
 
-import com.installertrackingws.installertrackingws.bean.communication.ConversationBn;
 import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.model.communication.Conversation;

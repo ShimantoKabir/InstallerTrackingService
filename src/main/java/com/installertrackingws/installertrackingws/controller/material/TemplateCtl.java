@@ -1,12 +1,10 @@
 package com.installertrackingws.installertrackingws.controller.material;
 
-import com.installertrackingws.installertrackingws.bean.material.TemplateBn;
 import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.utility.material.TemplateUtl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletRequest;
 

@@ -1,6 +1,5 @@
 package com.installertrackingws.installertrackingws.utility.material;
 
-import com.installertrackingws.installertrackingws.bean.material.SiteBn;
 import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.model.material.Site;

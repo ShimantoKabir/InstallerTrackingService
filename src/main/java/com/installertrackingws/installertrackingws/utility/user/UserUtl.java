@@ -81,7 +81,7 @@ public class UserUtl {
             session = sessionFactory.openSession();
             tx = session.beginTransaction();
 
-            Query query = session.createNativeQuery("UPDATE USER SET is_user_active = :isUserActive,is_user_approved=:isUserApproved,dept_id=:deptId WHERE id = :id");
+            Query query = session.createNativeQuery("UPDATE user SET is_user_active = :isUserActive,is_user_approved=:isUserApproved,dept_id=:deptId WHERE id = :id");
             query.setParameter("isUserActive",request.getManageUserBn().getIsUserActive());
             query.setParameter("isUserApproved",request.getManageUserBn().getIsUserApproved());
             query.setParameter("deptId",request.getManageUserBn().getDeptId());
@@ -242,7 +242,7 @@ public class UserUtl {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Query query = session.createNativeQuery("SELECT * FROM USER WHERE user_email = :userEmail AND password = :password ", User.class);
+        Query query = session.createNativeQuery("SELECT * FROM user WHERE user_email = :userEmail AND password = :password ", User.class);
         query.setParameter("userEmail", request.getUserBn().getUserEmail());
         query.setParameter("password", PasswordEncryptionManager.encryptPassword(request.getUserBn().getPassword()));
 
@@ -266,7 +266,7 @@ public class UserUtl {
 
                 String token = Token.getToken();
 
-                Query sessionIdQuery = session.createNativeQuery("UPDATE USER SET session_id = :sessionId WHERE id = :id");
+                Query sessionIdQuery = session.createNativeQuery("UPDATE user SET session_id = :sessionId WHERE id = :id");
                 sessionIdQuery.setParameter("id",userList.get(0).getId());
                 sessionIdQuery.setParameter("sessionId",token);
                 sessionIdQuery.executeUpdate();

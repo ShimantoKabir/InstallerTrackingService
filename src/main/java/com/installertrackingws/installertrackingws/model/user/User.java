@@ -17,7 +17,6 @@ public class User {
     @Column(nullable = false)
     public String userEmail;
     public String userName;
-    @Column(nullable = false)
     public String sessionId;
     public Integer isUserActive;
     public Integer isUserApproved;

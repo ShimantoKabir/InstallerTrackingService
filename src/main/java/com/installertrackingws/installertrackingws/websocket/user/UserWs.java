@@ -3,7 +3,6 @@ package com.installertrackingws.installertrackingws.websocket.user;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.installertrackingws.installertrackingws.bean.network.Request;
-import com.installertrackingws.installertrackingws.utility.location.LocationUtl;
 import com.installertrackingws.installertrackingws.utility.user.UserUtl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;

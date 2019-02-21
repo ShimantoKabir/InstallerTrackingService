@@ -104,14 +104,14 @@ public class WorkOrderUtl {
                 "site.name AS site_name, \n" +
                 "uOne.user_name AS wo_pi_ch_name, \n" +
                 "uTwo.user_name AS requester_name,\n" +
-                "status.name AS STATUS,\n" +
+                "status.name AS status,\n" +
                 "work_order.status_oid,\n" +
                 "work_order.site_pi_ct\n" +
                 "FROM work_order \n" +
                 "INNER JOIN site ON site.id=work_order.site_id \n" +
-                "INNER JOIN USER uOne ON uOne.id=work_order.wo_pi_ch \n" +
-                "INNER JOIN USER uTwo ON uTwo.id=work_order.requester\n" +
-                "INNER JOIN STATUS ON STATUS.o_id=work_order.status_oid\n");
+                "INNER JOIN user uOne ON uOne.id=work_order.wo_pi_ch \n" +
+                "INNER JOIN user uTwo ON uTwo.id=work_order.requester\n" +
+                "INNER JOIN status ON status.o_id=work_order.status_oid\n");
 
         List<Object[]> results = query.getResultList();
 

@@ -148,8 +148,8 @@ public class WorkOrderDetailUtl {
                     "work_order_detail.photo_quantity\n" +
                     "FROM work_order_detail \n" +
                     "INNER JOIN task ON task.id=work_order_detail.task_id\n" +
-                    "INNER JOIN STATUS ON STATUS.o_id=work_order_detail.status_oid\n" +
-                    "LEFT JOIN USER ON USER.id=work_order_detail.done_by\n" +
+                    "INNER JOIN status ON status.o_id=work_order_detail.status_oid\n" +
+                    "LEFT JOIN user ON user.id=work_order_detail.done_by\n" +
                     "WHERE wo_id = :woId AND template_oid = :templateOid ");
 
             wodTaskQuery.setParameter("woId",wodResult[0]);

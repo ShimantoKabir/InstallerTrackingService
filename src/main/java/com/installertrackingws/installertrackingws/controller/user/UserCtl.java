@@ -1,26 +1,16 @@
 package com.installertrackingws.installertrackingws.controller.user;
 
-import com.google.gson.Gson;
-import com.installertrackingws.installertrackingws.bean.department.DepartmentBn;
-import com.installertrackingws.installertrackingws.bean.menu.MenuBn;
 import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
-import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.helper.Token;
 import com.installertrackingws.installertrackingws.utility.email.Email;
-import com.installertrackingws.installertrackingws.utility.menu.MenuUtl;
-import com.installertrackingws.installertrackingws.utility.router.RouterUtl;
 import com.installertrackingws.installertrackingws.utility.user.UserUtl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityManagerFactory;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/user")

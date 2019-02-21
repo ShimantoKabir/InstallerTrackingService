@@ -20,7 +20,7 @@ public class StatusUtl {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Query query = session.createNativeQuery("select * from Status",Status.class);
+        Query query = session.createNativeQuery("select * from status",Status.class);
         List<StatusBn> statusList = query.getResultList();
 
         session.getTransaction().commit();

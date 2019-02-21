@@ -5,7 +5,6 @@ import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.utility.workorder.WorkOrderDetailUtl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;

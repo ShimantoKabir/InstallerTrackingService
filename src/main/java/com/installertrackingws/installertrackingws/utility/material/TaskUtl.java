@@ -68,7 +68,7 @@ public class TaskUtl {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Query query = session.createNativeQuery("SELECT task.id, task.name, task.cost, task.duration, task.task_specialist, user.user_email, user.user_name FROM task INNER JOIN USER ON task.task_specialist=user.id");
+        Query query = session.createNativeQuery("SELECT task.id, task.name, task.cost, task.duration, task.task_specialist, user.user_email, user.user_name FROM task INNER JOIN user ON task.task_specialist=user.id");
         List<Object[]> results = query.getResultList();
 
         List<TaskBn> taskList = new ArrayList<>();
