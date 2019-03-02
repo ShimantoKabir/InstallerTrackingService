@@ -285,7 +285,7 @@ public class UserUtl {
                 resUserBn.setDeptId(userList.get(0).getDeptId());
                 resUserBn.setDeptName(department.getName());
 
-                response.setObject(resUserBn);
+                response.setUserBn(resUserBn);
                 response.setMsg("Login successful !");
                 response.setCode(200);
 

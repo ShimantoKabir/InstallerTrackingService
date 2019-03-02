@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class InstallerTrackingWsApplication {
 
-	// test
 	public static void main(String[] args) {
 		SpringApplication.run(InstallerTrackingWsApplication.class, args);
 	}
