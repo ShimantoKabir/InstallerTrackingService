@@ -20,7 +20,7 @@ public class MenuBn {
     public Date createdDate;
     public Date modifyDate;
     public List<MenuBn> children;
-    public List<MenuPermission> menuPermissionList;
+    public List<MenuPermission> menuPermissionBnList;
 
     public MenuBn() {}
 
@@ -32,12 +32,12 @@ public class MenuBn {
         this.children = children;
     }
 
-    public List<MenuPermission> getMenuPermissionList() {
-        return menuPermissionList;
+    public List<MenuPermission> getMenuPermissionBnList() {
+        return menuPermissionBnList;
     }
 
-    public void setMenuPermissionList(List<MenuPermission> menuPermissionList) {
-        this.menuPermissionList = menuPermissionList;
+    public void setMenuPermissionBnList(List<MenuPermission> menuPermissionBnList) {
+        this.menuPermissionBnList = menuPermissionBnList;
     }
 
     public int getId() {
