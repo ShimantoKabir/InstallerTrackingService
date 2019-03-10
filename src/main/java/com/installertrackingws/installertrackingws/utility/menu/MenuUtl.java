@@ -20,96 +20,87 @@ public class MenuUtl {
     public Response getMenuByDepartment(EntityManagerFactory entityManagerFactory, Request request){
 
         Response response = new Response();
-        MenuBn root = new MenuBn();
+        MenuBn menuBn = new MenuBn();
 
         SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
         Query rootMenuQry = session.createNativeQuery("SELECT * FROM menu WHERE parent_id=0 AND rank=1 AND srl=1 and o_id=1 ORDER BY srl ASC",Menu.class);
-        Menu rootMenu = (Menu) rootMenuQry.getSingleResult();
+        Menu menu = (Menu) rootMenuQry.getSingleResult();
 
-        root.setId(rootMenu.getId());
-        root.setoId(rootMenu.getoId());
-        root.setIcon(rootMenu.getIcon());
-        root.setLink(rootMenu.getLink());
-        root.setText(rootMenu.getText());
-        root.setRank(rootMenu.getRank());
-        root.setSrl(rootMenu.getSrl());
-        root.setParentId(rootMenu.getParentId());
+        menuBn.setId(menu.getId());
+        menuBn.setoId(menu.getoId());
+        menuBn.setIcon(menu.getIcon());
+        menuBn.setLink(menu.getLink());
+        menuBn.setText(menu.getText());
+        menuBn.setRank(menu.getRank());
+        menuBn.setSrl(menu.getSrl());
+        menuBn.setParentId(menu.getParentId());
 
         // first child ...
         Query childOneMenuQry = session.createNativeQuery("SELECT * FROM menu WHERE parent_id = :pId AND rank = 2 ORDER BY srl ASC",Menu.class);
-        childOneMenuQry.setParameter("pId",rootMenu.getoId());
+        childOneMenuQry.setParameter("pId",menu.getoId());
 
-        List<Menu> childOneMenus = childOneMenuQry.getResultList();
+        List<Menu> menuList = childOneMenuQry.getResultList();
+        List<MenuBn> menuBnList = new ArrayList<>();
 
-        ArrayList<MenuBn> menuBns = new ArrayList<>();
+        for (int i = 0; i < menuList.size(); i++) {
 
-        for (int i = 0; i < childOneMenus.size(); i++) {
-
-            MenuBn child = new MenuBn();
+            MenuBn children = new MenuBn();
 
             // second child ...
             Query childTwoMenuQry = session.createNativeQuery("SELECT * FROM menu INNER JOIN menu_permission ON menu_permission.menu_oid=menu.o_id WHERE menu.rank = 3 AND menu_permission.dept_id = :deptId AND menu.parent_id = :pId",Menu.class);
-            childTwoMenuQry.setParameter("pId",childOneMenus.get(i).getoId());
+            childTwoMenuQry.setParameter("pId",menuList.get(i).getoId());
             childTwoMenuQry.setParameter("deptId",request.getDepartmentBn().getId());
 
-            List<Menu> childTwoMenus = childTwoMenuQry.getResultList();
+            List<Menu> childrenMenuList = childTwoMenuQry.getResultList();
 
-            child.setId(childOneMenus.get(i).getId());
-            child.setoId(childOneMenus.get(i).getoId());
-            child.setIcon(childOneMenus.get(i).getIcon());
-            child.setText(childOneMenus.get(i).getText());
-            child.setLink(childOneMenus.get(i).getLink());
-            child.setRank(childOneMenus.get(i).getRank());
-            child.setSrl(childOneMenus.get(i).getSrl());
-            child.setParentId(childOneMenus.get(i).getParentId());
+            children.setId(menuList.get(i).getId());
+            children.setoId(menuList.get(i).getoId());
+            children.setIcon(menuList.get(i).getIcon());
+            children.setText(menuList.get(i).getText());
+            children.setLink(menuList.get(i).getLink());
+            children.setRank(menuList.get(i).getRank());
+            children.setSrl(menuList.get(i).getSrl());
+            children.setParentId(menuList.get(i).getParentId());
 
-            ArrayList<MenuBn> menuBnsTwo = new ArrayList<>();
+            List<MenuBn> childrenMenuBnList = new ArrayList<>();
 
-            for (int j = 0; j < childTwoMenus.size(); j++) {
+            for (int j = 0; j < childrenMenuList.size(); j++) {
 
                 Query departmentQuery = session.createNativeQuery("SELECT * FROM menu_permission WHERE menu_oid=:mOid ",MenuPermission.class);
-                departmentQuery.setParameter("mOid",childTwoMenus.get(j).getoId());
+                departmentQuery.setParameter("mOid",childrenMenuList.get(j).getoId());
 
                 MenuBn childTwo = new MenuBn();
-                childTwo.setId(childTwoMenus.get(j).getId());
-                childTwo.setoId(childTwoMenus.get(j).getoId());
-                childTwo.setIcon(childTwoMenus.get(j).getIcon());
-                childTwo.setLink(childTwoMenus.get(j).getLink());
-                childTwo.setText(childTwoMenus.get(j).getText());
-                childTwo.setRank(childTwoMenus.get(j).getRank());
-                childTwo.setSrl(childTwoMenus.get(j).getSrl());
-                childTwo.setParentId(childTwoMenus.get(j).getParentId());
-                childTwo.setMenuPermissionList(departmentQuery.getResultList());
+                childTwo.setId(childrenMenuList.get(j).getId());
+                childTwo.setoId(childrenMenuList.get(j).getoId());
+                childTwo.setIcon(childrenMenuList.get(j).getIcon());
+                childTwo.setLink(childrenMenuList.get(j).getLink());
+                childTwo.setText(childrenMenuList.get(j).getText());
+                childTwo.setRank(childrenMenuList.get(j).getRank());
+                childTwo.setSrl(childrenMenuList.get(j).getSrl());
+                childTwo.setParentId(childrenMenuList.get(j).getParentId());
+                childTwo.setMenuPermissionBnList(departmentQuery.getResultList());
 
-                menuBnsTwo.add(childTwo);
+                childrenMenuBnList.add(childTwo);
 
             }
 
-            child.setChildren(menuBnsTwo);
-            menuBns.add(child);
+            children.setChildren(childrenMenuBnList);
+            menuBnList.add(children);
 
         }
 
-        root.setChildren(menuBns);
+        menuBn.setChildren(menuBnList);
         session.getTransaction().commit();
         session.close();
 
-        List<MenuBn> rootMenuList = new ArrayList<>();
-        rootMenuList.add(root);
+        response.setCode(200);
+        response.setMsg("Menu fetch successful !");
+        response.setMenuBn(menuBn);
 
-        if (rootMenuList.size()>0){
-            response.setCode(200);
-            response.setMsg("Menu list fetch successful");
-            response.setList(rootMenuList);
-            return response;
-        }else {
-            response.setCode(400);
-            response.setMsg("Menu list empty");
-            return response;
-        }
+        return response;
 
     }
 
@@ -177,7 +168,7 @@ public class MenuUtl {
                 childTwo.setSrl(childTwoMenus.get(j).getSrl());
                 childTwo.setRank(childTwoMenus.get(j).getRank());
                 childTwo.setParentId(childTwoMenus.get(j).getParentId());
-                childTwo.setMenuPermissionList(departmentQuery.getResultList());
+                childTwo.setMenuPermissionBnList(departmentQuery.getResultList());
 
                 menuBeansTwo.add(childTwo);
 
