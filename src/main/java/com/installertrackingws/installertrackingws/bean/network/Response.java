@@ -29,8 +29,17 @@ public class Response {
     public List<?> costBreakDownList;
     public UserBn userBn;
     public int conversationId;
+    public MenuBn menuBn;
 
     public Response() {}
+
+    public MenuBn getMenuBn() {
+        return menuBn;
+    }
+
+    public void setMenuBn(MenuBn menuBn) {
+        this.menuBn = menuBn;
+    }
 
     public List<?> getCostBreakDownList() {
         return costBreakDownList;
