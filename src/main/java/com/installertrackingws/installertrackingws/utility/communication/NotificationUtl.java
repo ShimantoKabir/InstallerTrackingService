@@ -24,13 +24,13 @@ public class NotificationUtl {
         Query query = session.createNativeQuery("select  * from notification WHERE receiver = :receiver",Notification.class);
         query.setParameter("receiver",request.getNotificationBn().getReceiver());
 
-        List<Notification> notifications = query.getResultList();
+        List<Notification> notificationList = query.getResultList();
 
-        if (notifications.size()>0){
+        if (notificationList.size()>0){
             response.setMsg("Found notification !");
             response.setCode(200);
-            response.setObject(request.getNotificationBn());
-            response.setList(notifications);
+            response.setNotificationBn(request.getNotificationBn());
+            response.setNotificationBnList(notificationList);
         }else {
             response.setMsg("Didn't found any notification !");
             response.setCode(400);
