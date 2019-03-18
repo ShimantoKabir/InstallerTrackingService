@@ -206,19 +206,19 @@ public class MenuUtl {
 
             session.createNativeQuery("DELETE FROM menu_permission WHERE dept_id=101").executeUpdate();
 
-            int rootOid = request.getMenuBnList().get(0).getoId();
+            int rootOid = request.getMenuBn().getoId();
             int maxOid = (int) query.getResultList().get(0);
 
             for (int i = rootOid+1; i <= maxOid; i++) {
                 session.createNativeQuery("DELETE FROM menu WHERE o_id=:oId").setParameter("oId",i).executeUpdate();
             }
 
-            if (request.getMenuBnList().get(0).getChildren().size()>0){
+            if (request.getMenuBn().getChildren().size()>0){
 
-                for (int i = 0; i < request.getMenuBnList().get(0).getChildren().size(); i++) {
+                for (int i = 0; i < request.getMenuBn().getChildren().size(); i++) {
 
-                    List<MenuBn> menuList1 = request.getMenuBnList().get(0).getChildren();
-                    int parentId = request.getMenuBnList().get(0).getoId();
+                    List<MenuBn> menuList1 = request.getMenuBn().getChildren();
+                    int parentId = request.getMenuBn().getoId();
 
                     BigInteger oId1 = (BigInteger) session.createNativeQuery("SELECT IFNULL(MAX(o_id),0)+1 AS o_id FROM menu").getResultList().get(0);
 
