@@ -1,7 +1,9 @@
 package com.installertrackingws.installertrackingws.bean.network;
 
+import com.installertrackingws.installertrackingws.bean.communication.NotificationBn;
 import com.installertrackingws.installertrackingws.bean.menu.MenuBn;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
+import com.installertrackingws.installertrackingws.model.communication.Notification;
 
 import java.util.List;
 
@@ -28,10 +30,28 @@ public class Response {
     public List<?> taskList;
     public List<?> costBreakDownList;
     public UserBn userBn;
-    public int conversationId;
+    public Integer conversationId;
     public MenuBn menuBn;
+    public NotificationBn notificationBn;
+    public List<Notification> notificationBnList;
 
     public Response() {}
+
+    public NotificationBn getNotificationBn() {
+        return notificationBn;
+    }
+
+    public void setNotificationBn(NotificationBn notificationBn) {
+        this.notificationBn = notificationBn;
+    }
+
+    public List<Notification> getNotificationBnList() {
+        return notificationBnList;
+    }
+
+    public void setNotificationBnList(List<Notification> notificationBnList) {
+        this.notificationBnList = notificationBnList;
+    }
 
     public MenuBn getMenuBn() {
         return menuBn;
