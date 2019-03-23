@@ -62,6 +62,7 @@ public class NotificationUtl {
 
             response.setMsg("Notification seen successfully !");
             response.setCode(200);
+            response.setNotificationBn(request.getNotificationBn());
 
             tx.commit();
 
