@@ -36,7 +36,7 @@ public class UserUtl {
         Query query = session.createNativeQuery("SELECT user.id,user.user_name,user.user_email,user.is_user_active,user.is_user_approved,department.name AS dept_name,department.o_id AS dept_id,user.is_online,user.last_presence_date,user.is_typing,user.for_who FROM user LEFT JOIN department ON department.o_id=user.dept_id");
         List<Object[]> results = query.getResultList();
 
-        List<UserBn> userList = new ArrayList<>();
+        List<UserBn> userBnList = new ArrayList<>();
         for (Object[] result : results) {
             UserBn userBn = new UserBn();
             userBn.setId((Integer) result[0]);
@@ -50,21 +50,25 @@ public class UserUtl {
             userBn.setLastPresenceDate((Date) result[8]);
             userBn.setIsTyping((Integer) result[9]);
             userBn.setForWho((Integer) result[10]);
-            userList.add(userBn);
+            userBnList.add(userBn);
         }
 
         session.getTransaction().commit();
         session.close();
 
-        if (userList.size()>0){
+        if (userBnList.size()>0){
+
             response.setCode(200);
             response.setMsg("User list fetch successful !");
-            response.setList(userList);
+            response.setUserBnList(userBnList);
             return response;
+
         }else {
+
             response.setCode(400);
             response.setMsg("User list fetch unsuccessful !");
             return response;
+
         }
 
     }
