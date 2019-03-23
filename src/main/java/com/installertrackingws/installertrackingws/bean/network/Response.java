@@ -34,8 +34,21 @@ public class Response {
     public MenuBn menuBn;
     public NotificationBn notificationBn;
     public List<Notification> notificationBnList;
+    public List<UserBn> userBnList;
 
     public Response() {}
+
+    public void setConversationId(Integer conversationId) {
+        this.conversationId = conversationId;
+    }
+
+    public List<UserBn> getUserBnList() {
+        return userBnList;
+    }
+
+    public void setUserBnList(List<UserBn> userBnList) {
+        this.userBnList = userBnList;
+    }
 
     public NotificationBn getNotificationBn() {
         return notificationBn;
