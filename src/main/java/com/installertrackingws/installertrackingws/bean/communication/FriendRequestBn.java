@@ -12,10 +12,18 @@ public class FriendRequestBn {
     public int areFriend;
     public int conversationId;
     public String ip;
-    public String acceptDate;
+    public Date acceptDate;
     public Date sendDate;
 
     public FriendRequestBn() {}
+
+    public Date getAcceptDate() {
+        return acceptDate;
+    }
+
+    public void setAcceptDate(Date acceptDate) {
+        this.acceptDate = acceptDate;
+    }
 
     public String getSenderEmail() {
         return senderEmail;
@@ -41,13 +49,6 @@ public class FriendRequestBn {
         this.ip = ip;
     }
 
-    public String getAcceptDate() {
-        return acceptDate;
-    }
-
-    public void setAcceptDate(String acceptDate) {
-        this.acceptDate = acceptDate;
-    }
 
     public int getId() {
         return id;
