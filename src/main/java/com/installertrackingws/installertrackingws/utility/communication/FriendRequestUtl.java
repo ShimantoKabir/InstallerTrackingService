@@ -19,6 +19,7 @@ public class FriendRequestUtl {
 
     public Response checkFriend(EntityManagerFactory entityManagerFactory, Request request) {
 
+        FriendRequestBn friendRequestBn = new FriendRequestBn();
         Response response = new Response();
         response.setObject(new FriendRequestBn());
         response.setCode(400);
@@ -32,16 +33,26 @@ public class FriendRequestUtl {
         query.setParameter("sender",request.getFriendRequestBn().getSender());
         query.setParameter("sender",request.getFriendRequestBn().getSender());
 
-        List<FriendRequest> friendRequests = query.getResultList();
+        List<FriendRequest> friendRequestList = query.getResultList();
 
-        for (int i = 0; i < friendRequests.size(); i++) {
+        for (int i = 0; i < friendRequestList.size(); i++) {
 
-            if (friendRequests.get(i).getReceiver() == request.getFriendRequestBn().getReceiver() ||
-                    friendRequests.get(i).getSender() == request.getFriendRequestBn().getReceiver()){
+            if (friendRequestList.get(i).getReceiver() == request.getFriendRequestBn().getReceiver() ||
+                    friendRequestList.get(i).getSender() == request.getFriendRequestBn().getReceiver()){
 
                 response.setCode(200);
                 response.setMsg("This user is your friend ");
-                response.setObject(friendRequests.get(i));
+
+                friendRequestBn.setId(friendRequestList.get(i).getId());
+                friendRequestBn.setAcceptDate(friendRequestList.get(i).getAcceptDate());
+                friendRequestBn.setAreFriend(friendRequestList.get(i).getAreFriend());
+                friendRequestBn.setSendDate(friendRequestList.get(i).getSendDate());
+                friendRequestBn.setSender(friendRequestList.get(i).getSender());
+                friendRequestBn.setReceiver(friendRequestList.get(i).getReceiver());
+                friendRequestBn.setConversationId(friendRequestList.get(i).getConversationId());
+                friendRequestBn.setIp(friendRequestList.get(i).getIp());
+
+                response.setFriendRequestBn(friendRequestBn);
                 break;
 
             }
