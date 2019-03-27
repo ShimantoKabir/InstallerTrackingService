@@ -21,7 +21,7 @@ public class FriendRequestUtl {
 
         FriendRequestBn friendRequestBn = new FriendRequestBn();
         Response response = new Response();
-        response.setObject(new FriendRequestBn());
+        response.setFriendRequestBn(new FriendRequestBn());
         response.setCode(400);
         response.setMsg("This user is not your friend");
 
