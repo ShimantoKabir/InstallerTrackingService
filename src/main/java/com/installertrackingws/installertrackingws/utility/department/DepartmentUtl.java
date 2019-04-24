@@ -3,12 +3,10 @@ package com.installertrackingws.installertrackingws.utility.department;
 import com.installertrackingws.installertrackingws.bean.department.DepartmentBn;
 import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
-import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.model.department.Department;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.web.bind.annotation.RequestBody;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
@@ -46,8 +44,8 @@ public class DepartmentUtl {
 
             transaction = session.beginTransaction();
 
-            Query query = session.createNativeQuery("SELECT count(id) FROM department WHERE rank = :rk");
-            query.setParameter("rk",request.getDepartmentBn().getRank());
+            Query query = session.createNativeQuery("SELECT count(id) FROM department WHERE rk = :rk");
+            query.setParameter("rk",request.getDepartmentBn().getRk());
 
             if (query.getResultList().get(0).toString().equals("0")){
 
@@ -56,7 +54,7 @@ public class DepartmentUtl {
                 Department department = new Department();
                 department.setIp(httpServletRequest.getRemoteAddr());
                 department.setName(request.getDepartmentBn().getName());
-                department.setRank(request.getDepartmentBn().getRank());
+                department.setRk(request.getDepartmentBn().getRk());
                 department.setoId(oId.intValue());
                 department.setModifiedBy(request.getUserBn().getId());
                 session.save(department);
@@ -66,7 +64,7 @@ public class DepartmentUtl {
 
             }else {
 
-                response.setMsg("This rank already exist !");
+                response.setMsg("This rk already exist !");
                 response.setCode(400);
 
             }
@@ -94,14 +92,14 @@ public class DepartmentUtl {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Query rankQuery = session.createNativeQuery("SELECT * FROM department WHERE o_id = :deptId",Department.class);
-        rankQuery.setParameter("deptId",request.getUserBn().getDeptId());
+        Query rkQuery = session.createNativeQuery("SELECT * FROM department WHERE o_id = :deptId",Department.class);
+        rkQuery.setParameter("deptId",request.getUserBn().getDeptId());
 
-        Department department = (Department) rankQuery.getSingleResult();
-        int rank = department.getRank();
+        Department department = (Department) rkQuery.getSingleResult();
+        int rk = department.getRk();
 
-        Query departmentListQeury = session.createNativeQuery("SELECT * FROM department WHERE rank >= :rank",Department.class);
-        departmentListQeury.setParameter("rank",rank);
+        Query departmentListQeury = session.createNativeQuery("SELECT * FROM department WHERE rk >= :rk",Department.class);
+        departmentListQeury.setParameter("rk",rk);
 
         List<Department> departmentList = departmentListQeury.getResultList();
 
@@ -132,8 +130,8 @@ public class DepartmentUtl {
 
             transaction = session.beginTransaction();
 
-            Query query = session.createNativeQuery("UPDATE department SET name=:name,rank=:rk,ip=:ip,modified_by=:modifiedBy,modify_date=:modifyDate WHERE id=:id");
-            query.setParameter("rk",request.getDepartmentBn().getRank());
+            Query query = session.createNativeQuery("UPDATE department SET name=:name,rk=:rk,ip=:ip,modified_by=:modifiedBy,modify_date=:modifyDate WHERE id=:id");
+            query.setParameter("rk",request.getDepartmentBn().getRk());
             query.setParameter("name",request.getDepartmentBn().getName());
             query.setParameter("modifiedBy",request.getUserBn().getId());
             query.setParameter("modifyDate",new Date());

@@ -19,7 +19,7 @@ public class RouterUtl {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Query routerQuery = session.createNativeQuery("SELECT link FROM menu INNER JOIN menu_permission ON menu_permission.menu_oid=menu.o_id WHERE menu.rank = 3 AND menu_permission.dept_id = :deptId");
+        Query routerQuery = session.createNativeQuery("SELECT link FROM menu INNER JOIN menu_permission ON menu_permission.menu_oid=menu.o_id WHERE menu.rk = 3 AND menu_permission.dept_id = :deptId");
         routerQuery.setParameter("deptId",request.getUserBn().getDeptId());
 
         List list = routerQuery.getResultList();

@@ -14,9 +14,8 @@ public class Department {
     public int id;
 
     public int oId;
-
     public String name;
-    public int rank;
+    public int rk;
     public String ip;
     public int modifiedBy;
 
@@ -54,13 +53,9 @@ public class Department {
         this.name = name;
     }
 
-    public int getRank() {
-        return rank;
-    }
+    public int getRk() {return rk;}
 
-    public void setRank(int rank) {
-        this.rank = rank;
-    }
+    public void setRk(int rk) {this.rk = rk;}
 
     public String getIp() {
         return ip;
@@ -86,11 +81,7 @@ public class Department {
         this.createdDate = createdDate;
     }
 
-    public Date getModifyDate() {
-        return modifyDate;
-    }
+    public Date getModifyDate() {return modifyDate;}
 
-    public void setModifyDate(Date modifyDate) {
-        this.modifyDate = modifyDate;
-    }
+    public void setModifyDate(Date modifyDate) {this.modifyDate = modifyDate;}
 }

@@ -4,7 +4,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -16,19 +15,18 @@ public class Menu {
 
     public int oId;
 
-    @NotNull
+    @Column(nullable = false)
     public String text;
-
     public String icon;
     public String link;
 
-    @NotNull
+    @Column(nullable = false)
     public int parentId;
 
-    @NotNull
-    public int rank;
+    @Column(nullable = false)
+    public int rk;
 
-    @NotNull
+    @Column(nullable = false)
     public int srl;
 
     public String ip;
@@ -44,13 +42,13 @@ public class Menu {
 
     public Menu() {}
 
-    public Menu(int oId, @NotNull String text, String icon, String link, @NotNull int parentId, @NotNull int rank, @NotNull int srl, String ip, int modifiedBy, Date createdDate, Date modifyDate) {
+    public Menu(int oId,String text, String icon, String link,int parentId,int rk,int srl, String ip, int modifiedBy, Date createdDate, Date modifyDate) {
         this.oId = oId;
         this.text = text;
         this.icon = icon;
         this.link = link;
         this.parentId = parentId;
-        this.rank = rank;
+        this.rk = rk;
         this.srl = srl;
         this.ip = ip;
         this.modifiedBy = modifiedBy;
@@ -106,12 +104,12 @@ public class Menu {
         this.parentId = parentId;
     }
 
-    public int getRank() {
-        return rank;
+    public int getRk() {
+        return rk;
     }
 
-    public void setRank(int rank) {
-        this.rank = rank;
+    public void setRk(int rk) {
+        this.rk = rk;
     }
 
     public int getSrl() {

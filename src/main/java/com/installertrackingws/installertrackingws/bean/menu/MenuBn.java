@@ -13,7 +13,7 @@ public class MenuBn {
     public String icon;
     public String link;
     public int parentId;
-    public int rank;
+    public int rk;
     public int srl;
     public String ip;
     public int modifiedBy;
@@ -88,12 +88,12 @@ public class MenuBn {
         this.parentId = parentId;
     }
 
-    public int getRank() {
-        return rank;
+    public int getRk() {
+        return rk;
     }
 
-    public void setRank(int rank) {
-        this.rank = rank;
+    public void setRk(int rk) {
+        this.rk = rk;
     }
 
     public int getSrl() {

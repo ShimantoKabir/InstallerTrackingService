@@ -690,13 +690,16 @@ public class UserUtl {
 
         if (userRes.getCode()==200 && deptRes.getCode()==200){
 
-            response.setUserList(userRes.getList());
+            response.setUserBnList(userRes.getUserBnList());
             response.setDepartmentBnList(deptRes.getList());
             response.setCode(200);
             response.setMsg("Initial data getting successful !");
+
         }else {
+
             response.setCode(400);
             response.setMsg("Initial data getting error !");
+
         }
 
         return response;

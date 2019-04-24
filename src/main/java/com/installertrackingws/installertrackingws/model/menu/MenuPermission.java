@@ -14,10 +14,10 @@ public class MenuPermission {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     public int id;
 
-    @NotNull
+    @Column(nullable = false)
     public int deptId;
 
-    @NotNull
+    @Column(nullable = false)
     public int menuOid;
 
     public String ip;

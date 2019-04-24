@@ -8,7 +8,7 @@ public class DepartmentBn {
 
     public int id;
     public String name;
-    public int rank;
+    public int rk;
     public String ip;
     public int modifiedBy;
     public Date createdDate;
@@ -50,12 +50,12 @@ public class DepartmentBn {
         this.name = name;
     }
 
-    public int getRank() {
-        return rank;
+    public int getRk() {
+        return rk;
     }
 
-    public void setRank(int rank) {
-        this.rank = rank;
+    public void setRk(int rk) {
+        this.rk = rk;
     }
 
     public String getIp() {
@@ -95,7 +95,7 @@ public class DepartmentBn {
         return "DepartmentBn{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", rank=" + rank +
+                ", rk=" + rk +
                 ", ip='" + ip + '\'' +
                 ", modifiedBy=" + modifiedBy +
                 ", createdDate=" + createdDate +

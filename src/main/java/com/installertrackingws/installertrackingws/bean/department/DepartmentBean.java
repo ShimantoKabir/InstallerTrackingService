@@ -94,7 +94,7 @@ public class DepartmentBean {
         return "DepartmentBean{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", rank=" + rank +
+                ", rk=" + rank +
                 ", ip='" + ip + '\'' +
                 ", modifiedBy=" + modifiedBy +
                 ", createdDate=" + createdDate +

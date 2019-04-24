@@ -26,7 +26,7 @@ public class MenuUtl {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Query rootMenuQry = session.createNativeQuery("SELECT * FROM menu WHERE parent_id=0 AND rank=1 AND srl=1 and o_id=1 ORDER BY srl ASC",Menu.class);
+        Query rootMenuQry = session.createNativeQuery("SELECT * FROM menu WHERE parent_id=0 AND rk=1 AND srl=1 and o_id=1 ORDER BY srl ASC",Menu.class);
         Menu menu = (Menu) rootMenuQry.getSingleResult();
 
         menuBn.setId(menu.getId());
@@ -34,12 +34,12 @@ public class MenuUtl {
         menuBn.setIcon(menu.getIcon());
         menuBn.setLink(menu.getLink());
         menuBn.setText(menu.getText());
-        menuBn.setRank(menu.getRank());
+        menuBn.setRk(menu.getRk());
         menuBn.setSrl(menu.getSrl());
         menuBn.setParentId(menu.getParentId());
 
         // first child ...
-        Query childOneMenuQry = session.createNativeQuery("SELECT * FROM menu WHERE parent_id = :pId AND rank = 2 ORDER BY srl ASC",Menu.class);
+        Query childOneMenuQry = session.createNativeQuery("SELECT * FROM menu WHERE parent_id = :pId AND rk = 2 ORDER BY srl ASC",Menu.class);
         childOneMenuQry.setParameter("pId",menu.getoId());
 
         List<Menu> menuList = childOneMenuQry.getResultList();
@@ -50,7 +50,7 @@ public class MenuUtl {
             MenuBn children = new MenuBn();
 
             // second child ...
-            Query childTwoMenuQry = session.createNativeQuery("SELECT * FROM menu INNER JOIN menu_permission ON menu_permission.menu_oid=menu.o_id WHERE menu.rank = 3 AND menu_permission.dept_id = :deptId AND menu.parent_id = :pId",Menu.class);
+            Query childTwoMenuQry = session.createNativeQuery("SELECT * FROM menu INNER JOIN menu_permission ON menu_permission.menu_oid=menu.o_id WHERE menu.rk = 3 AND menu_permission.dept_id = :deptId AND menu.parent_id = :pId",Menu.class);
             childTwoMenuQry.setParameter("pId",menuList.get(i).getoId());
             childTwoMenuQry.setParameter("deptId",request.getDepartmentBn().getId());
 
@@ -61,7 +61,7 @@ public class MenuUtl {
             children.setIcon(menuList.get(i).getIcon());
             children.setText(menuList.get(i).getText());
             children.setLink(menuList.get(i).getLink());
-            children.setRank(menuList.get(i).getRank());
+            children.setRk(menuList.get(i).getRk());
             children.setSrl(menuList.get(i).getSrl());
             children.setParentId(menuList.get(i).getParentId());
 
@@ -78,7 +78,7 @@ public class MenuUtl {
                 childTwo.setIcon(childrenMenuList.get(j).getIcon());
                 childTwo.setLink(childrenMenuList.get(j).getLink());
                 childTwo.setText(childrenMenuList.get(j).getText());
-                childTwo.setRank(childrenMenuList.get(j).getRank());
+                childTwo.setRk(childrenMenuList.get(j).getRk());
                 childTwo.setSrl(childrenMenuList.get(j).getSrl());
                 childTwo.setParentId(childrenMenuList.get(j).getParentId());
                 childTwo.setMenuPermissionBnList(departmentQuery.getResultList());
@@ -112,7 +112,7 @@ public class MenuUtl {
 
         MenuBn root = new MenuBn();
 
-        Query rootMenuQry = session.createNativeQuery("SELECT * FROM menu WHERE parent_id=0 AND rank=1 AND srl=1 and o_id=1 ORDER BY srl ASC",Menu.class);
+        Query rootMenuQry = session.createNativeQuery("SELECT * FROM menu WHERE parent_id=0 AND rk=1 AND srl=1 and o_id=1 ORDER BY srl ASC",Menu.class);
 
         Menu rootMenu = (Menu) rootMenuQry.getSingleResult();
 
@@ -121,12 +121,12 @@ public class MenuUtl {
         root.setIcon(rootMenu.getIcon());
         root.setLink(rootMenu.getLink());
         root.setText(rootMenu.getText());
-        root.setRank(rootMenu.getRank());
+        root.setRk(rootMenu.getRk());
         root.setSrl(rootMenu.getSrl());
         root.setParentId(rootMenu.getParentId());
 
         // first child ...
-        Query childOneMenuQry = session.createNativeQuery("SELECT * FROM menu WHERE parent_id = :pId AND rank = 2 ORDER BY srl ASC",Menu.class);
+        Query childOneMenuQry = session.createNativeQuery("SELECT * FROM menu WHERE parent_id = :pId AND rk = 2 ORDER BY srl ASC",Menu.class);
         childOneMenuQry.setParameter("pId",rootMenu.getoId());
 
         List<Menu> childOneMenus = childOneMenuQry.getResultList();
@@ -138,7 +138,7 @@ public class MenuUtl {
             MenuBn child = new MenuBn();
 
             // second child ...
-            Query childTwoMenuQry = session.createNativeQuery("SELECT * FROM menu WHERE parent_id = :pId AND rank = 3 ORDER BY srl ASC",Menu.class);
+            Query childTwoMenuQry = session.createNativeQuery("SELECT * FROM menu WHERE parent_id = :pId AND rk = 3 ORDER BY srl ASC",Menu.class);
             childTwoMenuQry.setParameter("pId",childOneMenus.get(i).getoId());
 
             List<Menu> childTwoMenus = childTwoMenuQry.getResultList();
@@ -148,7 +148,7 @@ public class MenuUtl {
             child.setIcon(childOneMenus.get(i).getIcon());
             child.setText(childOneMenus.get(i).getText());
             child.setLink(childOneMenus.get(i).getLink());
-            child.setRank(childOneMenus.get(i).getRank());
+            child.setRk(childOneMenus.get(i).getRk());
             child.setSrl(childOneMenus.get(i).getSrl());
             child.setParentId(childOneMenus.get(i).getParentId());
 
@@ -166,7 +166,7 @@ public class MenuUtl {
                 childTwo.setLink(childTwoMenus.get(j).getLink());
                 childTwo.setText(childTwoMenus.get(j).getText());
                 childTwo.setSrl(childTwoMenus.get(j).getSrl());
-                childTwo.setRank(childTwoMenus.get(j).getRank());
+                childTwo.setRk(childTwoMenus.get(j).getRk());
                 childTwo.setParentId(childTwoMenus.get(j).getParentId());
                 childTwo.setMenuPermissionBnList(departmentQuery.getResultList());
 
@@ -226,7 +226,7 @@ public class MenuUtl {
                     menu1.setoId(oId1.intValue());
                     menu1.setParentId(parentId);
                     menu1.setText(menuList1.get(i).getText());
-                    menu1.setRank(2);
+                    menu1.setRk(2);
                     menu1.setLink(menuList1.get(i).getLink());
                     menu1.setIcon(menuList1.get(i).getIcon());
                     menu1.setSrl(i+1);
@@ -245,7 +245,7 @@ public class MenuUtl {
                             Menu menu2 = new Menu();
                             menu2.setoId(oId2.intValue());
                             menu2.setParentId(oId1.intValue());
-                            menu2.setRank(3);
+                            menu2.setRk(3);
                             menu2.setText(menuList2.get(j).getText());
                             menu2.setLink(menuList2.get(j).getLink());
                             menu2.setIcon(menuList2.get(j).getIcon());
