@@ -37,8 +37,17 @@ public class Response {
     public List<Notification> notificationBnList;
     public List<UserBn> userBnList;
     public FriendRequestBn friendRequestBn;
+    public String facebookLoginUrl;
 
     public Response() {}
+
+    public String getFacebookLoginUrl() {
+        return facebookLoginUrl;
+    }
+
+    public void setFacebookLoginUrl(String facebookLoginUrl) {
+        this.facebookLoginUrl = facebookLoginUrl;
+    }
 
     public FriendRequestBn getFriendRequestBn() {
         return friendRequestBn;

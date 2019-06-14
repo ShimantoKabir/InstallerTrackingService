@@ -1,4 +1,4 @@
-package com.installertrackingws.installertrackingws.utility.social;
+package com.installertrackingws.installertrackingws.utility.social.facebook;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.social.facebook.api.Facebook;
@@ -24,28 +24,29 @@ public class FaceBookServiceImp implements FaceBookService{
     }
 
     @Override
-    public String facebookLogin() {
+    public String login() {
 
         OAuth2Parameters parameters = new OAuth2Parameters();
-        parameters.setRedirectUri("http://localhost:3307/facebook");
+        parameters.setRedirectUri("http://localhost:3307/fb/get-access-token");
         parameters.setScope("public_profile,email");
         return createFaceBookConnection().getOAuthOperations().buildAuthenticateUrl(parameters);
 
     }
 
     @Override
-    public String getFacebookAccessToken(String code) {
+    public String getAccessToken(String code) {
 
-        return createFaceBookConnection().getOAuthOperations().exchangeForAccess(code,"http://localhost:3307/facebook",null).getAccessToken();
+        return createFaceBookConnection().getOAuthOperations().exchangeForAccess(code,"http://localhost:3307/fb/get-access-token",null).getAccessToken();
 
     }
 
     @Override
-    public User getFacebookUserProfile(String accessToken) {
+    public User getData(String accessToken) {
 
         Facebook facebook = new FacebookTemplate(accessToken);
         String[] fields = {"id","first_name","last_name","cover","email"};
         return facebook.fetchObject("me",User.class,fields);
 
     }
+
 }
