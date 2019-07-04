@@ -2,7 +2,6 @@ package com.installertrackingws.installertrackingws.utility.social.vk;
 
 import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;
-import com.vk.api.sdk.exceptions.OAuthException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import org.springframework.stereotype.Service;

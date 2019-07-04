@@ -13,9 +13,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -275,6 +273,8 @@ public class UserUtl {
                 sessionIdQuery.setParameter("sessionId",token);
                 sessionIdQuery.executeUpdate();
 
+                System.out.println(userList.get(0).getAddress());
+
                 Query deptNameQuery = session.createNativeQuery("SELECT * FROM department WHERE o_id = :oId",Department.class);
                 deptNameQuery.setParameter("oId",userList.get(0).getDeptId());
                 Department department = (Department) deptNameQuery.getSingleResult();
@@ -287,6 +287,9 @@ public class UserUtl {
                 resUserBn.setIsUserApproved(userList.get(0).getIsUserApproved());
                 resUserBn.setSessionId(token);
                 resUserBn.setDeptId(userList.get(0).getDeptId());
+                resUserBn.setAddress(userList.get(0).getAddress());
+                resUserBn.setLat(userList.get(0).getLat());
+                resUserBn.setLon(userList.get(0).getLon());
                 resUserBn.setDeptName(department.getName());
 
                 response.setUserBn(resUserBn);
@@ -318,9 +321,13 @@ public class UserUtl {
             session = sessionFactory.openSession();
             tx = session.beginTransaction();
 
-            Query query = session.createNativeQuery("UPDATE user SET user_name = :userName WHERE id = :id");
+            Query query = session.createNativeQuery("UPDATE user SET user_name = :userName, lat = :lat, lon = :lon, address = :address WHERE id = :id");
             query.setParameter("id",request.getUserBn().getId());
             query.setParameter("userName",request.getUserBn().getUserName());
+            query.setParameter("userName",request.getUserBn().getUserName());
+            query.setParameter("lat",request.getUserBn().getLat());
+            query.setParameter("lon",request.getUserBn().getLon());
+            query.setParameter("address",request.getUserBn().getAddress());
             query.executeUpdate();
 
             response.setMsg("Profile save successfully!");

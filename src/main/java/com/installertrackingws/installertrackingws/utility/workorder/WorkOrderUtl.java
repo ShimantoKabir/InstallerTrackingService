@@ -29,7 +29,7 @@ public class WorkOrderUtl {
 
         response.setCode(200);
         response.setMsg("Init data getting successful !");
-        response.setUserList(userRes.getList());
+        response.setUserBnList(userRes.getUserBnList());
         response.setSiteList(siteRes.getList());
         response.setStatusList(statusRes.getList());
         response.setWorkOrderList(workOrderRes.getList());
@@ -164,10 +164,11 @@ public class WorkOrderUtl {
             session = sessionFactory.openSession();
             tx = session.beginTransaction();
 
-            Query query = session.createNativeQuery("UPDATE work_order SET name=:name, site_id=:siteId, wo_pi_ch=:woPiCh, requester=:requester, dead_line=:deadLine, remark=:remark, ip=:ip, modified_by=:modifiedBy WHERE id = :id");
+            Query query = session.createNativeQuery("UPDATE work_order SET name=:name, site_id=:siteId,site_pi_ct =:sitePiCt, wo_pi_ch=:woPiCh, requester=:requester, dead_line=:deadLine, remark=:remark, ip=:ip, modified_by=:modifiedBy WHERE id = :id");
             query.setParameter("name",workOrderBn.getName());
             query.setParameter("siteId",workOrderBn.getSiteId());
             query.setParameter("woPiCh",workOrderBn.getWoPiCh());
+            query.setParameter("sitePiCt",workOrderBn.getSitePiCt());
             query.setParameter("requester",workOrderBn.getRequester());
             query.setParameter("deadLine",workOrderBn.getDeadLine());
             query.setParameter("remark",workOrderBn.getRemark());

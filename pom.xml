@@ -100,6 +100,13 @@
 			<version>0.5.12</version>
 		</dependency>
 
+		<!--wowza-->
+		<dependency>
+			<groupId>com.wowza.cloudsdk</groupId>
+			<artifactId>WowzaCloudSDK-java-client</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>

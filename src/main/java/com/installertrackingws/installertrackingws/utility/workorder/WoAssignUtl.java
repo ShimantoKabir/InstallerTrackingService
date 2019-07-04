@@ -172,6 +172,9 @@ public class WoAssignUtl {
             woAssignDetailQuery.setParameter("woAssignOid",result[1]);
 
             List<Object[]> wadResults = woAssignDetailQuery.getResultList();
+
+            System.out.println(wadResults.size());
+
             List<WoAssignDetailBn> woAssignDetailBnList = new ArrayList<>();
 
             for (Object[] wadResult : wadResults) {
