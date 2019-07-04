@@ -39,16 +39,23 @@ public class WoAssignCtl {
             Response emailResponse = email.sendWoAssignMailToUser(javaMailSender,request);
 
             if (emailResponse.getCode()==200){
+
+                response.setNotificationBn(saveRes.getNotificationBn());
                 response.setCode(200);
                 response.setMsg("A mail has been sent to "+request.getWoAssignBn().getAssignUserMail()+" !");
+
             }else {
+
                 response.setCode(400);
                 response.setMsg("No mail has been sent to "+request.getWoAssignBn().getAssignUserMail()+" !");
+
             }
 
         }else {
+
             response.setCode(400);
             response.setMsg("Mail send unsuccessful !");
+
         }
 
         return response;

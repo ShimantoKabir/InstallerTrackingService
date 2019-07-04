@@ -1,10 +1,12 @@
 package com.installertrackingws.installertrackingws.utility.workorder;
 
+import com.installertrackingws.installertrackingws.bean.communication.NotificationBn;
 import com.installertrackingws.installertrackingws.bean.department.DepartmentBn;
 import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.bean.workorder.WoAssignBn;
 import com.installertrackingws.installertrackingws.bean.workorder.WoAssignDetailBn;
+import com.installertrackingws.installertrackingws.model.communication.Notification;
 import com.installertrackingws.installertrackingws.model.workorder.WoAssign;
 import com.installertrackingws.installertrackingws.model.workorder.WoAssignDetail;
 import com.installertrackingws.installertrackingws.utility.accounts.CostBreakDownUtl;
@@ -85,6 +87,18 @@ public class WoAssignUtl {
 
             }
 
+            Notification notification = new Notification();
+            notification.setIsSeen(0);
+            notification.setLink("/work-order-assign");
+            notification.setIp(httpServletRequest.getRemoteAddr());
+            notification.setReceiver(request.getWoAssignBn().getAssignTo());
+            notification.setMessage("A new work order has been assigned to you");
+            session.save(notification);
+
+            NotificationBn notificationBn = new NotificationBn();
+            notificationBn.setReceiver(request.getWoAssignBn().getAssignTo());
+
+            response.setNotificationBn(notificationBn);
             response.setMsg("Work order assigned successfully !");
             response.setCode(200);
 
