@@ -21,7 +21,7 @@ public class StatusUtl {
         session.beginTransaction();
 
         Query query = session.createNativeQuery("select * from status",Status.class);
-        List<StatusBn> statusList = query.getResultList();
+        List<Status> statusList = query.getResultList();
 
         session.getTransaction().commit();
         session.close();
@@ -29,7 +29,7 @@ public class StatusUtl {
         if (statusList.size()>0){
             response.setCode(200);
             response.setMsg("Status list fetch successful !");
-            response.setList(statusList);
+            response.setStatusList(statusList);
             return response;
         }else {
             response.setCode(400);

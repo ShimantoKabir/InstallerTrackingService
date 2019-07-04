@@ -73,14 +73,18 @@ public class SiteUtl {
         session.close();
 
         if (siteList.size()>0){
+
             response.setCode(200);
             response.setMsg("Site list fetch successful !");
-            response.setList(siteList);
+            response.setSiteList(siteList);
             return response;
+
         }else {
+
             response.setCode(400);
             response.setMsg("Site list empty !");
             return response;
+
         }
 
     }

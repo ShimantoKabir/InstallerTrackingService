@@ -136,7 +136,7 @@ public class TemplateUtl {
         if (templateBnList.size()>0){
             response.setCode(200);
             response.setMsg("Template list fetch successful !");
-            response.setList(templateBnList);
+            response.setTemplateBnList(templateBnList);
             return response;
         }else {
             response.setCode(400);

@@ -25,13 +25,13 @@ public class WorkOrderDetailUtl {
 
         Response templateRes = new  TemplateUtl().getTemplateWithTask(entityManagerFactory);
         Response wordOrderRes = WorkOrderUtl.getAllWorkOder(entityManagerFactory);
-        Response workOrderDetailList = WorkOrderDetailUtl.getAllWorkOderDetail(entityManagerFactory);
+        Response workOrderDetailRes = WorkOrderDetailUtl.getAllWorkOderDetail(entityManagerFactory);
 
         response.setCode(200);
         response.setMsg("Init data getting successful !");
-        response.setTemplateList(templateRes.getList());
-        response.setWorkOrderList(wordOrderRes.getList());
-        response.setWorkOrderDetailList(workOrderDetailList.getList());
+        response.setTemplateList(templateRes.getTemplateList());
+        response.setWorkOrderList(wordOrderRes.getWorkOrderList());
+        response.setWorkOrderDetailBnList(workOrderDetailRes.getWorkOrderDetailBnList());
 
         return response;
 
@@ -193,7 +193,7 @@ public class WorkOrderDetailUtl {
         if (workOrderDetailBnList.size()>0){
             response.setCode(200);
             response.setMsg("Work order detail list fetch successful !");
-            response.setList(workOrderDetailBnList);
+            response.setWorkOrderDetailBnList(workOrderDetailBnList);
             return response;
         }else {
             response.setCode(400);

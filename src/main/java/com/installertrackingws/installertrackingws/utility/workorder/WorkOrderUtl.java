@@ -30,9 +30,9 @@ public class WorkOrderUtl {
         response.setCode(200);
         response.setMsg("Init data getting successful !");
         response.setUserBnList(userRes.getUserBnList());
-        response.setSiteList(siteRes.getList());
-        response.setStatusList(statusRes.getList());
-        response.setWorkOrderList(workOrderRes.getList());
+        response.setSiteList(siteRes.getSiteList());
+        response.setStatusList(statusRes.getStatusList());
+        response.setWorkOrderBnList(workOrderRes.getWorkOrderBnList());
 
         return response;
 
@@ -115,7 +115,7 @@ public class WorkOrderUtl {
 
         List<Object[]> results = query.getResultList();
 
-        List<WorkOrderBn> workOrderList = new ArrayList<>();
+        List<WorkOrderBn> workOrderBnList = new ArrayList<>();
 
         for (Object[] result : results) {
             WorkOrderBn workOrderBn = new WorkOrderBn();
@@ -132,16 +132,16 @@ public class WorkOrderUtl {
             workOrderBn.setStatus((String) result[10]);
             workOrderBn.setStatusOid((Integer) result[11]);
             workOrderBn.setSitePiCt((String) result[12]);
-            workOrderList.add(workOrderBn);
+            workOrderBnList.add(workOrderBn);
         }
 
         session.getTransaction().commit();
         session.close();
 
-        if (workOrderList.size()>0){
+        if (workOrderBnList.size()>0){
             response.setCode(200);
             response.setMsg("Work order list fetch successful !");
-            response.setList(workOrderList);
+            response.setWorkOrderBnList(workOrderBnList);
             return response;
         }else {
             response.setCode(400);
