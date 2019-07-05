@@ -84,7 +84,7 @@ public class CostBreakDownUtl {
         if (costBreakDownBnList.size()>0){
             response.setCode(200);
             response.setMsg("Cost break down list fetch successful !");
-            response.setList(costBreakDownBnList);
+            response.setCostBreakDownBnList(costBreakDownBnList);
             return response;
         }else {
             response.setCode(400);
@@ -137,4 +137,34 @@ public class CostBreakDownUtl {
 
     }
 
+    public static Response getInitData(EntityManagerFactory entityManagerFactory) {
+
+        Response response = new Response();
+
+        SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Query query = session.createNativeQuery("SELECT * from cost_break_down",CostBreakDown.class);
+        List<CostBreakDown> costBreakDownList = query.getResultList();
+
+        session.getTransaction().commit();
+        session.close();
+
+        if (costBreakDownList.size()>0){
+
+            response.setCode(200);
+            response.setMsg("Initial data getting successful !");
+            response.setCostBreakDownList(costBreakDownList);
+            return response;
+
+        }else {
+
+            response.setCode(400);
+            response.setMsg("Cost break down list empty !");
+            return response;
+
+        }
+
+    }
 }

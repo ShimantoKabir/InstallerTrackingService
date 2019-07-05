@@ -71,11 +71,10 @@ public class TaskUtl {
         Query query = session.createNativeQuery("SELECT task.id, task.name, task.cost, task.duration, task.task_specialist, user.user_email, user.user_name FROM task INNER JOIN user ON task.task_specialist=user.id");
         List<Object[]> results = query.getResultList();
 
-        List<TaskBn> taskList = new ArrayList<>();
+        List<TaskBn> taskBnList = new ArrayList<>();
 
-        int count = 0;
         for (Object[] result : results) {
-            count++;
+
             TaskBn taskBn = new TaskBn();
             taskBn.setId((Integer) result[0]);
             taskBn.setName((String) result[1]);
@@ -86,17 +85,17 @@ public class TaskUtl {
             taskBn.setUserEmail((String) result[5]);
             taskBn.setUserName((String) result[6]);
             taskBn.setChecked(false);
-            taskList.add(taskBn);
+            taskBnList.add(taskBn);
         }
 
         session.getTransaction().commit();
         session.close();
 
 
-        if (taskList.size()>0){
+        if (taskBnList.size()>0){
             response.setCode(200);
             response.setMsg("Task list fetch successful !");
-            response.setList(taskList);
+            response.setTaskBnList(taskBnList);
             return response;
         }else {
             response.setCode(400);
@@ -154,8 +153,9 @@ public class TaskUtl {
     public Response getInitData(EntityManagerFactory entityManagerFactory) {
 
         Response response = new Response();
-        response.setTaskResponse(this.getAllTask(entityManagerFactory));
-        response.setUserResponse(new UserUtl().getAllUser(entityManagerFactory));
+
+        response.setTaskBnList(getAllTask(entityManagerFactory).getTaskBnList());
+        response.setUserBnList(new UserUtl().getAllUser(entityManagerFactory).getUserBnList());
         response.setCode(200);
         response.setMsg("Init data getting successful !");
 

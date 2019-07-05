@@ -217,10 +217,10 @@ public class TemplateUtl {
 
         Response response = new Response();
         Response taskRes = new TaskUtl().getAllTask(entityManagerFactory);
-        Response templateRes = this.getTemplateWithTask(entityManagerFactory);
+        Response templateRes = getTemplateWithTask(entityManagerFactory);
 
-        response.setTaskResponse(taskRes);
-        response.setTemplateResponse(templateRes);
+        response.setTaskBnList(taskRes.getTaskBnList());
+        response.setTemplateBnList(templateRes.getTemplateBnList());
         response.setCode(200);
         response.setMsg("Init data getting successful !");
 

@@ -1,8 +1,10 @@
 package com.installertrackingws.installertrackingws.bean.network;
 
+import com.installertrackingws.installertrackingws.bean.accounts.CostBreakDownBn;
 import com.installertrackingws.installertrackingws.bean.communication.FriendRequestBn;
 import com.installertrackingws.installertrackingws.bean.communication.NotificationBn;
 import com.installertrackingws.installertrackingws.bean.material.SiteBn;
+import com.installertrackingws.installertrackingws.bean.material.TaskBn;
 import com.installertrackingws.installertrackingws.bean.material.TemplateBn;
 import com.installertrackingws.installertrackingws.bean.menu.MenuBn;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
@@ -39,6 +41,7 @@ public class Response {
     public List<?> woAssignBnList;
     public List<?> cbdList;
     public List<Task> taskList;
+    public List<TaskBn> taskBnList;
     public UserBn userBn;
     public Integer conversationId;
     public MenuBn menuBn;
@@ -47,6 +50,7 @@ public class Response {
     public List<UserBn> userBnList;
     public List<Site> siteList;
     public List<CostBreakDown> costBreakDownList;
+    public List<CostBreakDownBn> costBreakDownBnList;
     public List<Department> departmentList;
     public List<Status> statusList;
     public List<Template> templateList;
@@ -63,6 +67,22 @@ public class Response {
     public String facebookLoginUrl;
 
     public Response() {}
+
+    public List<CostBreakDownBn> getCostBreakDownBnList() {
+        return costBreakDownBnList;
+    }
+
+    public void setCostBreakDownBnList(List<CostBreakDownBn> costBreakDownBnList) {
+        this.costBreakDownBnList = costBreakDownBnList;
+    }
+
+    public List<TaskBn> getTaskBnList() {
+        return taskBnList;
+    }
+
+    public void setTaskBnList(List<TaskBn> taskBnList) {
+        this.taskBnList = taskBnList;
+    }
 
     public List<WorkOrderDetailBn> getWorkOrderDetailBnList() {
         return workOrderDetailBnList;

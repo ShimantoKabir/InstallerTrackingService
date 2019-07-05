@@ -37,7 +37,7 @@ public class TaskCtl {
 
     }
 
-    @PostMapping("/init-data")
+    @PostMapping("/get-init-data")
     public Response getInitData(@RequestBody Request request){
 
         return new TaskUtl().getInitData(entityManagerFactory);

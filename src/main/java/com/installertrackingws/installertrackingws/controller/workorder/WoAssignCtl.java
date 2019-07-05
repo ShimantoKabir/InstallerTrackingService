@@ -21,7 +21,7 @@ public class WoAssignCtl {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    @GetMapping("/init")
+    @GetMapping("/get-init-data")
     public Response getInitData(){
         return WoAssignUtl.getInitData(entityManagerFactory);
     }

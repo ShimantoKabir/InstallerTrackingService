@@ -34,10 +34,10 @@ public class WoAssignUtl {
         Response woAssignRes = getALLAssignWorkOrder(entityManagerFactory);
         Response cbdRes = CostBreakDownUtl.getAllCostBreakDown(entityManagerFactory);
 
-        response.setWorkOrderList(workOrderRes.getWorkOrderList());
+        response.setWorkOrderBnList(workOrderRes.getWorkOrderBnList());
         response.setDepartmentBnList(departmentBnList);
         response.setWoAssignBnList(woAssignRes.getList());
-        response.setCostBreakDownList(cbdRes.getCostBreakDownList());
+        response.setCostBreakDownBnList(cbdRes.getCostBreakDownBnList());
 
         response.setMsg("Init data fetch successful !");
         response.setCode(200);

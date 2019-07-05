@@ -37,7 +37,7 @@ public class TemplateCtl {
 
     }
 
-    @PostMapping("/init-data")
+    @PostMapping("/get-init-data")
     public Response getInitData(@RequestBody Request request){
 
         return new TemplateUtl().getInitData(entityManagerFactory,request);

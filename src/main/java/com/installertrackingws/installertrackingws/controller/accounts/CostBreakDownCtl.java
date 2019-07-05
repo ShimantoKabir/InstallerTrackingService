@@ -29,10 +29,10 @@ public class CostBreakDownCtl {
 
     }
 
-    @GetMapping("/get")
-    public Response get(){
+    @GetMapping("/get-inti-data")
+    public Response getInitData(){
 
-        return CostBreakDownUtl.getAllCostBreakDown(entityManagerFactory);
+        return CostBreakDownUtl.getInitData(entityManagerFactory);
 
     }
 

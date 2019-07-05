@@ -27,10 +27,12 @@ public class WorkOrderDetailUtl {
         Response wordOrderRes = WorkOrderUtl.getAllWorkOder(entityManagerFactory);
         Response workOrderDetailRes = WorkOrderDetailUtl.getAllWorkOderDetail(entityManagerFactory);
 
+        System.out.println("Temp list = "+templateRes.getTemplateBnList());
+
         response.setCode(200);
         response.setMsg("Init data getting successful !");
-        response.setTemplateList(templateRes.getTemplateList());
-        response.setWorkOrderList(wordOrderRes.getWorkOrderList());
+        response.setTemplateBnList(templateRes.getTemplateBnList());
+        response.setWorkOrderBnList(wordOrderRes.getWorkOrderBnList());
         response.setWorkOrderDetailBnList(workOrderDetailRes.getWorkOrderDetailBnList());
 
         return response;
