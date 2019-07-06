@@ -8,9 +8,11 @@ import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.model.location.Location;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -170,6 +172,49 @@ public class LocationUtl {
 
         session.getTransaction().commit();
         session.close();
+
+        return response;
+
+    }
+
+    public Response sendByUser(HttpServletRequest httpServletRequest,EntityManagerFactory entityManagerFactory, Request request) {
+
+        Response response = new Response();
+
+        SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
+        Session session = null;
+        Transaction tx = null;
+
+        try{
+
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+
+            Location location = new Location();
+            location.setUserId(request.getLocationBn().getUserId());
+            location.setIp(httpServletRequest.getRemoteAddr());
+            location.setLat(request.getLocationBn().getLat());
+            location.setLon(request.getLocationBn().getLon());
+            location.setWoId(request.getLocationBn().getWoId());
+            session.save(location);
+
+            response.setMsg("Location save successfully !");
+            response.setCode(200);
+
+            tx.commit();
+
+        }catch(Exception e){
+            if (tx != null) {
+                tx.rollback();
+                throw e;
+            }
+            response.setMsg(e.getMessage());
+            response.setCode(400);
+        }finally{
+            if(session!=null){
+                session.close();
+            }
+        }
 
         return response;
 

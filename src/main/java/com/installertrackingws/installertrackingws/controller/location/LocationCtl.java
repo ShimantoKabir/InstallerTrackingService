@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityManagerFactory;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/location")
@@ -40,6 +41,13 @@ public class LocationCtl {
     public Response trackByWorkOrder(@RequestBody Request request){
 
         return new LocationUtl().trackByWorkOrder(entityManagerFactory,request);
+
+    }
+
+    @PostMapping("/send-by-user")
+    public Response sendByUser(HttpServletRequest httpServletRequest, @RequestBody Request request){
+
+        return new LocationUtl().sendByUser(httpServletRequest,entityManagerFactory,request);
 
     }
 
