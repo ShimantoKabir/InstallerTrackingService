@@ -6,6 +6,7 @@ import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.helper.PasswordEncryptionManager;
 import com.installertrackingws.installertrackingws.helper.Token;
 import com.installertrackingws.installertrackingws.model.department.Department;
+import com.installertrackingws.installertrackingws.model.setup.CompanyInfo;
 import com.installertrackingws.installertrackingws.model.user.User;
 import com.installertrackingws.installertrackingws.utility.department.DepartmentUtl;
 import org.hibernate.Session;
@@ -298,6 +299,7 @@ public class UserUtl {
                 resUserBn.setLon(userList.get(0).getLon());
                 resUserBn.setDeptName(department.getName());
 
+                response.setCompanyInfo(session.createNativeQuery("SELECT * FROM company_info",CompanyInfo.class).getSingleResult());
                 response.setUserBn(resUserBn);
                 response.setMsg("Login successful !");
                 response.setCode(200);
