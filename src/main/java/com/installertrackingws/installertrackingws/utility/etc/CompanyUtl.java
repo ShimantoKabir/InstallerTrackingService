@@ -6,7 +6,6 @@ import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.model.Etc.Status;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import java.util.List;

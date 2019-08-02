@@ -9,7 +9,6 @@ import com.installertrackingws.installertrackingws.model.location.Location;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
@@ -132,7 +131,7 @@ public class LocationUtl {
             UserBn userBn = new UserBn();
             userBn.setId((Integer) distinctUserIdQuery.getResultList().get(i));
 
-            Query locationQuery = session.createNativeQuery("select location.id,location.lat,location.lon,location.user_id,location.wo_id,location.created_date,user.user_name,work_order.name from location inner join user on user.id = location.user_id inner join work_order on work_order.id = location.wo_id WHERE location.user_id = :userId AND location.wo_id = :woId AND CAST(location.created_date AS DATE) = :createdDate");
+            Query locationQuery = session.createNativeQuery("select location.id,location.lat,location.lon,location.user_id,location.wo_id,location.created_date,user.user_name,work_order.name from location inner join user on user.id = location.user_id inner join work_order on work_order.id = location.wo_id WHERE location.user_id = :userId AND location.wo_id = :woId AND CAST(location.created_date AS DATE) = :createdDate ORDER BY id");
             locationQuery.setParameter("userId",distinctUserIdQuery.getResultList().get(i));
             locationQuery.setParameter("woId",request.getWorkOrderBn().getId());
             locationQuery.setParameter("createdDate",request.getLocationBn().getCreatedDate());
@@ -156,7 +155,7 @@ public class LocationUtl {
 
             }
 
-            userBn.setLocationList(locationBnList);
+            userBn.setLocationBnList(locationBnList);
             userBnList.add(userBn);
 
         }
@@ -164,7 +163,7 @@ public class LocationUtl {
         if (userBnList.size()>0){
             response.setMsg("Found worker for this work order !");
             response.setCode(200);
-            response.setList(userBnList);
+            response.setUserBnList(userBnList);
         }else {
             response.setMsg("No worker found for this work order !");
             response.setCode(400);
@@ -218,5 +217,65 @@ public class LocationUtl {
 
         return response;
 
+    }
+
+    public Response trackLastByWorkOrder(EntityManagerFactory entityManagerFactory, Request request) {
+
+        Response response = new Response();
+
+        SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        List<UserBn> userBnList = new ArrayList<>();
+
+        for (int i = 0; i < request.getUserBnList().size(); i++) {
+
+            UserBn userBn = new UserBn();
+            userBn.setId(request.getUserBnList().get(i).getId());
+
+            Query locationQuery = session.createNativeQuery("select location.id,location.lat,location.lon,location.user_id,location.wo_id,location.created_date,user.user_name,work_order.name from location inner join user on user.id = location.user_id inner join work_order on work_order.id = location.wo_id WHERE location.user_id = :userId AND location.wo_id = :woId AND CAST(location.created_date AS DATE) = :createdDate AND location.id > :locationId ORDER BY id");
+            locationQuery.setParameter("userId",request.getUserBnList().get(i).getId());
+            locationQuery.setParameter("locationId",request.getUserBnList().get(i).getLocationBn().getId());
+            locationQuery.setParameter("woId",request.getWoAssignBn().getId());
+            locationQuery.setParameter("createdDate",request.getLocationBn().getCreatedDate());
+
+            List<Object[]> results = locationQuery.getResultList();
+            List<LocationBn> locationBnList = new ArrayList<>();
+
+            for (Object[] result : results) {
+
+                LocationBn locationBn = new LocationBn();
+                locationBn.setId((Integer) result[0]);
+                locationBn.setLat((Double) result[1]);
+                locationBn.setLng((Double) result[2]);
+                locationBn.setPosition(new Position((Double) result[1],(Double) result[2]));
+                locationBn.setUserId((Integer) result[3]);
+                locationBn.setWoId((Integer) result[4]);
+                locationBn.setCreatedDate((Date) result[5]);
+                locationBn.setUserName((String) result[6]);
+                locationBn.setWorkOrderName((String) result[7]);
+                locationBnList.add(locationBn);
+
+            }
+
+            userBn.setLocationBnList(locationBnList);
+            userBnList.add(userBn);
+
+        }
+
+        if (userBnList.size()>0){
+            response.setMsg("Found new location for this work order !");
+            response.setCode(200);
+            response.setUserBnList(userBnList);
+        }else {
+            response.setMsg("No new location found this work order !");
+            response.setCode(400);
+        }
+
+        session.getTransaction().commit();
+        session.close();
+
+        return response;
     }
 }

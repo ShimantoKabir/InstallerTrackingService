@@ -33,4 +33,12 @@ public class LocationWs {
         return gson.toJson(new LocationUtl().trackByUser(entityManagerFactory,request));
     }
 
+    @MessageMapping("/get-last-location-by-work-order")
+    @SendTo("/ws-response/last-location-by-work-order")
+    public String getLastLocationByWorkOrder(String receiver) {
+        Gson gson = new GsonBuilder().create();
+        Request request = gson.fromJson(receiver,Request.class);
+        return gson.toJson(new LocationUtl().trackByWorkOrder(entityManagerFactory,request));
+    }
+
 }

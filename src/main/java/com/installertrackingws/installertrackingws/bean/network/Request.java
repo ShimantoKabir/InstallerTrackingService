@@ -10,38 +10,68 @@ import com.installertrackingws.installertrackingws.bean.material.SiteBn;
 import com.installertrackingws.installertrackingws.bean.material.TaskBn;
 import com.installertrackingws.installertrackingws.bean.material.TemplateBn;
 import com.installertrackingws.installertrackingws.bean.menu.MenuBn;
+import com.installertrackingws.installertrackingws.bean.setup.SuperviseConfigBn;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.bean.workorder.WoAssignBn;
 import com.installertrackingws.installertrackingws.bean.workorder.WoAssignDetailBn;
 import com.installertrackingws.installertrackingws.bean.workorder.WorkOrderBn;
 import com.installertrackingws.installertrackingws.bean.workorder.WorkOrderDetailBn;
+import com.installertrackingws.installertrackingws.model.setup.SuperviseConfig;
 
 import java.util.List;
 
 public class Request {
 
-    public WorkOrderDetailBn workOrderDetailBn;
-    public List<TaskBn> taskBnList;
-    public List<Integer> integerList;
     public UserBn userBn;
-    public UserBn manageUserBn;
-    public WoAssignBn woAssignBn;
-    public DepartmentBn departmentBn;
     public TaskBn taskBn;
-    public WorkOrderBn workOrderBn;
-    public LocationBn locationBn;
-    public List<MenuBn> menuBnList;
-    public NotificationBn notificationBn;
     public MenuBn menuBn;
-    public FriendRequestBn friendRequestBn;
-    public ConversationBn conversationBn;
     public SiteBn siteBn;
+    public UserBn manageUserBn;
+    public LocationBn locationBn;
+    public WoAssignBn woAssignBn;
     public TemplateBn templateBn;
+    public WorkOrderBn workOrderBn;
+    public DepartmentBn departmentBn;
+    public ConversationBn conversationBn;
+    public NotificationBn notificationBn;
+    public FriendRequestBn friendRequestBn;
     public CostBreakDownBn costBreakDownBn;
+    public WorkOrderDetailBn workOrderDetailBn;
+    public SuperviseConfigBn superviseConfigBn;
+    public SuperviseConfig superviseConfig;
+
+    public List<UserBn> userBnList;
+    public List<TaskBn> taskBnList;
+    public List<MenuBn> menuBnList;
+    public List<Integer> integerList;
     public List<CostBreakDownBn> costBreakDownBnList;
     public List<WoAssignDetailBn> woAssignDetailBnList;
 
     public Request() {}
+
+    public SuperviseConfig getSuperviseConfig() {
+        return superviseConfig;
+    }
+
+    public void setSuperviseConfig(SuperviseConfig superviseConfig) {
+        this.superviseConfig = superviseConfig;
+    }
+
+    public SuperviseConfigBn getSuperviseConfigBn() {
+        return superviseConfigBn;
+    }
+
+    public void setSuperviseConfigBn(SuperviseConfigBn superviseConfigBn) {
+        this.superviseConfigBn = superviseConfigBn;
+    }
+
+    public List<UserBn> getUserBnList() {
+        return userBnList;
+    }
+
+    public void setUserBnList(List<UserBn> userBnList) {
+        this.userBnList = userBnList;
+    }
 
     public List<WoAssignDetailBn> getWoAssignDetailBnList() {
         return woAssignDetailBnList;

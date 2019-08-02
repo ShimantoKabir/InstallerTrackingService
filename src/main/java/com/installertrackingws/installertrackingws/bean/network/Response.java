@@ -7,6 +7,7 @@ import com.installertrackingws.installertrackingws.bean.material.SiteBn;
 import com.installertrackingws.installertrackingws.bean.material.TaskBn;
 import com.installertrackingws.installertrackingws.bean.material.TemplateBn;
 import com.installertrackingws.installertrackingws.bean.menu.MenuBn;
+import com.installertrackingws.installertrackingws.bean.setup.SuperviseConfigBn;
 import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.bean.workorder.WorkOrderBn;
 import com.installertrackingws.installertrackingws.bean.workorder.WorkOrderDetailBn;
@@ -34,18 +35,21 @@ public class Response {
     public Object taskResponse;
     public Object templateResponse;
     public Object userResponse;
+    public UserBn userBn;
+    public Integer conversationId;
+    public MenuBn menuBn;
+    public NotificationBn notificationBn;
+    public FriendRequestBn friendRequestBn;
+    public String facebookLoginUrl;
+
     public List<?> list;
-    public List<MenuBn> menuBnList;
-    public List<Integer> integerList;
     public List<?> departmentBnList;
     public List<?> woAssignBnList;
     public List<?> cbdList;
     public List<Task> taskList;
     public List<TaskBn> taskBnList;
-    public UserBn userBn;
-    public Integer conversationId;
-    public MenuBn menuBn;
-    public NotificationBn notificationBn;
+    public List<MenuBn> menuBnList;
+    public List<Integer> integerList;
     public List<Notification> notificationBnList;
     public List<UserBn> userBnList;
     public List<Site> siteList;
@@ -63,10 +67,17 @@ public class Response {
     public List<WorkOrderDetail> workOrderDetailList;
     public List<TemplateBn> templateBnList;
     public List<WorkOrderDetailBn> workOrderDetailBnList;
-    public FriendRequestBn friendRequestBn;
-    public String facebookLoginUrl;
+    public List<SuperviseConfigBn> superviseConfigBnList;
 
     public Response() {}
+
+    public List<SuperviseConfigBn> getSuperviseConfigBnList() {
+        return superviseConfigBnList;
+    }
+
+    public void setSuperviseConfigBnList(List<SuperviseConfigBn> superviseConfigBnList) {
+        this.superviseConfigBnList = superviseConfigBnList;
+    }
 
     public List<CostBreakDownBn> getCostBreakDownBnList() {
         return costBreakDownBnList;

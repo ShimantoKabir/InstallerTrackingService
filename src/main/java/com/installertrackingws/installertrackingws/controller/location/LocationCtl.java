@@ -44,6 +44,13 @@ public class LocationCtl {
 
     }
 
+    @PostMapping("/track-last-by-work-order")
+    public Response trackLastByWorkOrder(@RequestBody Request request){
+
+        return new LocationUtl().trackLastByWorkOrder(entityManagerFactory,request);
+
+    }
+
     @PostMapping("/send-by-user")
     public Response sendByUser(HttpServletRequest httpServletRequest, @RequestBody Request request){
 

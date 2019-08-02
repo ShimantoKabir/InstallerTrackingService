@@ -31,7 +31,7 @@ public class UserUtl {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Query query = session.createNativeQuery("SELECT user.id,user.user_name,user.user_email,user.is_user_active,user.is_user_approved,department.name AS dept_name,department.o_id AS dept_id,user.is_online,user.last_presence_date,user.is_typing,user.for_who FROM user LEFT JOIN department ON department.o_id=user.dept_id");
+        Query query = session.createNativeQuery("SELECT user.id,user.user_name,user.user_email,user.is_user_active,user.is_user_approved,department.name AS dept_name,department.o_id AS dept_id,user.is_online,user.last_presence_date,user.is_typing,user.for_who, user.lat, user.lon, user.address FROM user LEFT JOIN department ON department.o_id=user.dept_id");
         List<Object[]> results = query.getResultList();
 
         List<UserBn> userBnList = new ArrayList<>();
@@ -48,6 +48,9 @@ public class UserUtl {
             userBn.setLastPresenceDate((Date) result[8]);
             userBn.setIsTyping((Integer) result[9]);
             userBn.setForWho((Integer) result[10]);
+            userBn.setLon((Double) result[11]);
+            userBn.setLat((Double) result[12]);
+            userBn.setAddress((String) result[13]);
             userBnList.add(userBn);
         }
 
@@ -83,11 +86,14 @@ public class UserUtl {
             session = sessionFactory.openSession();
             tx = session.beginTransaction();
 
-            Query query = session.createNativeQuery("UPDATE user SET is_user_active = :isUserActive,is_user_approved=:isUserApproved,dept_id=:deptId WHERE id = :id");
+            Query query = session.createNativeQuery("UPDATE user SET is_user_active = :isUserActive,is_user_approved=:isUserApproved,dept_id=:deptId,lat=:lat,lon=:lon,address=:address WHERE id = :id");
             query.setParameter("isUserActive",request.getManageUserBn().getIsUserActive());
             query.setParameter("isUserApproved",request.getManageUserBn().getIsUserApproved());
             query.setParameter("deptId",request.getManageUserBn().getDeptId());
             query.setParameter("id",request.getManageUserBn().getId());
+            query.setParameter("lat",request.getManageUserBn().getLat());
+            query.setParameter("lon",request.getManageUserBn().getLon());
+            query.setParameter("address",request.getManageUserBn().getAddress());
             query.executeUpdate();
 
             tx.commit();

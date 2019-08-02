@@ -29,9 +29,19 @@ public class UserBn {
     public String address;
     public double lat;
     public double lon;
-    List<LocationBn> locationList = new ArrayList<>();
+    List<LocationBn> locationBnList = new ArrayList<>();
+    public LocationBn locationBn;
 
     public UserBn() {}
+
+
+    public LocationBn getLocationBn() {
+        return locationBn;
+    }
+
+    public void setLocationBn(LocationBn locationBn) {
+        this.locationBn = locationBn;
+    }
 
     public String getAddress() {
         return address;
@@ -63,14 +73,6 @@ public class UserBn {
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
-    }
-
-    public List<LocationBn> getLocationList() {
-        return locationList;
-    }
-
-    public void setLocationList(List<LocationBn> locationList) {
-        this.locationList = locationList;
     }
 
     public String getNewPassword() {
@@ -215,5 +217,13 @@ public class UserBn {
 
     public void setForWho(Integer forWho) {
         this.forWho = forWho;
+    }
+
+    public List<LocationBn> getLocationBnList() {
+        return locationBnList;
+    }
+
+    public void setLocationBnList(List<LocationBn> locationBnList) {
+        this.locationBnList = locationBnList;
     }
 }

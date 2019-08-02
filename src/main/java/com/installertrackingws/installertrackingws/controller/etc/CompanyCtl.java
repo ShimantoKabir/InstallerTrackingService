@@ -3,7 +3,6 @@ package com.installertrackingws.installertrackingws.controller.etc;
 import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.utility.etc.CompanyUtl;
-import com.installertrackingws.installertrackingws.utility.location.LocationUtl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
