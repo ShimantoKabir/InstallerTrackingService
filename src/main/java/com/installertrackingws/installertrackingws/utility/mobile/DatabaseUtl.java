@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class DatabaseUtl {
 
-    public Response get(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, Request request) {
+    public Response get(EntityManagerFactory entityManagerFactory) {
 
         Response response = new Response();
 
