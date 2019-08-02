@@ -9,6 +9,7 @@ import com.installertrackingws.installertrackingws.model.department.Department;
 import com.installertrackingws.installertrackingws.model.setup.CompanyInfo;
 import com.installertrackingws.installertrackingws.model.user.User;
 import com.installertrackingws.installertrackingws.utility.department.DepartmentUtl;
+import com.installertrackingws.installertrackingws.utility.mobile.DatabaseUtl;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -299,7 +300,24 @@ public class UserUtl {
                 resUserBn.setLon(userList.get(0).getLon());
                 resUserBn.setDeptName(department.getName());
 
-                response.setCompanyInfo(session.createNativeQuery("SELECT * FROM company_info",CompanyInfo.class).getSingleResult());
+                DatabaseUtl databaseUtl = new DatabaseUtl();
+                Response mobileData = databaseUtl.get(entityManagerFactory);
+
+                response.setCompanyInfo(mobileData.getCompanyInfo());
+                response.setSuperviseConfigList(mobileData.getSuperviseConfigList());
+                response.setWorkOrderDetailList(mobileData.getWorkOrderDetailList());
+                response.setWorkOrderList(mobileData.getWorkOrderList());
+                response.setWoAssignDetailList(mobileData.getWoAssignDetailList());
+                response.setWoAssignList(mobileData.getWoAssignList());
+                response.setUserList(mobileData.getUserList());
+                response.setTemplateDetailList(mobileData.getTemplateDetailList());
+                response.setTemplateList(mobileData.getTemplateList());
+                response.setTaskList(mobileData.getTaskList());
+                response.setStatusList(mobileData.getStatusList());
+                response.setDepartmentList(mobileData.getDepartmentList());
+                response.setCostBreakDownList(mobileData.getCostBreakDownList());
+                response.setSiteList(mobileData.getSiteList());
+
                 response.setUserBn(resUserBn);
                 response.setMsg("Login successful !");
                 response.setCode(200);
