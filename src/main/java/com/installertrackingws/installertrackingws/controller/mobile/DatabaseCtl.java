@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityManagerFactory;
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/database")
@@ -20,9 +19,9 @@ public class DatabaseCtl {
     private EntityManagerFactory entityManagerFactory;
 
     @PostMapping("/get")
-    public Response get(HttpServletRequest httpServletRequest, @RequestBody Request request){
+    public Response get(@RequestBody Request request){
 
-        return new DatabaseUtl().get(httpServletRequest,entityManagerFactory,request);
+        return new DatabaseUtl().get(entityManagerFactory);
 
     }
 
