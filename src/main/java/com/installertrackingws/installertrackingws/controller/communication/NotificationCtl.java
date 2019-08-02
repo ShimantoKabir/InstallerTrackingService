@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.persistence.EntityManagerFactory;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/notification")
@@ -28,6 +29,13 @@ public class NotificationCtl {
     public Response seenNotification(@RequestBody Request request){
 
         return new NotificationUtl().seenNotification(entityManagerFactory,request);
+
+    }
+
+    @PostMapping("/create")
+    public Response create(HttpServletRequest httpServletRequest,@RequestBody Request request){
+
+        return new NotificationUtl().create(httpServletRequest,entityManagerFactory,request);
 
     }
 

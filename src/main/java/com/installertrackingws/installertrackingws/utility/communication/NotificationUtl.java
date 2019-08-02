@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class NotificationUtl {
@@ -72,6 +73,52 @@ public class NotificationUtl {
                 throw e;
             }
             response.setMsg("Exception occurred !");
+            response.setCode(400);
+
+        }finally{
+            if(session!=null){
+                session.close();
+            }
+        }
+
+        return response;
+
+    }
+
+    public Response create(HttpServletRequest httpServletRequest, EntityManagerFactory entityManagerFactory, Request request) {
+
+        Response response = new Response();
+
+        SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
+        Session session = null;
+        Transaction tx = null;
+
+        try{
+
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+
+            Notification notification = new Notification();
+            notification.setIp(httpServletRequest.getRemoteAddr());
+            notification.setLink(request.getNotificationBn().getLink());
+            notification.setMessage(request.getNotificationBn().getMessage());
+            notification.setReceiver(request.getNotificationBn().getReceiver());
+            notification.setIsSeen(0);
+
+            session.save(notification);
+
+            response.setMsg("Notification save successfully !");
+            response.setCode(200);
+            response.setNotificationBn(request.getNotificationBn());
+
+            tx.commit();
+
+        }catch(Exception e){
+            if (tx != null) {
+                tx.rollback();
+                throw e;
+            }
+            response.setMsg(e.getMessage());
             response.setCode(400);
 
         }finally{

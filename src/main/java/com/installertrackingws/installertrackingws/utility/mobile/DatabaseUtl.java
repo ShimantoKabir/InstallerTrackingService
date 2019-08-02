@@ -1,6 +1,5 @@
 package com.installertrackingws.installertrackingws.utility.mobile;
 
-import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.model.Etc.Status;
 import com.installertrackingws.installertrackingws.model.accounts.CostBreakDown;
@@ -20,7 +19,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import javax.persistence.EntityManagerFactory;
-import javax.servlet.http.HttpServletRequest;
 
 public class DatabaseUtl {
 
