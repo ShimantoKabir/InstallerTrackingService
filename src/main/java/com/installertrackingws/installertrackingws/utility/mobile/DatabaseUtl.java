@@ -1,6 +1,5 @@
 package com.installertrackingws.installertrackingws.utility.mobile;
 
-import com.installertrackingws.installertrackingws.bean.material.SiteBn;
 import com.installertrackingws.installertrackingws.bean.network.Request;
 import com.installertrackingws.installertrackingws.bean.network.Response;
 import com.installertrackingws.installertrackingws.model.Etc.Status;
@@ -10,6 +9,8 @@ import com.installertrackingws.installertrackingws.model.material.Site;
 import com.installertrackingws.installertrackingws.model.material.Task;
 import com.installertrackingws.installertrackingws.model.material.Template;
 import com.installertrackingws.installertrackingws.model.material.TemplateDetail;
+import com.installertrackingws.installertrackingws.model.setup.CompanyInfo;
+import com.installertrackingws.installertrackingws.model.setup.SuperviseConfig;
 import com.installertrackingws.installertrackingws.model.user.User;
 import com.installertrackingws.installertrackingws.model.workorder.WoAssign;
 import com.installertrackingws.installertrackingws.model.workorder.WoAssignDetail;
@@ -19,9 +20,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 public class DatabaseUtl {
 
@@ -45,6 +44,8 @@ public class DatabaseUtl {
         response.setWoAssignDetailList(session.createNativeQuery("SELECT * FROM wo_assign_detail ",WoAssignDetail.class).getResultList());
         response.setWorkOrderList(session.createNativeQuery("SELECT * FROM work_order ",WorkOrder.class).getResultList());
         response.setWorkOrderDetailList(session.createNativeQuery("SELECT * FROM work_order_detail ",WorkOrderDetail.class).getResultList());
+        response.setSuperviseConfigList(session.createNativeQuery("SELECT * FROM supervise_config ",SuperviseConfig.class).getResultList());
+        response.setCompanyInfo(session.createNativeQuery("SELECT * FROM company_info",CompanyInfo.class).getSingleResult());
 
         session.getTransaction().commit();
         session.close();

@@ -19,6 +19,8 @@ import com.installertrackingws.installertrackingws.model.material.Site;
 import com.installertrackingws.installertrackingws.model.material.Task;
 import com.installertrackingws.installertrackingws.model.material.Template;
 import com.installertrackingws.installertrackingws.model.material.TemplateDetail;
+import com.installertrackingws.installertrackingws.model.setup.CompanyInfo;
+import com.installertrackingws.installertrackingws.model.setup.SuperviseConfig;
 import com.installertrackingws.installertrackingws.model.user.User;
 import com.installertrackingws.installertrackingws.model.workorder.WoAssign;
 import com.installertrackingws.installertrackingws.model.workorder.WoAssignDetail;
@@ -41,6 +43,7 @@ public class Response {
     public NotificationBn notificationBn;
     public FriendRequestBn friendRequestBn;
     public String facebookLoginUrl;
+    public CompanyInfo companyInfo;
 
     public List<?> list;
     public List<?> departmentBnList;
@@ -68,8 +71,25 @@ public class Response {
     public List<TemplateBn> templateBnList;
     public List<WorkOrderDetailBn> workOrderDetailBnList;
     public List<SuperviseConfigBn> superviseConfigBnList;
+    public List<SuperviseConfig> superviseConfigList;
 
     public Response() {}
+
+    public CompanyInfo getCompanyInfo() {
+        return companyInfo;
+    }
+
+    public void setCompanyInfo(CompanyInfo companyInfo) {
+        this.companyInfo = companyInfo;
+    }
+
+    public List<SuperviseConfig> getSuperviseConfigList() {
+        return superviseConfigList;
+    }
+
+    public void setSuperviseConfigList(List<SuperviseConfig> superviseConfigList) {
+        this.superviseConfigList = superviseConfigList;
+    }
 
     public List<SuperviseConfigBn> getSuperviseConfigBnList() {
         return superviseConfigBnList;
