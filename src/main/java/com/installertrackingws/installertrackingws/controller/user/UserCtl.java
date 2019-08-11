@@ -7,6 +7,7 @@ import com.installertrackingws.installertrackingws.utility.email.Email;
 import com.installertrackingws.installertrackingws.utility.user.UserUtl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mobile.device.Device;
 import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletRequest;
@@ -135,8 +136,8 @@ public class UserCtl {
     }
 
     @PostMapping("/update-presence")
-    public Response updateUserPresence(@RequestBody Request request){
-        return new UserUtl().updateUserPresence(entityManagerFactory,request);
+    public Response updateUserPresence(@RequestBody Request request,Device device){
+        return new UserUtl().updateUserPresence(entityManagerFactory,request,device);
     }
 
     @PostMapping("/change-typing-status")

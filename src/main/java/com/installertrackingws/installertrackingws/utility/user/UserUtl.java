@@ -6,6 +6,7 @@ import com.installertrackingws.installertrackingws.bean.user.UserBn;
 import com.installertrackingws.installertrackingws.helper.PasswordEncryptionManager;
 import com.installertrackingws.installertrackingws.helper.Token;
 import com.installertrackingws.installertrackingws.model.department.Department;
+import com.installertrackingws.installertrackingws.model.location.Location;
 import com.installertrackingws.installertrackingws.model.setup.CompanyInfo;
 import com.installertrackingws.installertrackingws.model.user.User;
 import com.installertrackingws.installertrackingws.utility.department.DepartmentUtl;
@@ -13,6 +14,8 @@ import com.installertrackingws.installertrackingws.utility.mobile.DatabaseUtl;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.mobile.device.Device;
+
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
@@ -509,10 +512,11 @@ public class UserUtl {
                 long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
 
                 if (minutes > 2){
+
                     response.setMsg("Token is expired !");
                     response.setCode(400);
-                }else {
 
+                }else {
 
                     Query query = session.createNativeQuery("UPDATE user SET password = :password WHERE modify_date = :modifyDate");
                     query.setParameter("password",PasswordEncryptionManager.encryptPassword(request.getUserBn().getNewPassword()));
@@ -551,7 +555,7 @@ public class UserUtl {
 
     }
 
-    public Response updateUserPresence(EntityManagerFactory entityManagerFactory, Request request) {
+    public Response updateUserPresence(EntityManagerFactory entityManagerFactory, Request request,Device device) {
 
         Response response = new Response();
 
@@ -569,8 +573,25 @@ public class UserUtl {
             query.setParameter("id",request.getUserBn().getId());
             query.executeUpdate();
 
-            response.setMsg("User presence update successfully !");
-            response.setCode(200);
+            if (device.isNormal()){
+
+                Location location = new Location();
+                location.setIp(request.getLocationBn().getIp());
+                location.setLat(request.getLocationBn().getLat());
+                location.setLon(request.getLocationBn().getLon());
+                location.setUserId(request.getLocationBn().getUserId());
+                location.setWoId(request.getLocationBn().getWoId());
+                session.save(location);
+
+                response.setMsg("User presence and location update successfully !");
+                response.setCode(200);
+
+            }else {
+
+                response.setMsg("User presence update successfully !");
+                response.setCode(200);
+
+            }
 
             tx.commit();
 
