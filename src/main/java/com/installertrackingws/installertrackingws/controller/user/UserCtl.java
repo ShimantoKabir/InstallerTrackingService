@@ -136,8 +136,8 @@ public class UserCtl {
     }
 
     @PostMapping("/update-presence")
-    public Response updateUserPresence(@RequestBody Request request,Device device){
-        return new UserUtl().updateUserPresence(entityManagerFactory,request,device);
+    public Response updateUserPresence(@RequestBody Request request){
+        return new UserUtl().updateUserPresence(entityManagerFactory,request);
     }
 
     @PostMapping("/change-typing-status")

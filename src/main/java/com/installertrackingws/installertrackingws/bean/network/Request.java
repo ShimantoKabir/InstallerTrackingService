@@ -36,9 +36,10 @@ public class Request {
     public NotificationBn notificationBn;
     public FriendRequestBn friendRequestBn;
     public CostBreakDownBn costBreakDownBn;
+    public SuperviseConfig superviseConfig;
     public WorkOrderDetailBn workOrderDetailBn;
     public SuperviseConfigBn superviseConfigBn;
-    public SuperviseConfig superviseConfig;
+    public boolean isRequestComeFromBrowser;
 
     public List<UserBn> userBnList;
     public List<TaskBn> taskBnList;
@@ -48,6 +49,14 @@ public class Request {
     public List<WoAssignDetailBn> woAssignDetailBnList;
 
     public Request() {}
+
+    public boolean isRequestComeFromBrowser() {
+        return isRequestComeFromBrowser;
+    }
+
+    public void setRequestComeFromBrowser(boolean requestComeFromBrowser) {
+        isRequestComeFromBrowser = requestComeFromBrowser;
+    }
 
     public SuperviseConfig getSuperviseConfig() {
         return superviseConfig;

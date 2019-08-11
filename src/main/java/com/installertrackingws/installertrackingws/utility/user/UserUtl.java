@@ -555,7 +555,7 @@ public class UserUtl {
 
     }
 
-    public Response updateUserPresence(EntityManagerFactory entityManagerFactory, Request request,Device device) {
+    public Response updateUserPresence(EntityManagerFactory entityManagerFactory, Request request) {
 
         Response response = new Response();
 
@@ -573,7 +573,12 @@ public class UserUtl {
             query.setParameter("id",request.getUserBn().getId());
             query.executeUpdate();
 
-            if (device.isNormal()){
+            if (request.isRequestComeFromBrowser()){
+
+                response.setMsg("User presence update successfully !");
+                response.setCode(200);
+
+            }else {
 
                 Location location = new Location();
                 location.setIp(request.getLocationBn().getIp());
@@ -584,11 +589,6 @@ public class UserUtl {
                 session.save(location);
 
                 response.setMsg("User presence and location update successfully !");
-                response.setCode(200);
-
-            }else {
-
-                response.setMsg("User presence update successfully !");
                 response.setCode(200);
 
             }
