@@ -11,6 +11,9 @@ public class AppInfo {
     public static String clientPort = "3308";
     public static String name = "Installer tracking ws";
 
+    public static int MAX_DISTANCE_HOME_TO_INSTALLER = 500;
+    public static int ONE_MINUTE_IN_MILLIS = 60000;
+
     public AppInfo() {}
 
     public static String getClientIpForWebSocket() {

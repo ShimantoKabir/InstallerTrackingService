@@ -3,6 +3,7 @@ package com.installertrackingws.installertrackingws.bean.network;
 import com.installertrackingws.installertrackingws.bean.accounts.CostBreakDownBn;
 import com.installertrackingws.installertrackingws.bean.communication.FriendRequestBn;
 import com.installertrackingws.installertrackingws.bean.communication.NotificationBn;
+import com.installertrackingws.installertrackingws.bean.location.LocationBn;
 import com.installertrackingws.installertrackingws.bean.material.SiteBn;
 import com.installertrackingws.installertrackingws.bean.material.TaskBn;
 import com.installertrackingws.installertrackingws.bean.material.TemplateBn;
@@ -15,6 +16,7 @@ import com.installertrackingws.installertrackingws.model.Etc.Status;
 import com.installertrackingws.installertrackingws.model.accounts.CostBreakDown;
 import com.installertrackingws.installertrackingws.model.communication.Notification;
 import com.installertrackingws.installertrackingws.model.department.Department;
+import com.installertrackingws.installertrackingws.model.location.Location;
 import com.installertrackingws.installertrackingws.model.material.Site;
 import com.installertrackingws.installertrackingws.model.material.Task;
 import com.installertrackingws.installertrackingws.model.material.Template;
@@ -44,6 +46,7 @@ public class Response {
     public FriendRequestBn friendRequestBn;
     public String facebookLoginUrl;
     public CompanyInfo companyInfo;
+    public LocationBn locationBn;
 
     public List<?> list;
     public List<?> departmentBnList;
@@ -74,6 +77,14 @@ public class Response {
     public List<SuperviseConfig> superviseConfigList;
 
     public Response() {}
+
+    public LocationBn getLocationBn() {
+        return locationBn;
+    }
+
+    public void setLocationBn(LocationBn locationBn) {
+        this.locationBn = locationBn;
+    }
 
     public CompanyInfo getCompanyInfo() {
         return companyInfo;

@@ -10,6 +10,7 @@ import com.installertrackingws.installertrackingws.model.location.Location;
 import com.installertrackingws.installertrackingws.model.setup.CompanyInfo;
 import com.installertrackingws.installertrackingws.model.user.User;
 import com.installertrackingws.installertrackingws.utility.department.DepartmentUtl;
+import com.installertrackingws.installertrackingws.utility.location.LocationUtl;
 import com.installertrackingws.installertrackingws.utility.mobile.DatabaseUtl;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -590,6 +591,8 @@ public class UserUtl {
 
                 response.setMsg("User presence and location update successfully !");
                 response.setCode(200);
+                response.setUserBn(request.getUserBn());
+                response.setUserBnList(new LocationUtl().getLastLocationByWorkOrder(entityManagerFactory,request).getUserBnList());
 
             }
 
